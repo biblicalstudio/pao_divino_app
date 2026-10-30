@@ -233,7 +233,10 @@ function createRecipeCardHTML(recipe) {
         ` : ''}
         
         <div class="card-top-tags">
-          <span class="card-badge-pill">${recipe.badge || (recipe.tags && recipe.tags[0]) || 'Sem Glúten'}</span>
+          <span class="card-badge-pill">
+            <span class="badge-tag-text">${recipe.badge || (recipe.tags && recipe.tags[0]) || 'Sem Glúten'}</span>
+            <span class="badge-title-text">${recipe.title}</span>
+          </span>
           <button class="btn-fav-card ${isFav ? 'favorited' : ''}" 
                   onclick="event.stopPropagation(); toggleFavorite('${recipe.id}')" 
                   title="Favoritar receita" aria-label="Favoritar">

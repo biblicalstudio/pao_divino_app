@@ -595,6 +595,7 @@ h1, h2, h3, h4, .font-serif {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 1.25rem;
   margin-bottom: 1.25rem;
   gap: 1rem;
 }
@@ -783,6 +784,14 @@ h1, h2, h3, h4, .font-serif {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
+.card-badge-pill .badge-tag-text {
+  display: inline;
+}
+
+.card-badge-pill .badge-title-text {
+  display: none;
+}
+
 .btn-fav-card {
   width: 36px;
   height: 36px;
@@ -902,21 +911,51 @@ h1, h2, h3, h4, .font-serif {
     display: none !important;
   }
 
-  .card-body {
-    padding: 0.95rem 1rem 1.05rem;
+  /* No modo mobile: texto de card-badge-pill recebe o título da receita */
+  .card-badge-pill {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 0.45rem 0.85rem;
+    max-width: calc(100% - 46px);
+    line-height: 1.25;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--bread-crust);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
   }
 
+  .card-badge-pill .badge-tag-text {
+    display: none !important;
+  }
+
+  .card-badge-pill .badge-title-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Remove o card-title de baixo da foto do card no mobile */
   .card-title {
-    font-size: 1.12rem;
-    margin-bottom: 0.55rem;
-    line-height: 1.3;
+    display: none !important;
+  }
+
+  .card-body {
+    padding: 0.75rem 1rem;
   }
 
   .card-meta-chips {
-    padding-top: 0.55rem;
+    padding-top: 0;
     gap: 0.55rem;
     font-size: 0.74rem;
     flex-wrap: wrap;
+  }
+
+  .module-navigation-bar {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 }
 

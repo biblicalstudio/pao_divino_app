@@ -123,113 +123,14 @@
 
   <main>
     <!-- ==========================================
-         HERO SECTION: O PÃO DA VIDA & PROVISÃO
-         ========================================== -->
-    <section class="hero-section" aria-labelledby="heroTitle">
-      <div class="hero-card">
-        <div class="hero-badge">
-          <span>✨</span> Baseado nos E-books Sagrados & Sem Glúten
-        </div>
-        <h1 id="heroTitle" class="hero-title">O Alimento que Nutre o Corpo e a Alma</h1>
-        <p class="hero-verse-quote">"O pão nosso de cada dia nos dá hoje."</p>
-        <span class="hero-verse-ref">Mateus 6:11 • Inspirado nas Escrituras e comprovado pela saúde</span>
-
-        <div class="hero-highlights">
-          <div class="hero-highlight-item">
-            <div class="highlight-icon-box">🌾</div>
-            <div>
-              <span class="highlight-label">Grãos Ancestrais</span>
-              <span class="highlight-val">Pães Bíblicos</span>
-            </div>
-          </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon-box">🛡️</div>
-            <div>
-              <span class="highlight-label">Digestão Leve</span>
-              <span class="highlight-val">45+ Sem Glúten</span>
-            </div>
-          </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon-box">⏱️</div>
-            <div>
-              <span class="highlight-label">Cozinha Guiada</span>
-              <span class="highlight-val">Timer com Som</span>
-            </div>
-          </div>
-          <div class="hero-highlight-item">
-            <div class="highlight-icon-box">📶</div>
-            <div>
-              <span class="highlight-label">Sempre Pronto</span>
-              <span class="highlight-val">100% Offline</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================
-         BARRA DE PESQUISA & FILTROS POR CATEGORIA
-         ========================================== -->
-    <section class="search-filter-section" aria-label="Busca e Filtros">
-      <div class="search-box">
-        <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input 
-          type="text" 
-          id="recipeSearchInput" 
-          class="search-input" 
-          placeholder="Buscar receita, ingrediente (ex: azeite, cevada, aveia, lentilha)..." 
-          autocomplete="off"
-        >
-        <button id="searchClearBtn" class="search-clear-btn" type="button" title="Limpar busca">✕</button>
-      </div>
-
-      <nav class="category-scroll-container hidden" id="categoryScrollContainer" aria-label="Categorias de Receitas">
-        <button class="cat-pill active" data-category="todos" type="button">
-          <span class="cat-icon">✨</span> Todas
-        </button>
-        <button class="cat-pill" data-category="sagrados" type="button">
-          <span class="cat-icon">📜</span> Bíblicos
-        </button>
-        <button class="cat-pill" data-category="sem-gluten" type="button">
-          <span class="cat-icon">🌾</span> Sem Glúten
-        </button>
-        <button class="cat-pill" data-category="rapidos" type="button">
-          <span class="cat-icon">⚡</span> Rápidos
-        </button>
-        <button class="cat-pill" data-category="doces-especiais" type="button">
-          <span class="cat-icon">🍯</span> Doces & Especiais
-        </button>
-        <button class="cat-pill" data-category="detox-sucos" type="button">
-          <span class="cat-icon">🥤</span> Sucos Verdes & Vivos
-        </button>
-        <button class="cat-pill" data-category="detox-acompanhamentos" type="button">
-          <span class="cat-icon">🌿</span> Acompanhamentos
-        </button>
-        <button class="cat-pill" data-category="lanches-cafes" type="button">
-          <span class="cat-icon">☕</span> Cafés & Lanches
-        </button>
-        <button class="cat-pill" data-category="favoritos" type="button">
-          <span class="cat-icon">❤️</span> Favoritos
-        </button>
-      </nav>
-    </section>
-
-    <!-- ==========================================
          SEÇÃO PRINCIPAL: 4 MÓDULOS (2 COLUNAS)
+         A PRIMEIRA PÁGINA EXIBE SOMENTE ESTES CARDS
          ========================================== -->
     <section class="modules-section" id="modulesSection" aria-labelledby="modulesTitle">
-      <div class="section-title-wrap" style="margin-bottom: 1.25rem;">
-        <h2 id="modulesTitle" class="modules-heading">Módulos de Receitas</h2>
-        <span class="section-subtitle">Selecione um módulo para acessar o catálogo de receitas</span>
-      </div>
-
       <div class="modules-grid" id="modulesGrid">
         <!-- Card 1: Pães Sagrados -->
         <article class="module-card" onclick="selectModule('sagrados')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sagrados');}" role="button" tabindex="0" aria-label="Abrir módulo Pães Sagrados">
-          <img src="./images/recipes/capa-paes-sagrados.jpg" alt="Pães Sagrados" class="module-card-img" loading="lazy">
+          <img src="./images/recipes/pao-branco-sem-gluten.jpg" alt="Pães Sagrados" class="module-card-img" loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Tradição Bíblica</span>
@@ -240,7 +141,7 @@
 
         <!-- Card 2: Sem Glúten -->
         <article class="module-card" onclick="selectModule('sem-gluten')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sem-gluten');}" role="button" tabindex="0" aria-label="Abrir módulo Sem Glúten">
-          <img src="./images/bonus_gluten_free/01_pao_branco_sem_gluten.jpg" alt="Sem Glúten" class="module-card-img" loading="lazy">
+          <img src="./images/bonus_gluten_free/08_pao_com_frutas_secas.jpg" alt="Sem Glúten" class="module-card-img" loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Digestão & Leveza</span>
@@ -251,7 +152,7 @@
 
         <!-- Card 3: Sucos Detox -->
         <article class="module-card" onclick="selectModule('sucos-detox')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sucos-detox');}" role="button" tabindex="0" aria-label="Abrir módulo Sucos Detox">
-          <img src="./images/sucos_detox/01_capa_parte1_sucos_verdes.jpg" alt="Sucos Detox" class="module-card-img" loading="lazy">
+          <img src="./images/sucos_detox/02_suco_verde_detox_completo.jpg" alt="Sucos Detox" class="module-card-img" loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Vitalidade Pura</span>
@@ -262,7 +163,7 @@
 
         <!-- Card 4: Lanches -->
         <article class="module-card" onclick="selectModule('lanches')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('lanches');}" role="button" tabindex="0" aria-label="Abrir módulo Lanches">
-          <img src="./images/lanches_cafes/01_capa_lanches_cafes.jpg" alt="Lanches" class="module-card-img" loading="lazy">
+          <img src="./images/lanches_cafes/07_panqueca_aveia_frutas_vermelhas.jpg" alt="Lanches" class="module-card-img" loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Cafés & Praticidade</span>
@@ -284,6 +185,51 @@
         <span class="current-module-badge" id="currentModuleBadge"></span>
       </div>
 
+      <!-- Barra de Pesquisa & Filtros dentro do Módulo -->
+      <div class="search-filter-section" style="margin-bottom: 1.25rem;">
+        <div class="search-box">
+          <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="recipeSearchInput" 
+            class="search-input" 
+            placeholder="Buscar receita ou ingrediente..." 
+            autocomplete="off"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" type="button" title="Limpar busca">✕</button>
+        </div>
+
+        <nav class="category-scroll-container hidden" id="categoryScrollContainer" aria-label="Categorias de Receitas">
+          <button class="cat-pill active" data-category="todos" type="button">
+            <span class="cat-icon">✨</span> Todas
+          </button>
+          <button class="cat-pill" data-category="sagrados" type="button">
+            <span class="cat-icon">📜</span> Bíblicos
+          </button>
+          <button class="cat-pill" data-category="sem-gluten" type="button">
+            <span class="cat-icon">🌾</span> Sem Glúten
+          </button>
+          <button class="cat-pill" data-category="rapidos" type="button">
+            <span class="cat-icon">⚡</span> Rápidos
+          </button>
+          <button class="cat-pill" data-category="doces-especiais" type="button">
+            <span class="cat-icon">🍯</span> Doces & Especiais
+          </button>
+          <button class="cat-pill" data-category="detox-sucos" type="button">
+            <span class="cat-icon">🥤</span> Sucos Verdes
+          </button>
+          <button class="cat-pill" data-category="detox-acompanhamentos" type="button">
+            <span class="cat-icon">🌿</span> Acompanhamentos
+          </button>
+          <button class="cat-pill" data-category="lanches-cafes" type="button">
+            <span class="cat-icon">☕</span> Cafés & Lanches
+          </button>
+        </nav>
+      </div>
+
       <div class="section-header-flex">
         <div class="section-title-wrap">
           <h2 id="recipesSectionTitle">Catálogo de Receitas</h2>
@@ -300,7 +246,12 @@
     <!-- ==========================================
          SEÇÃO DE DEVOCIONAIS & ORAÇÕES DO PÃO
          ========================================== -->
-    <section class="devotional-section" id="devotionalSection" aria-labelledby="devotionalTitle">
+    <section class="devotional-section hidden" id="devotionalSection" aria-labelledby="devotionalTitle">
+      <div class="module-navigation-bar" style="margin-bottom: 1.5rem;">
+        <button type="button" class="btn-back-modules" onclick="backToModules()">
+          <span class="back-arrow">←</span> Voltar aos Módulos
+        </button>
+      </div>
       <div class="section-title-wrap" style="text-align: center; margin-bottom: 0.5rem;">
         <span class="hero-badge">🕊️ Espaço Sagrado</span>
         <h2 id="devotionalTitle" style="font-size: 1.8rem; color: var(--gold-200);">Devocionais & Orações do Pão</h2>

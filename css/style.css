@@ -482,8 +482,8 @@ h1, h2, h3, h4, .font-serif {
    SEÇÃO DE MÓDULOS (2 COLUNAS - CARDS VISUAIS PREMIUM)
    ========================================================================== */
 .modules-section {
-  max-width: var(--max-content-width);
-  margin: 1.25rem auto 2.5rem;
+  max-width: 800px;
+  margin: 1.5rem auto 3rem;
   padding: 0 1.25rem;
 }
 

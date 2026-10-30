@@ -272,12 +272,14 @@ function selectModule(moduleId) {
 
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
+  const devSec = document.getElementById('devotionalSection');
   const catNav = document.getElementById('categoryScrollContainer');
   const titleEl = document.getElementById('recipesSectionTitle');
   const subEl = document.getElementById('recipesSectionSubtitle');
   const badgeEl = document.getElementById('currentModuleBadge');
 
   if (modulesSec) modulesSec.classList.add('hidden');
+  if (devSec) devSec.classList.add('hidden');
   if (recipesSec) recipesSec.classList.remove('hidden');
 
   const config = MODULE_CONFIG[moduleId];
@@ -323,10 +325,12 @@ function backToModules() {
 
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
+  const devSec = document.getElementById('devotionalSection');
   const catNav = document.getElementById('categoryScrollContainer');
 
   if (modulesSec) modulesSec.classList.remove('hidden');
   if (recipesSec) recipesSec.classList.add('hidden');
+  if (devSec) devSec.classList.add('hidden');
   if (catNav) catNav.classList.add('hidden');
 
   const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
@@ -343,6 +347,23 @@ function showFavoritesModule() {
   navBtns.forEach(b => b.classList.remove('active'));
   const favBtn = document.querySelector('.bottom-nav-bar .nav-item[data-target="favoritos"]');
   if (favBtn) favBtn.classList.add('active');
+}
+
+function showDevotional() {
+  appState.activeModule = 'devocional';
+  const modulesSec = document.getElementById('modulesSection');
+  const recipesSec = document.getElementById('recipesSection');
+  const devSec = document.getElementById('devotionalSection');
+  if (modulesSec) modulesSec.classList.add('hidden');
+  if (recipesSec) recipesSec.classList.add('hidden');
+  if (devSec) devSec.classList.remove('hidden');
+
+  const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
+  navBtns.forEach(b => b.classList.remove('active'));
+  const devBtn = document.querySelector('.bottom-nav-bar .nav-item[data-target="devocional"]');
+  if (devBtn) devBtn.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function initCategories() {
@@ -907,7 +928,7 @@ function initBottomNav() {
       } else if (target === 'favoritos') {
         showFavoritesModule();
       } else if (target === 'devocional') {
-        scrollToSection('devotionalSection');
+        showDevotional();
       } else if (target === 'timer') {
         openTimerModal();
       }

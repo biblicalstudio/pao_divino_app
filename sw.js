@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pao-divino-v1.3.0';
+const CACHE_NAME = 'pao-divino-v1.4.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS_TO_CACHE = [
   './css/style.css',
   './js/recipes-data.js',
   './js/bonus_gluten_free/bonus-recipes-data.js',
+  './js/sucos_detox/sucos-detox-data.js',
   './js/app.js',
   './icons/icon.svg',
   './icons/icon-192.png',

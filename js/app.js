@@ -108,12 +108,13 @@ function initPwaInstall() {
 }
 
 // ==========================================================================
-// CATÁLOGO UNIFICADO DE RECEITAS (BÍBLICAS + BÔNUS 45 SEM GLÚTEN)
+// CATÁLOGO UNIFICADO DE RECEITAS (BÍBLICAS + BÔNUS 45 SEM GLÚTEN + 30 SUCOS DETOX)
 // ==========================================================================
 function getAllRecipes() {
   const base = (typeof RECIPES_DATA !== 'undefined' && Array.isArray(RECIPES_DATA)) ? RECIPES_DATA : [];
   const bonus = (typeof BONUS_GLUTEN_FREE_RECIPES !== 'undefined' && Array.isArray(BONUS_GLUTEN_FREE_RECIPES)) ? BONUS_GLUTEN_FREE_RECIPES : [];
-  return [...base, ...bonus];
+  const sucos = (typeof SUCOS_DETOX_RECIPES !== 'undefined' && Array.isArray(SUCOS_DETOX_RECIPES)) ? SUCOS_DETOX_RECIPES : [];
+  return [...base, ...bonus, ...sucos];
 }
 
 // ==========================================================================
@@ -198,9 +199,9 @@ function createRecipeCardHTML(recipe) {
         <p class="card-story-snippet">${recipe.story || recipe.tips || ''}</p>
 
         <div class="card-meta-chips">
-          <span class="meta-chip">⏱️ ${recipe.totalTime || recipe.bakeTime}</span>
+          <span class="meta-chip">⏱️ ${recipe.totalTime || recipe.bakeTime || recipe.prepTime}</span>
           <span class="meta-chip">🔥 ${recipe.difficulty}</span>
-          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : 'Natural')}</span>
+          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : (recipe.category === 'detox-sucos' ? '100% Detox' : 'Natural'))}</span>
         </div>
       </div>
 
@@ -342,8 +343,8 @@ function buildRecipeModalHTML(recipe) {
           <span class="meta-box-value">${recipe.prepTime}</span>
         </div>
         <div class="modal-meta-box">
-          <span class="meta-box-label">Forno</span>
-          <span class="meta-box-value">${recipe.bakeTime}</span>
+          <span class="meta-box-label">${recipe.bakeTime === '0 min' ? 'Preparo' : 'Forno'}</span>
+          <span class="meta-box-value">${recipe.bakeTime === '0 min' ? 'Sem Forno' : recipe.bakeTime}</span>
         </div>
         <div class="modal-meta-box">
           <span class="meta-box-label">Dificuldade</span>

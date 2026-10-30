@@ -162,9 +162,11 @@ function createRecipeCardHTML(recipe) {
 
   return `
     <article class="recipe-card" onclick="openRecipeModal('${recipe.id}')" data-id="${recipe.id}">
-      <div class="card-header-art" style="background: ${recipe.coverStyle || 'linear-gradient(135deg, #2e1e12, #633816)'};">
-        <div class="card-art-pattern"></div>
-        <div class="card-art-glow"></div>
+      <div class="card-header-art" style="background: ${recipe.coverStyle || 'var(--wheat-100)'};">
+        ${recipe.image ? `
+          <img src="${recipe.image}" alt="${recipe.title}" class="card-recipe-img" loading="lazy">
+          <div class="card-art-overlay"></div>
+        ` : ''}
         
         <div class="card-top-tags">
           <span class="card-badge-pill">${recipe.badge || recipe.tags[0]}</span>
@@ -343,6 +345,14 @@ function buildRecipeModalHTML(recipe) {
     </div>
 
     <div class="modal-content-body">
+      <!-- Foto Oficial do E-book da Receita -->
+      ${recipe.image ? `
+        <div class="modal-recipe-cover-wrap">
+          <img src="${recipe.image}" alt="${recipe.title}" class="modal-recipe-cover-img">
+          <span class="modal-recipe-badge-overlay">📖 Página Original do E-book</span>
+        </div>
+      ` : ''}
+
       <!-- História e Contexto Bíblico -->
       ${recipe.story ? `
         <div class="story-box">

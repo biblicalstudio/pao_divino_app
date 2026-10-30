@@ -76,6 +76,7 @@ const RECIPES_DATA = [
   // ==========================================
   {
     id: "pao-de-ezequiel-classico",
+    image: "./images/recipes/pao-de-ezequiel-classico.jpg",
     title: "Pão de Ezequiel Clássico",
     subtitle: "A Fórmula Sagrada Revelada por Deus ao Profeta",
     category: "sagrados",
@@ -147,6 +148,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-de-cevada-do-milagre",
+    image: "./images/recipes/pao-de-cevada-do-milagre.jpg",
     title: "Pão de Cevada do Milagre",
     subtitle: "O Pão da Multiplicação que Jesus Abençoou",
     category: "sagrados",
@@ -212,6 +214,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-profetico-de-lentilha",
+    image: "./images/recipes/pao-profetico-de-lentilha.jpg",
     title: "Pão Profético de Lentilha",
     subtitle: "Pão da Vida com Alto Teor Proteico e Sem Glúten",
     category: "sagrados",
@@ -277,6 +280,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-azimo-da-ultima-ceia",
+    image: "./images/recipes/pao-azimo-da-ultima-ceia.jpg",
     title: "Pão Ázimo da Última Ceia (Matzá Sagrado)",
     subtitle: "O Pão da Aliança que Jesus Partiu - Rápido e Sem Fermento",
     category: "sagrados",
@@ -336,6 +340,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-de-aveia-com-mel-e-azeite",
+    image: "./images/recipes/pao-de-aveia-com-mel-e-azeite.jpg",
     title: "Pão de Aveia com Mel e Azeite Puro",
     subtitle: "Adoçado com Mel Silvestre - Fofinho e Reconfortante",
     category: "sagrados",
@@ -405,6 +410,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-grao-de-bico-ervas-deserto",
+    image: "./images/recipes/pao-grao-de-bico-ervas-deserto.jpg",
     title: "Pão de Grão-de-Bico com Ervas do Deserto",
     subtitle: "O Pão Cozido sobre as Brasas que Restaurou o Profeta Elias",
     category: "sagrados",
@@ -470,6 +476,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-do-mana-pao-do-ceu",
+    image: "./images/recipes/pao-do-mana-pao-do-ceu.jpg",
     title: "Pão do Maná - O Pão do Céu",
     subtitle: "Levíssimo, Sem Ovo, Sem Glúten e Delicado",
     category: "sagrados",
@@ -533,6 +540,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-multigraos-abencoado-levain",
+    image: "./images/recipes/pao-multigraos-abencoado-levain.jpg",
     title: "Pão Multi-Grãos Abençoado (Levain Rústico)",
     subtitle: "A Receita Mais Completa dos Profetas com Fermentação Natural",
     category: "sagrados",
@@ -601,6 +609,7 @@ const RECIPES_DATA = [
   // ==========================================
   {
     id: "pao-branco-sem-gluten",
+    image: "./images/recipes/pao-branco-sem-gluten.jpg",
     title: "Pão Branco Sem Glúten de Todo Dia",
     subtitle: "O Básico Essencial que Não Pode Faltar em Casa",
     category: "sem-gluten",
@@ -658,6 +667,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-rapido-de-frigideira",
+    image: "./images/recipes/pao-rapido-de-frigideira.jpg",
     title: "Pão Rápido de Frigideira de 5 Minutos",
     subtitle: "Pronto em Minutos para o Café da Manhã",
     category: "rapidos",
@@ -708,6 +718,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-de-abobora-dourada",
+    image: "./images/recipes/pao-de-abobora-dourada.jpg",
     title: "Pão de Abóbora Dourada com Sementes",
     subtitle: "Cor Dourada Sublime, Rico em Betacaroteno e Maciez",
     category: "sem-gluten",
@@ -766,6 +777,7 @@ const RECIPES_DATA = [
 
   {
     id: "focaccia-italiana-alecrim-confit",
+    image: "./images/recipes/focaccia-italiana-alecrim-confit.jpg",
     title: "Focaccia Artesanal com Alecrim e Tomate Confit",
     subtitle: "Rústica, Dourada e com Fartura de Azeite de Oliva",
     category: "sem-gluten",
@@ -831,6 +843,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-com-psyllium-husk-elastico",
+    image: "./images/recipes/pao-com-psyllium-husk-elastico.jpg",
     title: "Pão Funcional com Psyllium Husk",
     subtitle: "Elasticidade Incrível, Digestão Perfeita e Sem Glúten",
     category: "sem-gluten",
@@ -889,6 +902,7 @@ const RECIPES_DATA = [
 
   {
     id: "pao-doce-com-gotas-de-chocolate-amargo",
+    image: "./images/recipes/pao-doce-com-gotas-de-chocolate-amargo.jpg",
     title: "Pão Doce Rústico com Cacau Nobre",
     subtitle: "Aconchego, Saúde e Sabor Irresistível para Toda a Família",
     category: "doces-especiais",
@@ -951,6 +965,7 @@ const RECIPES_DATA = [
   // ==========================================
   {
     id: "suco-verde-revitalizante-salmos",
+    image: "./images/recipes/suco-verde-revitalizante-salmos.jpg",
     title: "Suco Verde Revitalizante dos Salmos",
     subtitle: "Nutre o Corpo e Alimenta o Espírito",
     category: "detox-acompanhamentos",
@@ -1000,6 +1015,7 @@ const RECIPES_DATA = [
 
   {
     id: "shot-imunidade-bom-samaritano",
+    image: "./images/recipes/shot-imunidade-bom-samaritano.jpg",
     title: "Shot de Imunidade do Bom Samaritano",
     subtitle: "Cúrcuma, Gengibre, Limão e Especiarias Sagradas",
     category: "detox-acompanhamentos",

@@ -312,5 +312,19 @@
   <!-- Scripts -->
   <script src="./js/recipes-data.js"></script>
   <script src="./js/app.js"></script>
+  <script>
+    // Elimina o badge da Netlify
+    window.addEventListener('DOMContentLoaded', () => {
+      const removeNetlifyBadges = () => {
+        const badges = document.querySelectorAll('a[href*="netlify.com"], a[href*="netlify.app"], .netlify-badge, #netlify-badge');
+        badges.forEach(badge => badge.remove());
+      };
+      removeNetlifyBadges();
+      window.addEventListener('load', removeNetlifyBadges);
+      // Observa se o elemento é injetado dinamicamente
+      const observer = new MutationObserver(removeNetlifyBadges);
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
 </body>
 </html>

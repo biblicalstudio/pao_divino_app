@@ -1589,3 +1589,17 @@ h1, h2, h3, h4, .font-serif {
     height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
   }
 }
+
+/* ==========================================================================
+   OCULTAR BADGE NETLIFY
+   ========================================================================== */
+a[href*="netlify.com"],
+a[href*="netlify.app"],
+.netlify-badge,
+#netlify-badge,
+[data-netlify-badge] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

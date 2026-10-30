@@ -108,6 +108,15 @@ function initPwaInstall() {
 }
 
 // ==========================================================================
+// CATÁLOGO UNIFICADO DE RECEITAS (BÍBLICAS + BÔNUS 45 SEM GLÚTEN)
+// ==========================================================================
+function getAllRecipes() {
+  const base = (typeof RECIPES_DATA !== 'undefined' && Array.isArray(RECIPES_DATA)) ? RECIPES_DATA : [];
+  const bonus = (typeof BONUS_GLUTEN_FREE_RECIPES !== 'undefined' && Array.isArray(BONUS_GLUTEN_FREE_RECIPES)) ? BONUS_GLUTEN_FREE_RECIPES : [];
+  return [...base, ...bonus];
+}
+
+// ==========================================================================
 // RENDERIZAÇÃO DO FEED DE RECEITAS
 // ==========================================================================
 function renderRecipes() {
@@ -115,7 +124,8 @@ function renderRecipes() {
   const counter = document.getElementById('recipesCounter');
   if (!grid) return;
 
-  const filtered = RECIPES_DATA.filter((recipe) => {
+  const all = getAllRecipes();
+  const filtered = all.filter((recipe) => {
     // Filtro por Categoria
     if (appState.activeCategory === 'favoritos') {
       if (!appState.favorites.includes(recipe.id)) return false;
@@ -130,7 +140,7 @@ function renderRecipes() {
       const inSub = (recipe.subtitle || '').toLowerCase().includes(q);
       const inVerse = (recipe.verse || '').toLowerCase().includes(q) || (recipe.verseText || '').toLowerCase().includes(q);
       const inIngredients = recipe.ingredients.some(ing => ing.name.toLowerCase().includes(q));
-      const inTags = recipe.tags.some(t => t.toLowerCase().includes(q));
+      const inTags = (recipe.tags || []).some(t => t.toLowerCase().includes(q));
       return inTitle || inSub || inVerse || inIngredients || inTags;
     }
 
@@ -158,7 +168,7 @@ function renderRecipes() {
 
 function createRecipeCardHTML(recipe) {
   const isFav = appState.favorites.includes(recipe.id);
-  const verseSnippet = recipe.verseText || recipe.story || '';
+  const verseSnippet = recipe.verseText || recipe.story || recipe.tips || '';
 
   return `
     <article class="recipe-card" onclick="openRecipeModal('${recipe.id}')" data-id="${recipe.id}">
@@ -169,7 +179,7 @@ function createRecipeCardHTML(recipe) {
         ` : ''}
         
         <div class="card-top-tags">
-          <span class="card-badge-pill">${recipe.badge || recipe.tags[0]}</span>
+          <span class="card-badge-pill">${recipe.badge || (recipe.tags && recipe.tags[0]) || 'Sem Glúten'}</span>
           <button class="btn-fav-card ${isFav ? 'favorited' : ''}" 
                   onclick="event.stopPropagation(); toggleFavorite('${recipe.id}')" 
                   title="Favoritar receita" aria-label="Favoritar">
@@ -177,18 +187,20 @@ function createRecipeCardHTML(recipe) {
           </button>
         </div>
 
-        <p class="card-verse-preview">${recipe.verse ? `"${verseSnippet}"` : verseSnippet}</p>
+        ${verseSnippet ? `
+          <p class="card-verse-preview">${recipe.verse ? `"${verseSnippet}"` : verseSnippet}</p>
+        ` : ''}
       </div>
 
       <div class="card-body">
         <h3 class="card-title">${recipe.title}</h3>
         <span class="card-subtitle">${recipe.subtitle || ''}</span>
-        <p class="card-story-snippet">${recipe.story || ''}</p>
+        <p class="card-story-snippet">${recipe.story || recipe.tips || ''}</p>
 
         <div class="card-meta-chips">
           <span class="meta-chip">⏱️ ${recipe.totalTime || recipe.bakeTime}</span>
           <span class="meta-chip">🔥 ${recipe.difficulty}</span>
-          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : 'Natural'}</span>
+          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : 'Natural')}</span>
         </div>
       </div>
 
@@ -280,7 +292,7 @@ function toggleFavorite(recipeId) {
 // MODAL DE DETALHES & MODO COZINHA
 // ==========================================================================
 function openRecipeModal(recipeId) {
-  const recipe = RECIPES_DATA.find(r => r.id === recipeId);
+  const recipe = getAllRecipes().find(r => r.id === recipeId);
   if (!recipe) return;
 
   appState.currentRecipe = recipe;

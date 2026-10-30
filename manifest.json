@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0e0c0a",
-  "theme_color": "#17120e",
+  "background_color": "#fbf9f5",
+  "theme_color": "#faf7f2",
   "lang": "pt-BR",
   "categories": ["food", "lifestyle", "health", "books"],
   "icons": [

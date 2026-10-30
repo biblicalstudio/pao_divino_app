@@ -90,7 +90,7 @@ const RECIPES_DATA = [
     difficulty: "Médio",
     glycemicIndex: "Baixo",
     tags: ["Bíblico", "Multi-grãos", "Baixo IG", "Rico em Fibras", "Ancestral"],
-    coverStyle: "linear-gradient(135deg, #3d2310, #73431d, #c98218)",
+    coverStyle: "linear-gradient(135deg, #f7efe1, #edd5b3, #c99e69)",
     badge: "Receita 1 do E-book",
     ingredients: [
       { name: "Farinha de Cevada", amount: 2, unit: "xícaras", notes: "moída fina" },
@@ -161,7 +161,7 @@ const RECIPES_DATA = [
     difficulty: "Fácil",
     glycemicIndex: "Muito Baixo",
     tags: ["Bíblico", "O Pão de Jesus", "Sem Glúten Opcional", "Multiplicação", "Cevada"],
-    coverStyle: "linear-gradient(135deg, #422a10, #8f531d, #d49a37)",
+    coverStyle: "linear-gradient(135deg, #fbf4ea, #f1dec3, #d4ad77)",
     badge: "Receita 2 do E-book",
     ingredients: [
       { name: "Farinha de Cevada (ou cevada em pó)", amount: 3, unit: "xícaras", notes: "rico em sabor rústico" },
@@ -226,7 +226,7 @@ const RECIPES_DATA = [
     difficulty: "Fácil",
     glycemicIndex: "Baixo",
     tags: ["Bíblico", "Sem Glúten", "Alto Teor Proteico", "Sem Sovar", "Linhaça"],
-    coverStyle: "linear-gradient(135deg, #381e0f, #823c18, #d97838)",
+    coverStyle: "linear-gradient(135deg, #fbf0e8, #edd3c1, #d69f7a)",
     badge: "Receita 3 do E-book",
     ingredients: [
       { name: "Farinha de Lentilha (laranja ou marrom)", amount: 2, unit: "xícaras", notes: "moída fina" },
@@ -291,7 +291,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Médio",
     tags: ["Bíblico", "Sem Fermento", "A Última Ceia", "Ultra Rápido", "Frigideira / Chapa"],
-    coverStyle: "linear-gradient(135deg, #2b180d, #613414, #b06e23)",
+    coverStyle: "linear-gradient(135deg, #fbf6ec, #ede2cb, #cbb68d)",
     badge: "Receita 4 do E-book",
     ingredients: [
       { name: "Farinha de Trigo Integral (ou Espelta)", amount: 2, unit: "xícaras", notes: "fina" },
@@ -350,7 +350,7 @@ const RECIPES_DATA = [
     difficulty: "Médio",
     glycemicIndex: "Médio",
     tags: ["Bíblico", "Adocicado", "Macio", "Aveia", "Mel Puro"],
-    coverStyle: "linear-gradient(135deg, #472608, #965313, #e5a93c)",
+    coverStyle: "linear-gradient(135deg, #fff7e6, #fae5be, #e0b467)",
     badge: "Receita 5 do E-book",
     ingredients: [
       { name: "Farinha de Aveia Fina", amount: 2, unit: "xícaras", notes: "" },
@@ -419,7 +419,7 @@ const RECIPES_DATA = [
     difficulty: "Fácil",
     glycemicIndex: "Baixo",
     tags: ["Bíblico", "Sem Glúten", "Aromático", "O Pão de Elias", "Ervas Frescas"],
-    coverStyle: "linear-gradient(135deg, #2e2612, #6b5219, #c49a37)",
+    coverStyle: "linear-gradient(135deg, #f6f3e6, #e7ddba, #c4b077)",
     badge: "Receita 6 do E-book",
     ingredients: [
       { name: "Farinha de Grão-de-Bico", amount: 2, unit: "xícaras", notes: "base nutritiva e aromática" },
@@ -484,7 +484,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Médio",
     tags: ["Bíblico", "O Pão do Céu", "Sem Ovo", "Sem Glúten", "Vegano"],
-    coverStyle: "linear-gradient(135deg, #2b2219, #5e4a36, #cfb794)",
+    coverStyle: "linear-gradient(135deg, #fbfaf6, #efebe0, #dbd4c0)",
     badge: "Receita 7 do E-book",
     ingredients: [
       { name: "Farinha de Arroz Branca", amount: 2, unit: "xícaras", notes: "leve e neutra" },
@@ -547,7 +547,7 @@ const RECIPES_DATA = [
     difficulty: "Avançado",
     glycemicIndex: "Muito Baixo",
     tags: ["Bíblico", "Fermentação Natural", "Levain", "Artesanal", "Multi-grãos"],
-    coverStyle: "linear-gradient(135deg, #1f140a, #4a2b13, #8c5720)",
+    coverStyle: "linear-gradient(135deg, #f5ebd9, #e5cfad, #ba9261)",
     badge: "Receita 8 do E-book",
     ingredients: [
       { name: "Levain (Fermento Natural ativo)", amount: 0.5, unit: "xícara", notes: "100g bem alimentado" },
@@ -615,7 +615,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Médio",
     tags: ["Sem Glúten", "Sem Sovar", "Básico", "Liquidificador", "Rápido"],
-    coverStyle: "linear-gradient(135deg, #2b1f13, #6b4c2b, #b38b59)",
+    coverStyle: "linear-gradient(135deg, #faf7f2, #f0e6d6, #d9c4aa)",
     badge: "Receita 01 do E-book Bônus",
     ingredients: [
       { name: "Farinha de Arroz Branca", amount: 2, unit: "xícaras", notes: "peneirada" },
@@ -672,7 +672,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Baixo",
     tags: ["Sem Glúten", "Frigideira", "5 Minutos", "Individual", "Super Rápido"],
-    coverStyle: "linear-gradient(135deg, #3d260f, #824b17, #d48b37)",
+    coverStyle: "linear-gradient(135deg, #fef5e7, #fae2bc, #dfb06c)",
     badge: "Receita 03 do E-book Bônus",
     ingredients: [
       { name: "Ovo", amount: 1, unit: "unidade", notes: "" },
@@ -722,7 +722,7 @@ const RECIPES_DATA = [
     difficulty: "Fácil",
     glycemicIndex: "Baixo",
     tags: ["Sem Glúten", "Abóbora", "Anti-inflamatório", "Macio", "Colorido Natural"],
-    coverStyle: "linear-gradient(135deg, #4a2107, #99490e, #e87b1c)",
+    coverStyle: "linear-gradient(135deg, #fef4e8, #fcd9b3, #e59d57)",
     badge: "Receita 12 do E-book Bônus",
     ingredients: [
       { name: "Purê de Abóbora Cabotiá cozida", amount: 1, unit: "xícara", notes: "bem amassadinho e sequinho" },
@@ -780,7 +780,7 @@ const RECIPES_DATA = [
     difficulty: "Médio",
     glycemicIndex: "Médio",
     tags: ["Sem Glúten", "Focaccia", "Alecrim", "Azeite de Oliva", "Gourmet"],
-    coverStyle: "linear-gradient(135deg, #1f2b14, #476127, #8bb84d)",
+    coverStyle: "linear-gradient(135deg, #f3f7ed, #dae7cb, #a8c48a)",
     badge: "Receita 21 do E-book Bônus",
     ingredients: [
       { name: "Farinha de Arroz Branca", amount: 1.5, unit: "xícaras", notes: "" },
@@ -845,7 +845,7 @@ const RECIPES_DATA = [
     difficulty: "Médio",
     glycemicIndex: "Muito Baixo",
     tags: ["Sem Glúten", "Psyllium", "Elástico", "Keto Friendly", "Fatiável"],
-    coverStyle: "linear-gradient(135deg, #2e1d0f, #663b17, #ad6e2d)",
+    coverStyle: "linear-gradient(135deg, #f8f1e7, #e8d7be, #c5a67c)",
     badge: "Receita 17 do E-book Bônus",
     ingredients: [
       { name: "Psyllium Husk em Pó (ou flocos)", amount: 2, unit: "colheres de sopa", notes: "20g de fibra pura" },
@@ -903,7 +903,7 @@ const RECIPES_DATA = [
     difficulty: "Fácil",
     glycemicIndex: "Médio",
     tags: ["Sem Glúten", "Pão Doce", "Cacau Puro", "Chocolate 70%", "Especial"],
-    coverStyle: "linear-gradient(135deg, #1c0e08, #421d0d, #783515)",
+    coverStyle: "linear-gradient(135deg, #f3ebe6, #dfcbbe, #ad8b79)",
     badge: "Receita 10 do E-book Bônus",
     ingredients: [
       { name: "Farinha de Aveia sem glúten", amount: 1.5, unit: "xícaras", notes: "" },
@@ -965,7 +965,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Muito Baixo",
     tags: ["Bíblico", "Detox", "Suco Verde", "Imunidade", "Refrescante"],
-    coverStyle: "linear-gradient(135deg, #102913, #225729, #4ca658)",
+    coverStyle: "linear-gradient(135deg, #edf6ee, #cce4cf, #86ba8d)",
     badge: "Receita 1 do E-book 75 Receitas",
     ingredients: [
       { name: "Folha de Couve Manteiga Orgânica", amount: 1, unit: "folha grande", notes: "higienizada e sem talo" },
@@ -1014,7 +1014,7 @@ const RECIPES_DATA = [
     difficulty: "Muito Fácil",
     glycemicIndex: "Muito Baixo",
     tags: ["Bíblico", "Shot Matinal", "Anti-inflamatório", "Imunidade", "Cúrcuma"],
-    coverStyle: "linear-gradient(135deg, #3d1b03, #8f4509, #f59f00)",
+    coverStyle: "linear-gradient(135deg, #fef7e8, #fbe4af, #e8a638)",
     badge: "Receita 5 do E-book 75 Receitas",
     ingredients: [
       { name: "Suco de Limão Taiti espremido na hora", amount: 1, unit: "unidade", notes: "" },

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>Pão Divino - Receitas Bíblicas & Artesanais Saudáveis</title>
+  <meta name="description" content="Aplicativo de receitas bíblicas sagradas dos profetas e opções artesanais sem glúten. Pão de Ezequiel, Cevada do Milagre, Ázimo da Ceia, modo cozinha e timer integrado.">
+  <meta name="keywords" content="Pão Divino, Pão de Ezequiel, Receitas Bíblicas, Pão Sem Glúten, Pão Artesanal, PWA, Culinária Sagrada">
+  <meta name="author" content="Biblical Studio">
+
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#130f0c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pão Divino">
+
+  <!-- Favicons e Apple Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+
+  <!-- Google Fonts: Cinzel para solenidade bíblica e Plus Jakarta Sans para leitura confortável -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Folha de Estilos Principal -->
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       BANNER DE INSTALAÇÃO PWA
+       ========================================== -->
+  <aside id="pwaInstallBanner" class="pwa-install-banner hidden" aria-label="Instalar Aplicativo">
+    <div class="pwa-banner-content">
+      <span class="pwa-banner-icon">🍞</span>
+      <div>
+        <strong>Instale o Pão Divino</strong>
+        <p style="font-size: 0.78rem; opacity: 0.85;">Acesse todas as receitas e o timer mesmo sem internet!</p>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button id="btnInstallPwa" class="btn-install" type="button">Instalar App</button>
+      <button id="btnCloseBanner" class="btn-close-banner" type="button" title="Fechar">✕</button>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       CABEÇALHO PRINCIPAL (STICKY)
+       ========================================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper" onclick="resetFilters()">
+        <img src="./icons/icon.svg" alt="Pão Divino Logo" class="brand-icon" width="44" height="44">
+        <div class="brand-titles">
+          <span class="brand-name">PÃO DIVINO</span>
+          <span class="brand-subtitle">RECEITAS SAGRADAS & SAUDÁVEIS</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-icon" onclick="openTimerModal()" title="Timer de Forno & Fermentação" aria-label="Timer de Cozinha">
+          ⏱️
+        </button>
+        <button class="btn-icon" onclick="scrollToSection('devotionalSection')" title="Devocionais & Orações" aria-label="Devocional">
+          🕊️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================
+         HERO SECTION: O PÃO DA VIDA & PROVISÃO
+         ========================================== -->
+    <section class="hero-section" aria-labelledby="heroTitle">
+      <div class="hero-card">
+        <div class="hero-badge">
+          <span>✨</span> Baseado nos E-books Sagrados & Sem Glúten
+        </div>
+        <h1 id="heroTitle" class="hero-title">O Alimento que Nutre o Corpo e a Alma</h1>
+        <p class="hero-verse-quote">"O pão nosso de cada dia nos dá hoje."</p>
+        <span class="hero-verse-ref">Mateus 6:11 • Inspirado nas Escrituras e comprovado pela saúde</span>
+
+        <div class="hero-highlights">
+          <div class="hero-highlight-item">
+            <div class="highlight-icon-box">🌾</div>
+            <div>
+              <span class="highlight-label">Grãos Ancestrais</span>
+              <span class="highlight-val">Pães Bíblicos</span>
+            </div>
+          </div>
+          <div class="hero-highlight-item">
+            <div class="highlight-icon-box">🛡️</div>
+            <div>
+              <span class="highlight-label">Digestão Leve</span>
+              <span class="highlight-val">45+ Sem Glúten</span>
+            </div>
+          </div>
+          <div class="hero-highlight-item">
+            <div class="highlight-icon-box">⏱️</div>
+            <div>
+              <span class="highlight-label">Cozinha Guiada</span>
+              <span class="highlight-val">Timer com Som</span>
+            </div>
+          </div>
+          <div class="hero-highlight-item">
+            <div class="highlight-icon-box">📶</div>
+            <div>
+              <span class="highlight-label">Sempre Pronto</span>
+              <span class="highlight-val">100% Offline</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BARRA DE PESQUISA & FILTROS POR CATEGORIA
+         ========================================== -->
+    <section class="search-filter-section" aria-label="Busca e Filtros">
+      <div class="search-box">
+        <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          id="recipeSearchInput" 
+          class="search-input" 
+          placeholder="Buscar receita, ingrediente (ex: azeite, cevada, aveia, lentilha)..." 
+          autocomplete="off"
+        >
+        <button id="searchClearBtn" class="search-clear-btn" type="button" title="Limpar busca">✕</button>
+      </div>
+
+      <nav class="category-scroll-container" aria-label="Categorias de Receitas">
+        <button class="cat-pill active" data-category="todos" type="button">
+          <span class="cat-icon">✨</span> Todos os Pães
+        </button>
+        <button class="cat-pill" data-category="sagrados" type="button">
+          <span class="cat-icon">📜</span> Pães Bíblicos dos Profetas
+        </button>
+        <button class="cat-pill" data-category="sem-gluten" type="button">
+          <span class="cat-icon">🌾</span> Pães Sem Glúten
+        </button>
+        <button class="cat-pill" data-category="rapidos" type="button">
+          <span class="cat-icon">⚡</span> Rápidos de Frigideira
+        </button>
+        <button class="cat-pill" data-category="doces-especiais" type="button">
+          <span class="cat-icon">🍯</span> Pães Doces & Rústicos
+        </button>
+        <button class="cat-pill" data-category="detox-acompanhamentos" type="button">
+          <span class="cat-icon">🌿</span> Sucos & Detox Bíblicos
+        </button>
+        <button class="cat-pill" data-category="favoritos" type="button">
+          <span class="cat-icon">❤️</span> Meus Favoritos
+        </button>
+      </nav>
+    </section>
+
+    <!-- ==========================================
+         GRID PRINCIPAL DE RECEITAS
+         ========================================== -->
+    <section class="recipes-section" id="recipesSection" aria-labelledby="recipesSectionTitle">
+      <div class="section-header-flex">
+        <div class="section-title-wrap">
+          <h2 id="recipesSectionTitle">Catálogo de Pães Sagrados</h2>
+          <span class="section-subtitle">Receitas com ingredientes literais, benefícios e instruções passo a passo</span>
+        </div>
+        <span class="recipes-counter" id="recipesCounter">Carregando...</span>
+      </div>
+
+      <div class="recipes-grid" id="recipesGrid" role="feed" aria-busy="false">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO DE DEVOCIONAIS & ORAÇÕES DO PÃO
+         ========================================== -->
+    <section class="devotional-section" id="devotionalSection" aria-labelledby="devotionalTitle">
+      <div class="section-title-wrap" style="text-align: center; margin-bottom: 0.5rem;">
+        <span class="hero-badge">🕊️ Espaço Sagrado</span>
+        <h2 id="devotionalTitle" style="font-size: 1.8rem; color: var(--gold-200);">Devocionais & Orações do Pão</h2>
+        <p class="section-subtitle" style="max-width: 650px; margin: 0.4rem auto 0;">
+          Consagre as suas mãos antes de preparar o pão e abençoe a mesa da sua família com gratidão e fé.
+        </p>
+      </div>
+
+      <div class="devotional-grid" id="devotionalsGrid">
+        <!-- Renderizado via JS -->
+      </div>
+
+      <!-- Guia dos Ingredientes Bíblicos e seus Significados -->
+      <div style="margin-top: 3.5rem;">
+        <h3 class="font-serif" style="font-size: 1.4rem; color: var(--gold-300); text-align: center; margin-bottom: 0.5rem;">
+          🌾 O Significado Espiritual dos Ingredientes Bíblicos
+        </h3>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Cada grão e cada elemento utilizado nas Escrituras carrega uma lição de saúde e fé.
+        </p>
+        <div class="ingredients-guide-grid" id="ingredientsGuideGrid">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       MODAL DE RECEITA DETALHADA / MODO COZINHA
+       ========================================== -->
+  <div id="recipeModalBackdrop" class="recipe-modal-backdrop" onclick="if(event.target === this) closeRecipeModal()" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="recipe-modal-container" id="recipeModalContainer">
+      <!-- Conteúdo inserido dinamicamente via openRecipeModal() -->
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL DO TIMER DE COZINHA / FORNO
+       ========================================== -->
+  <div id="timerModalBackdrop" class="timer-modal-backdrop" onclick="if(event.target === this) closeTimerModal()" role="dialog" aria-modal="true">
+    <div class="timer-modal-card">
+      <button class="modal-close-btn" onclick="closeTimerModal()" title="Fechar">✕</button>
+      
+      <span class="hero-badge">⏱️ Timer de Cozinha</span>
+      <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--gold-200); margin-top: 0.5rem;">
+        Controle de Forno & Sova
+      </h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+        Toque nos atalhos rápidos ou inicie a contagem regressiva para não perder o ponto do seu pão.
+      </p>
+
+      <!-- Presets de Tempo -->
+      <div class="timer-presets">
+        <button class="preset-chip" onclick="setTimerDuration(300, 'Frigideira / Rápido'); startTimer();">⚡ 5 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(600, 'Tempo de Sova'); startTimer();">🥣 10 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(1200, 'Descanso da Massa'); startTimer();">⏳ 20 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(2100, 'Forno Dourado'); startTimer();">🔥 35 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(2700, 'Forno Completo'); startTimer();">🍞 45 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(3600, 'Fermentação Longa'); startTimer();">🌾 60 min</button>
+      </div>
+
+      <!-- Display Circular do Timer -->
+      <div class="timer-circle-progress">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="8"></circle>
+          <circle id="timerProgressRing" cx="100" cy="100" r="88" fill="none" stroke="var(--gold-400)" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.92" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="timer-big-display" id="timerBigDisplay">00:00</div>
+      </div>
+
+      <!-- Controles do Timer -->
+      <div style="display: flex; gap: 0.75rem; justify-content: center;">
+        <button id="btnTimerToggle" class="btn-install" style="padding: 0.75rem 1.6rem; font-size: 1rem;" onclick="appState.timer.isRunning ? pauseTimer() : startTimer()">
+          ▶️ Iniciar
+        </button>
+        <button class="btn-secondary-action" style="padding: 0.75rem 1.25rem;" onclick="resetTimer()">
+          🔄 Zerar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       WIDGET FLUTUANTE DE TIMER EM SEGUNDO PLANO
+       ========================================== -->
+  <div id="kitchenTimerWidget" class="kitchen-timer-widget" onclick="openTimerModal()" title="Ver Timer">
+    <span style="font-size: 1.15rem;">⏱️</span>
+    <div>
+      <div class="timer-digits" id="floatTimerDigits">00:00</div>
+      <div class="timer-label-tag">Pão no Forno</div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       TOAST NOTIFICATION RAPIDA
+       ========================================== -->
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+
+  <!-- ==========================================
+       BARRA DE NAVEGAÇÃO INFERIOR FIXA (MOBILE)
+       ========================================== -->
+  <nav class="bottom-nav-bar" aria-label="Navegação Principal">
+    <button class="nav-item active" data-target="receitas" type="button">
+      <span class="nav-icon">🍞</span>
+      <span>Receitas</span>
+    </button>
+    <button class="nav-item" data-target="biblicos" type="button">
+      <span class="nav-icon">📜</span>
+      <span>Bíblicos</span>
+    </button>
+    <button class="nav-item" data-target="sem-gluten" type="button">
+      <span class="nav-icon">🌾</span>
+      <span>Sem Glúten</span>
+    </button>
+    <button class="nav-item" data-target="devocional" type="button">
+      <span class="nav-icon">🕊️</span>
+      <span>Devocional</span>
+    </button>
+    <button class="nav-item" data-target="timer" type="button">
+      <span class="nav-icon">⏱️</span>
+      <span>Timer</span>
+    </button>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="./js/recipes-data.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

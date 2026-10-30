@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Logs & Scripts temporários
+*.log
+scratch/
+venv/
+__pycache__/
+*.pyc
+
+# IDEs
+.vscode/
+.idea/

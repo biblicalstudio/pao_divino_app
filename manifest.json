@@ -1,0 +1,53 @@
+{
+  "name": "Pão Divino - Receitas Bíblicas & Saudáveis",
+  "short_name": "Pão Divino",
+  "description": "App oficial de receitas dos e-books Pães Sagrados dos Profetas e Pães Sem Glúten. Pão de Ezequiel, Cevada do Milagre, Ázimo da Ceia e mais.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0e0c0a",
+  "theme_color": "#17120e",
+  "lang": "pt-BR",
+  "categories": ["food", "lifestyle", "health", "books"],
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pães Bíblicos",
+      "short_name": "Bíblicos",
+      "url": "./index.html#biblicos",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Pães Sem Glúten",
+      "short_name": "Sem Glúten",
+      "url": "./index.html#sem-gluten",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Devocional do Pão",
+      "short_name": "Devocional",
+      "url": "./index.html#devocional",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

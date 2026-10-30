@@ -70,6 +70,25 @@ npx serve .
 
 ---
 
+## 🌐 Deploy no Netlify
+
+O projeto já possui os arquivos [`netlify.toml`](file:///Users/thyagosouza/Documents/AUTOMAÇÕES%20WHATSAPP/PÃES%20DIVINOS/app_pao_divino/netlify.toml) e [`_redirects`](file:///Users/thyagosouza/Documents/AUTOMAÇÕES%20WHATSAPP/PÃES%20DIVINOS/app_pao_divino/_redirects) configurados especificamente com:
+- **Cache-Control adequado para o `sw.js`** (sempre atualizado no navegador dos usuários).
+- **MIME Type correto para o `manifest.json`**.
+- **Redirecionamento SPA (200)**.
+- **Cabeçalhos de segurança (X-Frame-Options, CSP, WakeLock)**.
+
+### Passo a passo para subir no Netlify:
+1. Conecte seu repositório GitHub `biblicalstudio/pao_divino_app` no [Netlify](https://app.netlify.com/).
+2. Nas configurações de build:
+   - **Build command:** *(deixe em branco)*
+   - **Publish directory:** `.` (ou deixe em branco, pois o `netlify.toml` já define automaticamente)
+3. Clique em **Deploy site**.
+4. Pronto! O app receberá SSL grátis (HTTPS) e estará disponível para instalação imediata no Android e iOS.
+
+
+---
+
 ## 📲 Como Instalar no Celular
 
 ### No Android / Chrome

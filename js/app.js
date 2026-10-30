@@ -35,8 +35,8 @@ const MODULE_CONFIG = {
   },
   'sem-gluten': {
     title: 'Sem Glúten',
-    subtitle: '45 receitas • Pães Saudáveis, Rústicos & Funcionais',
-    badge: '45 receitas',
+    subtitle: '42 receitas • Pães Saudáveis, Rústicos & Funcionais',
+    badge: '42 receitas',
     categories: ['todos', 'bonus-gluten-free'],
     filterFn: (r) => r.category === 'bonus-gluten-free'
   },

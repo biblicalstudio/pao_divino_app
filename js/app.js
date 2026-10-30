@@ -172,7 +172,13 @@ function createRecipeCardHTML(recipe) {
   const verseSnippet = recipe.verseText || recipe.story || recipe.tips || '';
 
   return `
-    <article class="recipe-card" onclick="openRecipeModal('${recipe.id}')" data-id="${recipe.id}">
+    <article class="recipe-card" 
+             onclick="openRecipeModal('${recipe.id}')" 
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecipeModal('${recipe.id}');}" 
+             data-id="${recipe.id}"
+             role="button"
+             tabindex="0"
+             aria-label="Abrir receita de ${recipe.title}">
       <div class="card-header-art" style="background: ${recipe.coverStyle || 'var(--wheat-100)'};">
         ${recipe.image ? `
           <img src="${recipe.image}" alt="${recipe.title}" class="card-recipe-img" loading="lazy">
@@ -203,13 +209,6 @@ function createRecipeCardHTML(recipe) {
           <span class="meta-chip">🔥 ${recipe.difficulty}</span>
           <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : (recipe.category === 'detox-sucos' ? '100% Detox' : 'Natural'))}</span>
         </div>
-      </div>
-
-      <div class="card-action-bar">
-        <button class="btn-open-recipe" type="button">
-          <span>Abrir Receita & Modo Cozinha</span>
-          <span>→</span>
-        </button>
       </div>
     </article>
   `;

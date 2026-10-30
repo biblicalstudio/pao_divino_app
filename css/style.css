@@ -521,7 +521,7 @@ h1, h2, h3, h4, .font-serif {
   gap: 1.5rem;
 }
 
-/* CARD INDIVIDUAL DA RECEITA CLEAN */
+/* CARD INDIVIDUAL DA RECEITA CLEAN & 100% CLICÁVEL */
 .recipe-card {
   background: var(--bg-card);
   border-radius: var(--radius-md);
@@ -530,19 +530,33 @@ h1, h2, h3, h4, .font-serif {
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
   cursor: pointer;
   position: relative;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .recipe-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   border-color: var(--wheat-400);
-  box-shadow: var(--shadow-md), var(--shadow-gold);
+  box-shadow: var(--shadow-md), 0 10px 28px rgba(162, 114, 57, 0.16);
 }
 
+.recipe-card:focus-visible {
+  border-color: var(--gold-300);
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.35);
+}
+
+.recipe-card:active {
+  transform: scale(0.985);
+}
+
+/* ÁREA DA IMAGEM EM PROPORÇÃO 3:4 */
 .card-header-art {
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 3 / 4;
   position: relative;
   padding: 1.15rem;
   display: flex;
@@ -560,19 +574,20 @@ h1, h2, h3, h4, .font-serif {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   z-index: 1;
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .recipe-card:hover .card-recipe-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .card-art-overlay {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(43, 31, 22, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.02) 40%, rgba(43, 31, 22, 0.78) 100%);
   pointer-events: none;
 }
 
@@ -654,7 +669,7 @@ h1, h2, h3, h4, .font-serif {
 }
 
 .card-body {
-  padding: 1.25rem;
+  padding: 1.15rem 1.25rem 1.25rem;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -704,33 +719,49 @@ h1, h2, h3, h4, .font-serif {
   gap: 0.3rem;
 }
 
-.card-action-bar {
-  padding: 0 1.25rem 1.25rem;
-  display: flex;
-  gap: 0.6rem;
+/* ==========================================================================
+   OTIMIZAÇÃO MOBILE PARA CARDS (SOMENTE TÍTULO + IMAGEM 3:4 DESTACADA)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .recipes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* No mobile, elimina subtítulo, história e versículo para focar na foto 3:4 e título */
+  .card-subtitle,
+  .card-story-snippet,
+  .card-verse-preview {
+    display: none !important;
+  }
+
+  .card-body {
+    padding: 0.95rem 1rem 1.05rem;
+  }
+
+  .card-title {
+    font-size: 1.12rem;
+    margin-bottom: 0.55rem;
+    line-height: 1.3;
+  }
+
+  .card-meta-chips {
+    padding-top: 0.55rem;
+    gap: 0.55rem;
+    font-size: 0.74rem;
+    flex-wrap: wrap;
+  }
 }
 
-.btn-open-recipe {
-  flex: 1;
-  background: var(--wheat-light);
-  border: 1px solid var(--border-subtle);
-  color: var(--bread-crust);
-  padding: 0.7rem;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  transition: all 0.2s ease;
-}
+@media (max-width: 480px) {
+  .recipes-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
 
-.btn-open-recipe:hover {
-  background: linear-gradient(135deg, var(--wheat-500), var(--bread-crust));
-  color: #ffffff;
-  border-color: var(--bread-crust);
+  .card-header-art {
+    padding: 0.85rem;
+  }
 }
 
 /* ==========================================================================

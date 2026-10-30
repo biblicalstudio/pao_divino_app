@@ -1591,15 +1591,38 @@ h1, h2, h3, h4, .font-serif {
 }
 
 /* ==========================================================================
-   OCULTAR BADGE NETLIFY
+   ELIMINAR BADGE E DRAWER NETLIFY (.nl-wrap, #nl-card, #nl-badge, iframes)
    ========================================================================== */
+.nl-wrap,
+#nl-card,
+#nl-badge,
+.nl-card,
+.nl-badge,
+.nl-icon-btn,
+.nl-prompt,
+.nl-drop,
+.nl-or,
 a[href*="netlify.com"],
 a[href*="netlify.app"],
-.netlify-badge,
-#netlify-badge,
-[data-netlify-badge] {
+iframe[src*="netlify"],
+iframe[id*="netlify"],
+iframe[class*="netlify"],
+iframe[title*="Netlify"],
+[data-netlify-badge],
+div[class*="nl-"],
+section[id="nl-card"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  z-index: -9999 !important;
 }

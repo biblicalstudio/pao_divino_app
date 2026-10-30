@@ -30,6 +30,53 @@
 
   <!-- Folha de Estilos Principal -->
   <link rel="stylesheet" href="./css/style.css">
+
+  <!-- Elimina o badge/drawer/HUD da Netlify instantaneamente -->
+  <script>
+    (function() {
+      function killNetlify() {
+        const elements = document.querySelectorAll(
+          '.nl-wrap, #nl-card, #nl-badge, .nl-card, .nl-badge, .nl-icon-btn, .nl-prompt, .nl-drop, a[href*="netlify.com"], a[href*="netlify.app"]'
+        );
+        elements.forEach(el => el.remove());
+
+        document.querySelectorAll('iframe').forEach(iframe => {
+          try {
+            const str = ((iframe.src || '') + ' ' + (iframe.id || '') + ' ' + (iframe.className || '') + ' ' + (iframe.name || '')).toLowerCase();
+            if (str.includes('netlify') || str.includes('nl-')) {
+              iframe.remove();
+            }
+          } catch(e) {}
+        });
+      }
+
+      // Intercepta a comunicação postMessage do iframe do Netlify (nlHud)
+      window.addEventListener('message', function(e) {
+        if (e.data && (e.data.nlHud || (typeof e.data === 'string' && e.data.includes('nlHud')))) {
+          document.querySelectorAll('iframe').forEach(iframe => {
+            try {
+              if (iframe.contentWindow === e.source) {
+                iframe.remove();
+              }
+            } catch(err) {
+              iframe.remove();
+            }
+          });
+          killNetlify();
+        }
+      }, true);
+
+      document.addEventListener('DOMContentLoaded', killNetlify);
+      window.addEventListener('load', killNetlify);
+      const interval = setInterval(killNetlify, 80);
+      setTimeout(() => clearInterval(interval), 4000);
+
+      if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(killNetlify);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+      }
+    })();
+  </script>
 </head>
 <body>
 

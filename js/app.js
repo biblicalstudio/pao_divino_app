@@ -28,37 +28,27 @@ const appState = {
 const MODULE_CONFIG = {
   'sagrados': {
     title: 'Pães Sagrados',
-    subtitle: '16 receitas • Pães Bíblicos dos Profetas & Grãos Ancestrais',
-    badge: '16 receitas',
-    categories: ['todos', 'sagrados', 'sem-gluten', 'rapidos', 'doces-especiais'],
+    desc: 'Pães Bíblicos dos Profetas & Grãos Ancestrais',
     filterFn: (r) => ['sagrados', 'sem-gluten', 'rapidos', 'doces-especiais'].includes(r.category)
   },
   'sem-gluten': {
     title: 'Sem Glúten',
-    subtitle: '42 receitas • Pães Saudáveis, Rústicos & Funcionais',
-    badge: '42 receitas',
-    categories: ['todos', 'bonus-gluten-free'],
+    desc: 'Pães Saudáveis, Rústicos & Funcionais',
     filterFn: (r) => r.category === 'bonus-gluten-free'
   },
   'sucos-detox': {
     title: 'Sucos Detox',
-    subtitle: '26 receitas • Sucos Verdes, Vivos & Acompanhamentos',
-    badge: '26 receitas',
-    categories: ['todos', 'detox-sucos', 'detox-acompanhamentos'],
+    desc: 'Sucos Verdes, Vivos & Acompanhamentos',
     filterFn: (r) => ['detox-sucos', 'detox-acompanhamentos'].includes(r.category)
   },
   'lanches': {
     title: 'Lanches',
-    subtitle: '25 receitas • Lanches e Cafés da Manhã Práticos & Nutritivos',
-    badge: '25 receitas',
-    categories: ['todos', 'lanches-cafes'],
+    desc: 'Lanches e Cafés da Manhã Práticos & Nutritivos',
     filterFn: (r) => r.category === 'lanches-cafes'
   },
   'favoritos': {
     title: 'Meus Favoritos',
-    subtitle: 'Suas receitas salvas para rápido acesso',
-    badge: 'Favoritos',
-    categories: ['todos'],
+    desc: 'Suas receitas salvas para rápido acesso',
     filterFn: (r) => appState.favorites.includes(r.id)
   }
 };
@@ -195,8 +185,23 @@ function renderRecipes() {
     return true;
   });
 
+  const countText = `${filtered.length} ${filtered.length === 1 ? 'receita' : 'receitas'}`;
   if (counter) {
-    counter.textContent = `${filtered.length} ${filtered.length === 1 ? 'receita' : 'receitas'}`;
+    counter.textContent = countText;
+  }
+
+  // Na parte section-subtitle, exibe a mesma quantidade de receitas que tá em recipes-counter
+  const subEl = document.getElementById('recipesSectionSubtitle');
+  if (subEl) {
+    if (appState.searchQuery.trim() !== '') {
+      subEl.textContent = `${countText} • Resultados para "${appState.searchQuery}"`;
+    } else if (appState.activeModule && MODULE_CONFIG[appState.activeModule]) {
+      const cfg = MODULE_CONFIG[appState.activeModule];
+      const desc = cfg.desc || 'Receitas selecionadas com carinho e saúde';
+      subEl.textContent = `${countText} • ${desc}`;
+    } else {
+      subEl.textContent = `${countText} disponíveis`;
+    }
   }
 
   if (filtered.length === 0) {
@@ -276,40 +281,15 @@ function selectModule(moduleId) {
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
   const devSec = document.getElementById('devotionalSection');
-  const catNav = document.getElementById('categoryScrollContainer');
   const titleEl = document.getElementById('recipesSectionTitle');
-  const subEl = document.getElementById('recipesSectionSubtitle');
-  const badgeEl = document.getElementById('currentModuleBadge');
 
   if (modulesSec) modulesSec.classList.add('hidden');
   if (devSec) devSec.classList.add('hidden');
   if (recipesSec) recipesSec.classList.remove('hidden');
 
   const config = MODULE_CONFIG[moduleId];
-  if (config) {
-    if (titleEl) titleEl.textContent = config.title;
-    if (subEl) subEl.textContent = config.subtitle;
-    if (badgeEl) badgeEl.textContent = config.badge;
-
-    // Se o módulo tem categorias adicionais, exibe filtros contextuais
-    if (catNav) {
-      if (config.categories.length > 2) {
-        catNav.classList.remove('hidden');
-        const pills = catNav.querySelectorAll('.cat-pill');
-        pills.forEach(p => {
-          const cat = p.dataset.category;
-          if (config.categories.includes(cat)) {
-            p.style.display = 'inline-flex';
-            if (cat === 'todos') p.classList.add('active');
-            else p.classList.remove('active');
-          } else {
-            p.style.display = 'none';
-          }
-        });
-      } else {
-        catNav.classList.add('hidden');
-      }
-    }
+  if (config && titleEl) {
+    titleEl.textContent = config.title;
   }
 
   renderRecipes();
@@ -329,12 +309,10 @@ function backToModules() {
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
   const devSec = document.getElementById('devotionalSection');
-  const catNav = document.getElementById('categoryScrollContainer');
 
   if (modulesSec) modulesSec.classList.remove('hidden');
   if (recipesSec) recipesSec.classList.add('hidden');
   if (devSec) devSec.classList.add('hidden');
-  if (catNav) catNav.classList.add('hidden');
 
   const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
   navBtns.forEach(b => b.classList.remove('active'));
@@ -390,19 +368,13 @@ function initSearch() {
     appState.searchQuery = e.target.value;
     const modulesSec = document.getElementById('modulesSection');
     const recipesSec = document.getElementById('recipesSection');
-    const catNav = document.getElementById('categoryScrollContainer');
     const titleEl = document.getElementById('recipesSectionTitle');
-    const subEl = document.getElementById('recipesSectionSubtitle');
-    const badgeEl = document.getElementById('currentModuleBadge');
 
     if (appState.searchQuery.trim().length > 0) {
       if (clearBtn) clearBtn.classList.add('active');
       if (modulesSec) modulesSec.classList.add('hidden');
       if (recipesSec) recipesSec.classList.remove('hidden');
-      if (catNav) catNav.classList.add('hidden');
       if (titleEl) titleEl.textContent = 'Resultados da Busca';
-      if (subEl) subEl.textContent = `Buscando por "${appState.searchQuery}" em todas as receitas`;
-      if (badgeEl) badgeEl.textContent = 'Busca Global';
     } else {
       if (clearBtn) clearBtn.classList.remove('active');
       if (appState.activeModule) {

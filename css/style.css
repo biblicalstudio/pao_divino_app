@@ -205,6 +205,10 @@ h1, h2, h3, h4, .font-serif {
   animation: slideDown 0.4s ease;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .pwa-install-banner.hidden {
   display: none !important;
 }

@@ -433,8 +433,11 @@ function resetFilters() {
 // ==========================================================================
 // FAVORITOS (LOCALSTORAGE)
 // ==========================================================================
+// FAVORITOS (LOCALSTORAGE)
+// ==========================================================================
 function toggleFavorite(recipeId) {
   const index = appState.favorites.indexOf(recipeId);
+  const isNowFav = index < 0;
   if (index >= 0) {
     appState.favorites.splice(index, 1);
     showToast('Receita removida dos favoritos');
@@ -444,10 +447,16 @@ function toggleFavorite(recipeId) {
   }
   localStorage.setItem('pao_divino_favs', JSON.stringify(appState.favorites));
   renderRecipes();
+
+  // Atualiza botões no modal de tela cheia se estiver aberto
+  const topFavBtn = document.getElementById('modalTopFavBtn');
+  if (topFavBtn) topFavBtn.textContent = isNowFav ? '❤️' : '🤍';
+  const footerFavBtn = document.getElementById('modalFooterFavBtn');
+  if (footerFavBtn) footerFavBtn.innerHTML = `<span>${isNowFav ? '❤️ Favoritado' : '🤍 Favoritar'}</span>`;
 }
 
 // ==========================================================================
-// MODAL DE DETALHES & MODO COZINHA
+// TELA CHEIA DE DETALHES DA RECEITA & MODO COZINHA
 // ==========================================================================
 function openRecipeModal(recipeId) {
   const recipe = getAllRecipes().find(r => r.id === recipeId);
@@ -463,53 +472,99 @@ function openRecipeModal(recipeId) {
 
   modalContainer.innerHTML = buildRecipeModalHTML(recipe);
   backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+
+  // Rola suavemente para o início da receita
+  modalContainer.scrollTop = 0;
+
+  // Empurra estado no histórico para que voltar no navegador/celular feche a receita
+  try {
+    history.pushState({ modalOpen: true, recipeId }, '');
+  } catch (e) {}
 
   // Tenta ativar o Wake Lock para manter a tela acesa na cozinha
   requestWakeLock();
 }
 
-function closeRecipeModal() {
+function closeRecipeModal(popHistory = false) {
   const backdrop = document.getElementById('recipeModalBackdrop');
-  if (backdrop) backdrop.classList.remove('open');
+  if (backdrop) {
+    backdrop.classList.remove('open');
+    backdrop.setAttribute('aria-hidden', 'true');
+  }
   document.body.style.overflow = '';
   releaseWakeLock();
+
+  if (popHistory && window.history.state && window.history.state.modalOpen) {
+    try {
+      history.back();
+    } catch (e) {}
+  }
 }
+
+// Escuta evento popstate para fechar tela cheia ao usar botão voltar do Android/iOS
+window.addEventListener('popstate', () => {
+  const backdrop = document.getElementById('recipeModalBackdrop');
+  if (backdrop && backdrop.classList.contains('open')) {
+    closeRecipeModal(false);
+  }
+});
 
 function buildRecipeModalHTML(recipe) {
   const isFav = appState.favorites.includes(recipe.id);
 
   return `
+    <!-- Barra Superior Fixa de Navegação da Tela Cheia -->
+    <div class="modal-top-bar">
+      <div class="modal-top-bar-inner">
+        <button class="modal-back-btn" onclick="closeRecipeModal(true)" aria-label="Voltar para receitas">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Voltar</span>
+        </button>
+
+        <div class="modal-top-actions">
+          <button class="modal-top-action-btn" id="modalTopFavBtn" onclick="toggleFavorite('${recipe.id}')" title="Favoritar">
+            ${isFav ? '❤️' : '🤍'}
+          </button>
+          <button class="modal-top-action-btn" onclick="closeRecipeModal(true)" title="Fechar receita">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cabeçalho Hero da Receita -->
     <div class="modal-header-hero" style="background: ${recipe.coverStyle || 'linear-gradient(135deg, #2b180d, #613414)'};">
-      <button class="modal-close-btn" onclick="closeRecipeModal()" title="Fechar">✕</button>
-      
-      <span class="card-badge-pill">${recipe.badge || 'Receita Sagrada'}</span>
-      <h2 style="font-family: var(--font-serif); font-size: 1.65rem; color: #fff; margin-top: 0.6rem;">${recipe.title}</h2>
-      <p style="color: var(--gold-200); font-size: 0.95rem; margin-top: 0.2rem;">${recipe.subtitle || ''}</p>
+      <div class="modal-header-inner">
+        <span class="card-badge-pill">${recipe.badge || 'Receita Sagrada'}</span>
+        <h2 style="font-family: var(--font-serif); font-size: 1.7rem; color: #fff; margin-top: 0.6rem; line-height: 1.25;">${recipe.title}</h2>
+        <p style="color: var(--gold-200); font-size: 0.95rem; margin-top: 0.2rem;">${recipe.subtitle || ''}</p>
 
-      ${recipe.verse ? `
-        <div class="modal-verse-card">
-          <p class="modal-verse-text">"${recipe.verseText}"</p>
-          <span class="modal-verse-ref">📖 ${recipe.verse}</span>
-        </div>
-      ` : ''}
+        ${recipe.verse ? `
+          <div class="modal-verse-card">
+            <p class="modal-verse-text">"${recipe.verseText}"</p>
+            <span class="modal-verse-ref">📖 ${recipe.verse}</span>
+          </div>
+        ` : ''}
 
-      <div class="modal-meta-grid">
-        <div class="modal-meta-box">
-          <span class="meta-box-label">Preparo</span>
-          <span class="meta-box-value">${recipe.prepTime}</span>
-        </div>
-        <div class="modal-meta-box">
-          <span class="meta-box-label">${recipe.bakeTime === '0 min' ? 'Preparo' : 'Forno'}</span>
-          <span class="meta-box-value">${recipe.bakeTime === '0 min' ? 'Sem Forno' : recipe.bakeTime}</span>
-        </div>
-        <div class="modal-meta-box">
-          <span class="meta-box-label">Dificuldade</span>
-          <span class="meta-box-value">${recipe.difficulty}</span>
-        </div>
-        <div class="modal-meta-box">
-          <span class="meta-box-label">Índice Glic.</span>
-          <span class="meta-box-value">${recipe.glycemicIndex || 'Baixo'}</span>
+        <div class="modal-meta-grid">
+          <div class="modal-meta-box">
+            <span class="meta-box-label">Preparo</span>
+            <span class="meta-box-value">${recipe.prepTime}</span>
+          </div>
+          <div class="modal-meta-box">
+            <span class="meta-box-label">${recipe.bakeTime === '0 min' ? 'Preparo' : 'Forno'}</span>
+            <span class="meta-box-value">${recipe.bakeTime === '0 min' ? 'Sem Forno' : recipe.bakeTime}</span>
+          </div>
+          <div class="modal-meta-box">
+            <span class="meta-box-label">Dificuldade</span>
+            <span class="meta-box-value">${recipe.difficulty}</span>
+          </div>
+          <div class="modal-meta-box">
+            <span class="meta-box-label">Índice Glic.</span>
+            <span class="meta-box-value">${recipe.glycemicIndex || 'Baixo'}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -518,7 +573,7 @@ function buildRecipeModalHTML(recipe) {
       <!-- Foto Oficial do E-book da Receita -->
       ${recipe.image ? `
         <div class="modal-recipe-cover-wrap">
-          <img src="${recipe.image}" alt="${recipe.title}" class="modal-recipe-cover-img">
+          <img src="${recipe.image}" alt="${recipe.title}" class="modal-recipe-cover-img" loading="eager">
           <span class="modal-recipe-badge-overlay">📖 Página Original do E-book</span>
         </div>
       ` : ''}
@@ -596,15 +651,17 @@ function buildRecipeModalHTML(recipe) {
 
     <!-- Barra de Ações Fixa no Rodapé -->
     <div class="modal-footer-actions">
-      <button class="btn-primary-action" onclick="shareRecipeOnWhatsApp()">
-        <span>📲 Enviar Ingredientes no WhatsApp</span>
-      </button>
-      <button class="btn-secondary-action" onclick="toggleFavorite('${recipe.id}')">
-        <span>${isFav ? '❤️ Favoritado' : '🤍 Favoritar'}</span>
-      </button>
-      <button class="btn-secondary-action" onclick="openTimerModal()">
-        <span>⏱️ Timer de Cozinha</span>
-      </button>
+      <div class="modal-footer-inner">
+        <button class="btn-primary-action" onclick="shareRecipeOnWhatsApp()">
+          <span>📲 Enviar Ingredientes no WhatsApp</span>
+        </button>
+        <button class="btn-secondary-action" id="modalFooterFavBtn" onclick="toggleFavorite('${recipe.id}')">
+          <span>${isFav ? '❤️ Favoritado' : '🤍 Favoritar'}</span>
+        </button>
+        <button class="btn-secondary-action" onclick="openTimerModal()">
+          <span>⏱️ Timer de Cozinha</span>
+        </button>
+      </div>
     </div>
   `;
 }

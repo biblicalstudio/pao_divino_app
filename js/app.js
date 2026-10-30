@@ -114,7 +114,8 @@ function getAllRecipes() {
   const base = (typeof RECIPES_DATA !== 'undefined' && Array.isArray(RECIPES_DATA)) ? RECIPES_DATA : [];
   const bonus = (typeof BONUS_GLUTEN_FREE_RECIPES !== 'undefined' && Array.isArray(BONUS_GLUTEN_FREE_RECIPES)) ? BONUS_GLUTEN_FREE_RECIPES : [];
   const sucos = (typeof SUCOS_DETOX_RECIPES !== 'undefined' && Array.isArray(SUCOS_DETOX_RECIPES)) ? SUCOS_DETOX_RECIPES : [];
-  return [...base, ...bonus, ...sucos];
+  const lanches = (typeof LANCHES_CAFES_RECIPES !== 'undefined' && Array.isArray(LANCHES_CAFES_RECIPES)) ? LANCHES_CAFES_RECIPES : [];
+  return [...base, ...bonus, ...sucos, ...lanches];
 }
 
 // ==========================================================================
@@ -207,7 +208,7 @@ function createRecipeCardHTML(recipe) {
         <div class="card-meta-chips">
           <span class="meta-chip">⏱️ ${recipe.totalTime || recipe.bakeTime || recipe.prepTime}</span>
           <span class="meta-chip">🔥 ${recipe.difficulty}</span>
-          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : (recipe.category === 'detox-sucos' ? '100% Detox' : 'Natural'))}</span>
+          <span class="meta-chip">🌾 ${recipe.glycemicIndex ? 'IG ' + recipe.glycemicIndex : (recipe.category === 'bonus-gluten-free' ? 'Sem Glúten' : (recipe.category === 'detox-sucos' ? '100% Detox' : (recipe.category === 'lanches-cafes' ? 'Café & Lanche' : 'Natural')))}</span>
         </div>
       </div>
     </article>

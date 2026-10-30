@@ -1,0 +1,45 @@
+# ==============================================================================
+# CONFIGURAÇÃO OFICIAL NETLIFY - PÃO DIVINO PWA
+# ==============================================================================
+
+[build]
+  # Diretório publicado (raiz do projeto onde estão index.html, css, js, icons)
+  publish = "."
+
+# ------------------------------------------------------------------------------
+# CABEÇALHOS HTTP OTIMIZADOS PARA PWA
+# ------------------------------------------------------------------------------
+
+# 1. Service Worker: Nunca manter em cache HTTP para permitir atualizações instantâneas do PWA
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Content-Type = "application/javascript; charset=utf-8"
+    Service-Worker-Allowed = "/"
+
+# 2. Web App Manifest
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# 3. Cabeçalhos Globais de Segurança e Performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "screen-wake-lock=(self), ambient-light-sensor=()"
+
+# ------------------------------------------------------------------------------
+# REDIRECIONAMENTOS SPA (Single Page Application Fallback)
+# ------------------------------------------------------------------------------
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

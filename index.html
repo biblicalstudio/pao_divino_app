@@ -186,48 +186,108 @@
         <button id="searchClearBtn" class="search-clear-btn" type="button" title="Limpar busca">✕</button>
       </div>
 
-      <nav class="category-scroll-container" aria-label="Categorias de Receitas">
+      <nav class="category-scroll-container hidden" id="categoryScrollContainer" aria-label="Categorias de Receitas">
         <button class="cat-pill active" data-category="todos" type="button">
-          <span class="cat-icon">✨</span> Todos os Pães
-        </button>
-        <button class="cat-pill" data-category="bonus-gluten-free" type="button">
-          <span class="cat-icon">🥖</span> 45 Pães Sem Glúten (Bônus)
+          <span class="cat-icon">✨</span> Todas
         </button>
         <button class="cat-pill" data-category="sagrados" type="button">
-          <span class="cat-icon">📜</span> Pães Bíblicos dos Profetas
+          <span class="cat-icon">📜</span> Bíblicos
         </button>
         <button class="cat-pill" data-category="sem-gluten" type="button">
-          <span class="cat-icon">🌾</span> Pães Sem Glúten Originais
+          <span class="cat-icon">🌾</span> Sem Glúten
         </button>
         <button class="cat-pill" data-category="rapidos" type="button">
-          <span class="cat-icon">⚡</span> Rápidos de Frigideira
+          <span class="cat-icon">⚡</span> Rápidos
         </button>
         <button class="cat-pill" data-category="doces-especiais" type="button">
-          <span class="cat-icon">🍯</span> Pães Doces & Rústicos
+          <span class="cat-icon">🍯</span> Doces & Especiais
         </button>
         <button class="cat-pill" data-category="detox-sucos" type="button">
-          <span class="cat-icon">🥤</span> 30 Sucos Detox
+          <span class="cat-icon">🥤</span> Sucos Verdes & Vivos
         </button>
         <button class="cat-pill" data-category="detox-acompanhamentos" type="button">
-          <span class="cat-icon">🌿</span> Acompanhamentos Bíblicos
+          <span class="cat-icon">🌿</span> Acompanhamentos
         </button>
         <button class="cat-pill" data-category="lanches-cafes" type="button">
-          <span class="cat-icon">☕</span> Lanches & Cafés da Manhã
+          <span class="cat-icon">☕</span> Cafés & Lanches
         </button>
         <button class="cat-pill" data-category="favoritos" type="button">
-          <span class="cat-icon">❤️</span> Meus Favoritos
+          <span class="cat-icon">❤️</span> Favoritos
         </button>
       </nav>
     </section>
 
     <!-- ==========================================
-         GRID PRINCIPAL DE RECEITAS
+         SEÇÃO PRINCIPAL: 4 MÓDULOS (2 COLUNAS)
          ========================================== -->
-    <section class="recipes-section" id="recipesSection" aria-labelledby="recipesSectionTitle">
+    <section class="modules-section" id="modulesSection" aria-labelledby="modulesTitle">
+      <div class="section-title-wrap" style="margin-bottom: 1.25rem;">
+        <h2 id="modulesTitle" class="modules-heading">Módulos de Receitas</h2>
+        <span class="section-subtitle">Selecione um módulo para acessar o catálogo de receitas</span>
+      </div>
+
+      <div class="modules-grid" id="modulesGrid">
+        <!-- Card 1: Pães Sagrados -->
+        <article class="module-card" onclick="selectModule('sagrados')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sagrados');}" role="button" tabindex="0" aria-label="Abrir módulo Pães Sagrados">
+          <img src="./images/recipes/capa-paes-sagrados.jpg" alt="Pães Sagrados" class="module-card-img" loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge">Tradição Bíblica</span>
+            <h3 class="module-title">Pães Sagrados</h3>
+            <span class="module-count">16 receitas</span>
+          </div>
+        </article>
+
+        <!-- Card 2: Sem Glúten -->
+        <article class="module-card" onclick="selectModule('sem-gluten')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sem-gluten');}" role="button" tabindex="0" aria-label="Abrir módulo Sem Glúten">
+          <img src="./images/bonus_gluten_free/01_pao_branco_sem_gluten.jpg" alt="Sem Glúten" class="module-card-img" loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge">Digestão & Leveza</span>
+            <h3 class="module-title">Sem Glúten</h3>
+            <span class="module-count">45 receitas</span>
+          </div>
+        </article>
+
+        <!-- Card 3: Sucos Detox -->
+        <article class="module-card" onclick="selectModule('sucos-detox')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sucos-detox');}" role="button" tabindex="0" aria-label="Abrir módulo Sucos Detox">
+          <img src="./images/sucos_detox/01_capa_parte1_sucos_verdes.jpg" alt="Sucos Detox" class="module-card-img" loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge">Vitalidade Pura</span>
+            <h3 class="module-title">Sucos Detox</h3>
+            <span class="module-count">26 receitas</span>
+          </div>
+        </article>
+
+        <!-- Card 4: Lanches -->
+        <article class="module-card" onclick="selectModule('lanches')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('lanches');}" role="button" tabindex="0" aria-label="Abrir módulo Lanches">
+          <img src="./images/lanches_cafes/01_capa_lanches_cafes.jpg" alt="Lanches" class="module-card-img" loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge">Cafés & Praticidade</span>
+            <h3 class="module-title">Lanches</h3>
+            <span class="module-count">25 receitas</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         GRID DE RECEITAS (POR MÓDULO OU BUSCA)
+         ========================================== -->
+    <section class="recipes-section hidden" id="recipesSection" aria-labelledby="recipesSectionTitle">
+      <div class="module-navigation-bar" id="moduleNavBar">
+        <button type="button" class="btn-back-modules" id="btnBackToModules" onclick="backToModules()">
+          <span class="back-arrow">←</span> Voltar aos Módulos
+        </button>
+        <span class="current-module-badge" id="currentModuleBadge"></span>
+      </div>
+
       <div class="section-header-flex">
         <div class="section-title-wrap">
-          <h2 id="recipesSectionTitle">Catálogo de Pães Sagrados</h2>
-          <span class="section-subtitle">Receitas com ingredientes literais, benefícios e instruções passo a passo</span>
+          <h2 id="recipesSectionTitle">Catálogo de Receitas</h2>
+          <span class="section-subtitle" id="recipesSectionSubtitle">Receitas com ingredientes literais, benefícios e instruções passo a passo</span>
         </div>
         <span class="recipes-counter" id="recipesCounter">Carregando...</span>
       </div>
@@ -343,17 +403,13 @@
        BARRA DE NAVEGAÇÃO INFERIOR FIXA (MOBILE)
        ========================================== -->
   <nav class="bottom-nav-bar" aria-label="Navegação Principal">
-    <button class="nav-item active" data-target="receitas" type="button">
-      <span class="nav-icon">🍞</span>
-      <span>Receitas</span>
+    <button class="nav-item active" data-target="modulos" type="button" onclick="backToModules()">
+      <span class="nav-icon">📖</span>
+      <span>Módulos</span>
     </button>
-    <button class="nav-item" data-target="biblicos" type="button">
-      <span class="nav-icon">📜</span>
-      <span>Bíblicos</span>
-    </button>
-    <button class="nav-item" data-target="sem-gluten" type="button">
-      <span class="nav-icon">🌾</span>
-      <span>Sem Glúten</span>
+    <button class="nav-item" data-target="favoritos" type="button" onclick="showFavoritesModule()">
+      <span class="nav-icon">❤️</span>
+      <span>Favoritos</span>
     </button>
     <button class="nav-item" data-target="devocional" type="button">
       <span class="nav-icon">🕊️</span>

@@ -5,6 +5,7 @@
 
 // Estado Global da Aplicação
 const appState = {
+  activeModule: null, // null = tela inicial com os 4 módulos em 2 colunas
   activeCategory: 'todos',
   searchQuery: '',
   favorites: JSON.parse(localStorage.getItem('pao_divino_favs') || '[]'),
@@ -21,6 +22,45 @@ const appState = {
     isRunning: false
   },
   deferredPrompt: null
+};
+
+// Configuração dos 4 Módulos Oficiais
+const MODULE_CONFIG = {
+  'sagrados': {
+    title: 'Pães Sagrados',
+    subtitle: '16 receitas • Pães Bíblicos dos Profetas & Grãos Ancestrais',
+    badge: '16 receitas',
+    categories: ['todos', 'sagrados', 'sem-gluten', 'rapidos', 'doces-especiais'],
+    filterFn: (r) => ['sagrados', 'sem-gluten', 'rapidos', 'doces-especiais'].includes(r.category)
+  },
+  'sem-gluten': {
+    title: 'Sem Glúten',
+    subtitle: '45 receitas • Pães Saudáveis, Rústicos & Funcionais',
+    badge: '45 receitas',
+    categories: ['todos', 'bonus-gluten-free'],
+    filterFn: (r) => r.category === 'bonus-gluten-free'
+  },
+  'sucos-detox': {
+    title: 'Sucos Detox',
+    subtitle: '26 receitas • Sucos Verdes, Vivos & Acompanhamentos',
+    badge: '26 receitas',
+    categories: ['todos', 'detox-sucos', 'detox-acompanhamentos'],
+    filterFn: (r) => ['detox-sucos', 'detox-acompanhamentos'].includes(r.category)
+  },
+  'lanches': {
+    title: 'Lanches',
+    subtitle: '25 receitas • Lanches e Cafés da Manhã Práticos & Nutritivos',
+    badge: '25 receitas',
+    categories: ['todos', 'lanches-cafes'],
+    filterFn: (r) => r.category === 'lanches-cafes'
+  },
+  'favoritos': {
+    title: 'Meus Favoritos',
+    subtitle: 'Suas receitas salvas para rápido acesso',
+    badge: 'Favoritos',
+    categories: ['todos'],
+    filterFn: (r) => appState.favorites.includes(r.id)
+  }
 };
 
 // ==========================================================================
@@ -119,7 +159,7 @@ function getAllRecipes() {
 }
 
 // ==========================================================================
-// RENDERIZAÇÃO DO FEED DE RECEITAS
+// RENDERIZAÇÃO DO FEED DE RECEITAS (POR MÓDULO OU BUSCA GLOBAL)
 // ==========================================================================
 function renderRecipes() {
   const grid = document.getElementById('recipesGrid');
@@ -128,22 +168,28 @@ function renderRecipes() {
 
   const all = getAllRecipes();
   const filtered = all.filter((recipe) => {
-    // Filtro por Categoria
-    if (appState.activeCategory === 'favoritos') {
-      if (!appState.favorites.includes(recipe.id)) return false;
-    } else if (appState.activeCategory !== 'todos') {
-      if (recipe.category !== appState.activeCategory) return false;
-    }
-
-    // Filtro por Busca de Texto
+    // 1. Busca por Texto: pesquisa em todas as 112 receitas
     if (appState.searchQuery.trim() !== '') {
       const q = appState.searchQuery.toLowerCase();
       const inTitle = recipe.title.toLowerCase().includes(q);
       const inSub = (recipe.subtitle || '').toLowerCase().includes(q);
       const inVerse = (recipe.verse || '').toLowerCase().includes(q) || (recipe.verseText || '').toLowerCase().includes(q);
-      const inIngredients = recipe.ingredients.some(ing => ing.name.toLowerCase().includes(q));
+      const inIngredients = (recipe.ingredients || []).some(ing => ing.name.toLowerCase().includes(q));
       const inTags = (recipe.tags || []).some(t => t.toLowerCase().includes(q));
       return inTitle || inSub || inVerse || inIngredients || inTags;
+    }
+
+    // 2. Filtro por Módulo Ativo
+    if (appState.activeModule) {
+      const config = MODULE_CONFIG[appState.activeModule];
+      if (config && config.filterFn && !config.filterFn(recipe)) {
+        return false;
+      }
+    }
+
+    // 3. Subfiltro por Categoria dentro do módulo
+    if (appState.activeCategory !== 'todos' && appState.activeCategory !== 'favoritos' && appState.activeCategory) {
+      if (recipe.category !== appState.activeCategory) return false;
     }
 
     return true;
@@ -158,8 +204,8 @@ function renderRecipes() {
       <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem;">
         <span style="font-size: 3rem; display: block; margin-bottom: 0.8rem;">🌾</span>
         <h3 style="font-size: 1.3rem; color: var(--gold-300); margin-bottom: 0.5rem;">Nenhuma receita encontrada</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Tente buscar por outro ingrediente, profeta ou categoria.</p>
-        <button class="btn-install" style="margin-top: 1rem;" onclick="resetFilters()">Ver Todas as Receitas</button>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Tente buscar por outro ingrediente ou selecione outro módulo.</p>
+        <button class="btn-install" style="margin-top: 1rem;" onclick="backToModules()">Voltar aos Módulos</button>
       </div>
     `;
     return;
@@ -218,6 +264,87 @@ function createRecipeCardHTML(recipe) {
 // ==========================================================================
 // FILTROS & BUSCA
 // ==========================================================================
+// NAVEGAÇÃO ENTRE MÓDULOS E CATEGORIAS
+// ==========================================================================
+function selectModule(moduleId) {
+  appState.activeModule = moduleId;
+  appState.activeCategory = 'todos';
+
+  const modulesSec = document.getElementById('modulesSection');
+  const recipesSec = document.getElementById('recipesSection');
+  const catNav = document.getElementById('categoryScrollContainer');
+  const titleEl = document.getElementById('recipesSectionTitle');
+  const subEl = document.getElementById('recipesSectionSubtitle');
+  const badgeEl = document.getElementById('currentModuleBadge');
+
+  if (modulesSec) modulesSec.classList.add('hidden');
+  if (recipesSec) recipesSec.classList.remove('hidden');
+
+  const config = MODULE_CONFIG[moduleId];
+  if (config) {
+    if (titleEl) titleEl.textContent = config.title;
+    if (subEl) subEl.textContent = config.subtitle;
+    if (badgeEl) badgeEl.textContent = config.badge;
+
+    // Se o módulo tem categorias adicionais, exibe filtros contextuais
+    if (catNav) {
+      if (config.categories.length > 2) {
+        catNav.classList.remove('hidden');
+        const pills = catNav.querySelectorAll('.cat-pill');
+        pills.forEach(p => {
+          const cat = p.dataset.category;
+          if (config.categories.includes(cat)) {
+            p.style.display = 'inline-flex';
+            if (cat === 'todos') p.classList.add('active');
+            else p.classList.remove('active');
+          } else {
+            p.style.display = 'none';
+          }
+        });
+      } else {
+        catNav.classList.add('hidden');
+      }
+    }
+  }
+
+  renderRecipes();
+  window.scrollTo({ top: recipesSec ? recipesSec.offsetTop - 75 : 0, behavior: 'smooth' });
+}
+
+function backToModules() {
+  appState.activeModule = null;
+  appState.searchQuery = '';
+  appState.activeCategory = 'todos';
+
+  const searchInput = document.getElementById('recipeSearchInput');
+  if (searchInput) searchInput.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.classList.remove('active');
+
+  const modulesSec = document.getElementById('modulesSection');
+  const recipesSec = document.getElementById('recipesSection');
+  const catNav = document.getElementById('categoryScrollContainer');
+
+  if (modulesSec) modulesSec.classList.remove('hidden');
+  if (recipesSec) recipesSec.classList.add('hidden');
+  if (catNav) catNav.classList.add('hidden');
+
+  const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
+  navBtns.forEach(b => b.classList.remove('active'));
+  const modBtn = document.querySelector('.bottom-nav-bar .nav-item[data-target="modulos"]');
+  if (modBtn) modBtn.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFavoritesModule() {
+  selectModule('favoritos');
+  const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
+  navBtns.forEach(b => b.classList.remove('active'));
+  const favBtn = document.querySelector('.bottom-nav-bar .nav-item[data-target="favoritos"]');
+  if (favBtn) favBtn.classList.add('active');
+}
+
 function initCategories() {
   const pills = document.querySelectorAll('.cat-pill');
   pills.forEach((pill) => {
@@ -237,11 +364,27 @@ function initSearch() {
 
   input.addEventListener('input', (e) => {
     appState.searchQuery = e.target.value;
-    if (clearBtn) {
-      if (appState.searchQuery.length > 0) {
-        clearBtn.classList.add('active');
+    const modulesSec = document.getElementById('modulesSection');
+    const recipesSec = document.getElementById('recipesSection');
+    const catNav = document.getElementById('categoryScrollContainer');
+    const titleEl = document.getElementById('recipesSectionTitle');
+    const subEl = document.getElementById('recipesSectionSubtitle');
+    const badgeEl = document.getElementById('currentModuleBadge');
+
+    if (appState.searchQuery.trim().length > 0) {
+      if (clearBtn) clearBtn.classList.add('active');
+      if (modulesSec) modulesSec.classList.add('hidden');
+      if (recipesSec) recipesSec.classList.remove('hidden');
+      if (catNav) catNav.classList.add('hidden');
+      if (titleEl) titleEl.textContent = 'Resultados da Busca';
+      if (subEl) subEl.textContent = `Buscando por "${appState.searchQuery}" em todas as receitas`;
+      if (badgeEl) badgeEl.textContent = 'Busca Global';
+    } else {
+      if (clearBtn) clearBtn.classList.remove('active');
+      if (appState.activeModule) {
+        selectModule(appState.activeModule);
       } else {
-        clearBtn.classList.remove('active');
+        backToModules();
       }
     }
     renderRecipes();
@@ -252,25 +395,18 @@ function initSearch() {
       input.value = '';
       appState.searchQuery = '';
       clearBtn.classList.remove('active');
-      renderRecipes();
+      if (appState.activeModule) {
+        selectModule(appState.activeModule);
+      } else {
+        backToModules();
+      }
       input.focus();
     });
   }
 }
 
 function resetFilters() {
-  appState.activeCategory = 'todos';
-  appState.searchQuery = '';
-  const input = document.getElementById('recipeSearchInput');
-  if (input) input.value = '';
-  const clearBtn = document.getElementById('searchClearBtn');
-  if (clearBtn) clearBtn.classList.remove('active');
-  const pills = document.querySelectorAll('.cat-pill');
-  pills.forEach(p => {
-    if (p.dataset.category === 'todos') p.classList.add('active');
-    else p.classList.remove('active');
-  });
-  renderRecipes();
+  backToModules();
 }
 
 // ==========================================================================
@@ -766,20 +902,10 @@ function initBottomNav() {
       btn.classList.add('active');
 
       const target = btn.dataset.target;
-      if (target === 'receitas') {
-        appState.activeCategory = 'todos';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        renderRecipes();
-      } else if (target === 'biblicos') {
-        appState.activeCategory = 'sagrados';
-        scrollToSection('recipesSection');
-        syncCategoryPills('sagrados');
-        renderRecipes();
-      } else if (target === 'sem-gluten') {
-        appState.activeCategory = 'sem-gluten';
-        scrollToSection('recipesSection');
-        syncCategoryPills('sem-gluten');
-        renderRecipes();
+      if (target === 'modulos') {
+        backToModules();
+      } else if (target === 'favoritos') {
+        showFavoritesModule();
       } else if (target === 'devocional') {
         scrollToSection('devotionalSection');
       } else if (target === 'timer') {

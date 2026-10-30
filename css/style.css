@@ -479,6 +479,164 @@ h1, h2, h3, h4, .font-serif {
 }
 
 /* ==========================================================================
+   SEÇÃO DE MÓDULOS (2 COLUNAS - CARDS VISUAIS PREMIUM)
+   ========================================================================== */
+.modules-section {
+  max-width: var(--max-content-width);
+  margin: 1.25rem auto 2.5rem;
+  padding: 0 1.25rem;
+}
+
+.modules-heading {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+.module-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--wheat-300);
+}
+
+.module-card:active {
+  transform: scale(0.98);
+}
+
+.module-card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.module-card:hover .module-card-img {
+  transform: scale(1.05);
+}
+
+.module-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(35, 23, 14, 0.35) 45%, rgba(20, 12, 6, 0.92) 100%);
+  pointer-events: none;
+}
+
+.module-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.25rem 1rem 1.05rem;
+  color: #ffffff;
+}
+
+.module-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.module-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.module-count {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+}
+
+/* Barra de Navegação e Retorno ao Módulo */
+.module-navigation-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+
+.btn-back-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid var(--wheat-300);
+  color: var(--bread-crust);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-back-modules:hover {
+  background: var(--wheat-100);
+  border-color: var(--wheat-400);
+  transform: translateX(-2px);
+}
+
+.btn-back-modules:active {
+  transform: scale(0.97);
+}
+
+.btn-back-modules .back-arrow {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.current-module-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bread-crust);
+  background: var(--wheat-light);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--wheat-200);
+}
+
+/* ==========================================================================
    FEED DE RECEITAS (GRID RESPONSIVO CLEAN)
    ========================================================================== */
 .recipes-section {
@@ -723,6 +881,11 @@ h1, h2, h3, h4, .font-serif {
    OTIMIZAÇÃO MOBILE PARA CARDS (SOMENTE TÍTULO + IMAGEM 3:4 DESTACADA)
    ========================================================================== */
 @media (max-width: 768px) {
+  /* Elimina o hero-section no mobile para visual limpo de aplicativo profissional */
+  .hero-section {
+    display: none !important;
+  }
+
   .recipes-grid {
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.25rem;
@@ -754,6 +917,33 @@ h1, h2, h3, h4, .font-serif {
 }
 
 @media (max-width: 480px) {
+  .modules-grid {
+    gap: 0.75rem;
+  }
+
+  .module-card-content {
+    padding: 0.85rem 0.75rem 0.85rem;
+  }
+
+  .module-title {
+    font-size: 1.05rem;
+  }
+
+  .module-badge {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .module-count {
+    font-size: 0.72rem;
+  }
+
+  .btn-back-modules {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.9rem;
+  }
+
   .recipes-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;

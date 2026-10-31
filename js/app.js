@@ -66,9 +66,21 @@ document.addEventListener('DOMContentLoaded', () => {
   initBottomNav();
   renderRecipes();
 
-  // Escuta tecla ESC para fechar modais
+  // Escuta mensagem do Service Worker para parar o alarme via notificação
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'STOP_ALARM') {
+        stopAlarm();
+      }
+    });
+  }
+
+  // Escuta tecla ESC para fechar modais ou silenciar alarme
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (isAlarmRinging) {
+        stopAlarm();
+      }
       closeRecipeModal();
       closeTimerModal();
     }
@@ -765,9 +777,45 @@ function adjustTimer(deltaSeconds) {
   setTimerDuration(next, appState.timer.label || 'Preparo de Pão');
 }
 
+// ==========================================================================
+// ÁUDIO DO ALARME & NOTIFICAÇÕES (BARRA DE STATUS E TELA BLOQUEADA)
+// ==========================================================================
+const timerAlarmAudio = new Audio('./sound/alarm.mp3');
+timerAlarmAudio.preload = 'auto';
+timerAlarmAudio.loop = true;
+
+let isAlarmRinging = false;
+let activeSystemNotification = null;
+
+// Tenta carregar fallback se o caminho primário falhar
+timerAlarmAudio.addEventListener('error', () => {
+  if (!timerAlarmAudio.src.includes('js/sound/alarm.mp3')) {
+    timerAlarmAudio.src = './js/sound/alarm.mp3';
+  }
+});
+
+function requestTimerNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    try {
+      Notification.requestPermission();
+    } catch (e) {}
+  }
+}
+
 function startTimer() {
   if (appState.timer.isRunning) return;
   if (appState.timer.remainingSeconds <= 0) return;
+
+  // Solicita permissão para notificação na barra de status
+  requestTimerNotificationPermission();
+
+  // Destrava o áudio no iOS / Android mediante gesto do usuário
+  try {
+    timerAlarmAudio.play().then(() => {
+      timerAlarmAudio.pause();
+      timerAlarmAudio.currentTime = 0;
+    }).catch(() => {});
+  } catch (e) {}
 
   appState.timer.isRunning = true;
   updateTimerControls();
@@ -793,6 +841,7 @@ function pauseTimer() {
 
 function resetTimer() {
   pauseTimer();
+  stopAlarm();
   appState.timer.remainingSeconds = appState.timer.totalSeconds;
   updateTimerDisplay();
   hideFloatingWidget();
@@ -800,11 +849,130 @@ function resetTimer() {
 
 function finishTimer() {
   pauseTimer();
-  playChurchBellChime();
-  if ('vibrate' in navigator) {
-    navigator.vibrate([300, 150, 300, 150, 600]);
-  }
+  playAlarm();
   showToast(`🔔 Glória a Deus! O tempo terminou: ${appState.timer.label || 'Seu pão está no ponto!'}`);
+}
+
+function playAlarm() {
+  isAlarmRinging = true;
+
+  // 1. Toca o arquivo de som alarm.mp3 em loop contínuo
+  try {
+    timerAlarmAudio.currentTime = 0;
+    const playPromise = timerAlarmAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn('Reprodução do alarme mp3 impedida, acionando sintetizador:', err);
+        playChurchBellChime();
+      });
+    }
+  } catch (err) {
+    playChurchBellChime();
+  }
+
+  // 2. Vibração no dispositivo móvel
+  if ('vibrate' in navigator) {
+    try {
+      navigator.vibrate([500, 250, 500, 250, 1000]);
+    } catch (e) {}
+  }
+
+  // 3. MediaSession API (Controle com botão Parar / Pausar na Barra de Notificação e Tela Bloqueada)
+  if ('mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: '🔔 O Tempo Acabou!',
+        artist: 'Pão Divino',
+        album: appState.timer.label || 'Seu pão está no ponto!',
+        artwork: [
+          { src: './icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: './icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      navigator.mediaSession.setActionHandler('pause', stopAlarm);
+      navigator.mediaSession.setActionHandler('stop', stopAlarm);
+      navigator.mediaSession.playbackState = 'playing';
+    } catch (e) {}
+  }
+
+  // 4. Notificação do Sistema na Barra de Notificações
+  if ('Notification' in window && Notification.permission === 'granted') {
+    try {
+      const notifOptions = {
+        body: `Glória a Deus! O tempo de preparo terminou: ${appState.timer.label || 'Seu pão está pronto!'}. Toque para parar o alarme.`,
+        icon: './icons/icon-192.png',
+        badge: './icons/icon.svg',
+        vibrate: [500, 250, 500, 250, 1000],
+        tag: 'pao-divino-alarm',
+        renotify: true,
+        requireInteraction: true,
+        actions: [
+          { action: 'stop-alarm', title: '⏹️ Parar Alarme' }
+        ]
+      };
+
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.showNotification('🍞 Pão Divino - Alarme Concluído!', notifOptions);
+        });
+      } else {
+        activeSystemNotification = new Notification('🍞 Pão Divino - Alarme Concluído!', notifOptions);
+        activeSystemNotification.onclick = () => stopAlarm();
+      }
+    } catch (e) {}
+  }
+
+  // 5. Exibe Banner Visual Superior
+  const banner = document.getElementById('alarmRingingBanner');
+  if (banner) {
+    banner.style.display = 'block';
+  }
+
+  // 6. Ao clicar em QUALQUER lugar da tela, para imediatamente de tocar!
+  setTimeout(() => {
+    window.addEventListener('click', onGlobalClickStopAlarm, { capture: true, once: true });
+    window.addEventListener('touchstart', onGlobalClickStopAlarm, { capture: true, once: true });
+  }, 120);
+}
+
+function onGlobalClickStopAlarm(e) {
+  stopAlarm();
+}
+
+function stopAlarm() {
+  if (!isAlarmRinging) return;
+  isAlarmRinging = false;
+
+  // Pausa e reseta o áudio
+  try {
+    timerAlarmAudio.pause();
+    timerAlarmAudio.currentTime = 0;
+  } catch (e) {}
+
+  // Reseta MediaSession
+  if ('mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.playbackState = 'none';
+    } catch (e) {}
+  }
+
+  // Fecha notificação do sistema
+  if (activeSystemNotification) {
+    try { activeSystemNotification.close(); } catch (e) {}
+    activeSystemNotification = null;
+  }
+
+  // Esconde o banner
+  const banner = document.getElementById('alarmRingingBanner');
+  if (banner) {
+    banner.style.display = 'none';
+  }
+
+  // Remove listeners de clique global
+  window.removeEventListener('click', onGlobalClickStopAlarm, { capture: true });
+  window.removeEventListener('touchstart', onGlobalClickStopAlarm, { capture: true });
+
+  showToast('🔇 Alarme silenciado.');
 }
 
 function formatSecondsToHMS(sec) {
@@ -830,32 +998,27 @@ function updateTimerDisplay(fromSlider = false) {
     activeLabel.textContent = appState.timer.label;
   }
 
-  // Barra Horizontal de Carregamento & Controle de Tempo
-  const bar = document.getElementById('timerHorizontalProgressBar');
+  // Controle de Tempo Deslizante com Círculo Branco (Estilo do Print)
   const slider = document.getElementById('timerHorizontalSlider');
-  const percentText = document.getElementById('timerProgressPercent');
-
   const total = appState.timer.totalSeconds || 0;
   let percent = 0;
 
   if (appState.timer.isRunning && total > 0) {
-    // Durante a contagem, mostra o percentual restante do ciclo
-    percent = Math.round((sec / total) * 100);
+    // Durante a contagem regressiva, reflete o percentual do ciclo atual
+    percent = (sec / total) * 100;
   } else {
-    // Quando configurando, mostra a posição em relação ao tempo máximo de 4 horas (14400s)
-    percent = Math.round((sec / 14400) * 100);
+    // Em repouso/ajuste, reflete a posição em relação ao máximo de 4 horas (14400s)
+    percent = (sec / 14400) * 100;
   }
 
   const clampedPercent = Math.min(100, Math.max(0, percent));
 
-  if (bar) {
-    bar.style.width = `${clampedPercent}%`;
-  }
-  if (percentText) {
-    percentText.textContent = `${clampedPercent}%`;
-  }
-  if (slider && !fromSlider) {
-    slider.value = sec;
+  if (slider) {
+    // Pinta a barra à esquerda do círculo em azul (#3b82f6) e à direita em cinza (#4b5563) igual ao print
+    slider.style.background = `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${clampedPercent}%, #4b5563 ${clampedPercent}%, #4b5563 100%)`;
+    if (!fromSlider) {
+      slider.value = sec;
+    }
   }
 }
 

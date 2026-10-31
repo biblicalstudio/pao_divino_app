@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  
+
   <title>Pão Divino - Receitas Bíblicas & Artesanais Saudáveis</title>
-  <meta name="description" content="Aplicativo de receitas bíblicas sagradas dos profetas e opções artesanais sem glúten. Pão de Ezequiel, Cevada do Milagre, Ázimo da Ceia, modo cozinha e timer integrado.">
-  <meta name="keywords" content="Pão Divino, Pão de Ezequiel, Receitas Bíblicas, Pão Sem Glúten, Pão Artesanal, PWA, Culinária Sagrada">
+  <meta name="description"
+    content="Aplicativo de receitas bíblicas sagradas dos profetas e opções artesanais sem glúten. Pão de Ezequiel, Cevada do Milagre, Ázimo da Ceia, modo cozinha e timer integrado.">
+  <meta name="keywords"
+    content="Pão Divino, Pão de Ezequiel, Receitas Bíblicas, Pão Sem Glúten, Pão Artesanal, PWA, Culinária Sagrada">
   <meta name="author" content="Biblical Studio">
 
   <!-- PWA & Mobile Web App Meta Tags -->
@@ -26,14 +30,16 @@
   <!-- Google Fonts: Playfair Display (suporte completo a acentos em português) e Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+    rel="stylesheet">
 
   <!-- Folha de Estilos Principal -->
   <link rel="stylesheet" href="./css/style.css">
 
   <!-- Elimina o badge/drawer/HUD da Netlify instantaneamente -->
   <script>
-    (function() {
+    (function () {
       function killNetlify() {
         const elements = document.querySelectorAll(
           '.nl-wrap, #nl-card, #nl-badge, .nl-card, .nl-badge, .nl-icon-btn, .nl-prompt, .nl-drop, a[href*="netlify.com"], a[href*="netlify.app"]'
@@ -46,19 +52,19 @@
             if (str.includes('netlify') || str.includes('nl-')) {
               iframe.remove();
             }
-          } catch(e) {}
+          } catch (e) { }
         });
       }
 
       // Intercepta a comunicação postMessage do iframe do Netlify (nlHud)
-      window.addEventListener('message', function(e) {
+      window.addEventListener('message', function (e) {
         if (e.data && (e.data.nlHud || (typeof e.data === 'string' && e.data.includes('nlHud')))) {
           document.querySelectorAll('iframe').forEach(iframe => {
             try {
               if (iframe.contentWindow === e.source) {
                 iframe.remove();
               }
-            } catch(err) {
+            } catch (err) {
               iframe.remove();
             }
           });
@@ -78,6 +84,7 @@
     })();
   </script>
 </head>
+
 <body>
 
   <!-- ==========================================
@@ -111,10 +118,12 @@
       </div>
 
       <div class="header-actions">
-        <button class="btn-icon" onclick="openTimerModal()" title="Timer de Forno & Fermentação" aria-label="Timer de Cozinha">
+        <button class="btn-icon" onclick="openTimerModal()" title="Timer de Forno & Fermentação"
+          aria-label="Timer de Cozinha">
           ⏱️
         </button>
-        <button class="btn-icon" onclick="scrollToSection('devotionalSection')" title="Devocionais & Orações" aria-label="Devocional">
+        <button class="btn-icon" onclick="scrollToSection('devotionalSection')" title="Devocionais & Orações"
+          aria-label="Devocional">
           🕊️
         </button>
       </div>
@@ -129,8 +138,11 @@
     <section class="modules-section" id="modulesSection" aria-labelledby="modulesTitle">
       <div class="modules-grid" id="modulesGrid">
         <!-- Card 1: Pães Sagrados -->
-        <article class="module-card" onclick="selectModule('sagrados')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sagrados');}" role="button" tabindex="0" aria-label="Abrir módulo Pães Sagrados">
-          <img src="./images/recipes/pao-branco-sem-gluten.jpg" alt="Pães Sagrados" class="module-card-img" loading="lazy">
+        <article class="module-card" onclick="selectModule('sagrados')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sagrados');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Pães Sagrados">
+          <img src="./images/recipes/pao-branco-sem-gluten.jpg" alt="Pães Sagrados" class="module-card-img"
+            loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Tradição Bíblica</span>
@@ -140,8 +152,11 @@
         </article>
 
         <!-- Card 2: Sem Glúten -->
-        <article class="module-card" onclick="selectModule('sem-gluten')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sem-gluten');}" role="button" tabindex="0" aria-label="Abrir módulo Sem Glúten">
-          <img src="./images/bonus_gluten_free/08_pao_com_frutas_secas.jpg" alt="Sem Glúten" class="module-card-img" loading="lazy">
+        <article class="module-card" onclick="selectModule('sem-gluten')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sem-gluten');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Sem Glúten">
+          <img src="./images/bonus_gluten_free/08_pao_com_frutas_secas.jpg" alt="Sem Glúten" class="module-card-img"
+            loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Digestão & Leveza</span>
@@ -151,8 +166,11 @@
         </article>
 
         <!-- Card 3: Sucos Detox -->
-        <article class="module-card" onclick="selectModule('sucos-detox')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sucos-detox');}" role="button" tabindex="0" aria-label="Abrir módulo Sucos Detox">
-          <img src="./images/sucos_detox/02_suco_verde_detox_completo.jpg" alt="Sucos Detox" class="module-card-img" loading="lazy">
+        <article class="module-card" onclick="selectModule('sucos-detox')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sucos-detox');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Sucos Detox">
+          <img src="./images/sucos_detox/02_suco_verde_detox_completo.jpg" alt="Sucos Detox" class="module-card-img"
+            loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Vitalidade Pura</span>
@@ -162,8 +180,11 @@
         </article>
 
         <!-- Card 4: Lanches -->
-        <article class="module-card" onclick="selectModule('lanches')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('lanches');}" role="button" tabindex="0" aria-label="Abrir módulo Lanches">
-          <img src="./images/lanches_cafes/07_panqueca_aveia_frutas_vermelhas.jpg" alt="Lanches" class="module-card-img" loading="lazy">
+        <article class="module-card" onclick="selectModule('lanches')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('lanches');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Lanches">
+          <img src="./images/lanches_cafes/07_panqueca_aveia_frutas_vermelhas.jpg" alt="Lanches" class="module-card-img"
+            loading="lazy">
           <div class="module-card-overlay"></div>
           <div class="module-card-content">
             <span class="module-badge">Cafés & Praticidade</span>
@@ -187,17 +208,13 @@
       <!-- Barra de Pesquisa & Filtros dentro do Módulo -->
       <div class="search-filter-section" style="margin-bottom: 1.25rem;">
         <div class="search-box">
-          <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input 
-            type="text" 
-            id="recipeSearchInput" 
-            class="search-input" 
-            placeholder="Buscar receita ou ingrediente..." 
-            autocomplete="off"
-          >
+          <input type="text" id="recipeSearchInput" class="search-input" placeholder="Buscar receita ou ingrediente..."
+            autocomplete="off">
           <button id="searchClearBtn" class="search-clear-btn" type="button" title="Limpar busca">✕</button>
         </div>
       </div>
@@ -205,7 +222,8 @@
       <div class="section-header-flex">
         <div class="section-title-wrap">
           <h2 id="recipesSectionTitle">Catálogo de Receitas</h2>
-          <span class="section-subtitle" id="recipesSectionSubtitle">Receitas com ingredientes literais, benefícios e instruções passo a passo</span>
+          <span class="section-subtitle" id="recipesSectionSubtitle">Receitas com ingredientes literais, benefícios e
+            instruções passo a passo</span>
         </div>
         <span class="recipes-counter" id="recipesCounter">Carregando...</span>
       </div>
@@ -238,7 +256,8 @@
 
       <!-- Guia dos Ingredientes Bíblicos e seus Significados -->
       <div style="margin-top: 3.5rem;">
-        <h3 class="font-serif" style="font-size: 1.4rem; color: var(--gold-300); text-align: center; margin-bottom: 0.5rem;">
+        <h3 class="font-serif"
+          style="font-size: 1.4rem; color: var(--gold-300); text-align: center; margin-bottom: 0.5rem;">
           🌾 O Significado Espiritual dos Ingredientes Bíblicos
         </h3>
         <p style="text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
@@ -254,19 +273,36 @@
   <!-- ==========================================
        MODAL DE RECEITA DETALHADA / MODO COZINHA
        ========================================== -->
-  <div id="recipeModalBackdrop" class="recipe-modal-backdrop" onclick="if(event.target === this) closeRecipeModal()" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="recipeModalBackdrop" class="recipe-modal-backdrop" onclick="if(event.target === this) closeRecipeModal()"
+    role="dialog" aria-modal="true" aria-hidden="true">
     <div class="recipe-modal-container" id="recipeModalContainer">
       <!-- Conteúdo inserido dinamicamente via openRecipeModal() -->
     </div>
   </div>
 
   <!-- ==========================================
+       BANNER DE ALARME TOCANDO (CLIQUE EM QUALQUER LUGAR PARA SILENCIAR)
+       ========================================== -->
+  <div id="alarmRingingBanner" class="alarm-ringing-banner" style="display: none;" role="alert" aria-live="assertive"
+    onclick="stopAlarm()">
+    <div class="alarm-ringing-content">
+      <span class="alarm-ringing-bell">🔔</span>
+      <div style="flex: 1;">
+        <strong style="font-size: 0.95rem; display: block; letter-spacing: 0.02em;">O TEMPO ACABOU!</strong>
+        <span style="font-size: 0.78rem; opacity: 0.95;">Toque em qualquer lugar da tela para parar o som</span>
+      </div>
+      <button type="button" class="btn-stop-alarm" onclick="stopAlarm()">PARAR</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
        MODAL DO TIMER DE COZINHA / FORNO
        ========================================== -->
-  <div id="timerModalBackdrop" class="timer-modal-backdrop" onclick="if(event.target === this) closeTimerModal()" role="dialog" aria-modal="true">
+  <div id="timerModalBackdrop" class="timer-modal-backdrop" onclick="if(event.target === this) closeTimerModal()"
+    role="dialog" aria-modal="true">
     <div class="timer-modal-card">
       <button class="modal-close-btn" onclick="closeTimerModal()" title="Fechar">✕</button>
-      
+
       <span class="hero-badge">⏱️ Timer de Cozinha</span>
       <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--gold-200); margin-top: 0.5rem;">
         Controle de Forno & Fermentação
@@ -275,43 +311,23 @@
         Arraste a barra horizontal (até 4 horas) ou toque nos atalhos rápidos.
       </p>
 
-      <!-- Presets de Tempo (Até 4 Horas) -->
-      <div class="timer-presets">
-        <button class="preset-chip" onclick="setTimerDuration(600, 'Tempo de Sova'); startTimer();">🥣 10 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(1800, 'Descanso da Massa'); startTimer();">⏳ 30 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(2700, 'Forno Dourado'); startTimer();">🔥 45 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(5400, 'Fermentação Média'); startTimer();">🍞 1h 30m</button>
-        <button class="preset-chip" onclick="setTimerDuration(9000, 'Fermentação Longa'); startTimer();">🌾 2h 30m</button>
-        <button class="preset-chip" onclick="setTimerDuration(14400, 'Fermentação Sagrada Máxima'); startTimer();">👑 4 Horas</button>
-      </div>
-
       <!-- Display Principal de Tempo (Formato 00:00:00) -->
       <div class="timer-display-box">
         <div class="timer-big-display" id="timerBigDisplay">00:00:00</div>
         <div class="timer-active-label" id="timerActiveLabel">Preparo de Pão</div>
       </div>
 
-      <!-- Controle de Tempo com Barra de Carregamento Horizontal (Máximo 4 Horas) -->
-      <div class="timer-horizontal-control-card">
-        <div class="timer-bar-header">
-          <span class="timer-bar-label">
-            <span>⏳ Barra de Tempo & Carregamento</span>
-          </span>
-          <span class="timer-bar-percentage" id="timerProgressPercent">0%</span>
+      <!-- Controle Deslizante de Tempo com Círculo para Puxar (Até 4 Horas) -->
+      <div class="timer-slider-card">
+        <div class="timer-slider-header">
+          <span class="timer-slider-label">Tempo de Preparo</span>
+          <span class="timer-slider-hint">Máx: 04:00:00</span>
         </div>
 
-        <!-- Trilha e Barra Horizontal de Carregamento -->
-        <div class="timer-horizontal-track" id="timerHorizontalTrack">
-          <div class="timer-horizontal-progress-bar" id="timerHorizontalProgressBar" style="width: 0%;"></div>
-          <input type="range" 
-                 id="timerHorizontalSlider" 
-                 class="timer-range-slider" 
-                 min="0" 
-                 max="14400" 
-                 step="60" 
-                 value="0" 
-                 aria-label="Controle de tempo horizontal de 0 até 4 horas"
-                 oninput="setTimerFromSlider(this.value)">
+        <!-- Trilha com Círculo Deslizante (Estilo Slider) -->
+        <div class="timer-slider-track-wrap">
+          <input type="range" id="timerHorizontalSlider" class="timer-modern-range" min="0" max="14400" step="60"
+            value="0" aria-label="Controle de tempo deslizante até 4 horas" oninput="setTimerFromSlider(this.value)">
         </div>
 
         <!-- Marcadores de Escala de 00:00:00 até 04:00:00 (4 Horas) -->
@@ -320,23 +336,30 @@
           <span>1h</span>
           <span>2h</span>
           <span>3h</span>
-          <span>04:00:00 (Máx)</span>
+          <span>04:00:00</span>
         </div>
 
         <!-- Botões de Micro-Ajuste Rápido -->
         <div class="timer-quick-adjusts">
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-900)" title="Diminuir 15 minutos">-15m</button>
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-300)" title="Diminuir 5 minutos">-5m</button>
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(300)" title="Adicionar 5 minutos">+5m</button>
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(900)" title="Adicionar 15 minutos">+15m</button>
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(1800)" title="Adicionar 30 minutos">+30m</button>
-          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(3600)" title="Adicionar 1 hora">+1h</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-900)"
+            title="Diminuir 15 minutos">-15m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-300)"
+            title="Diminuir 5 minutos">-5m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(300)"
+            title="Adicionar 5 minutos">+5m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(900)"
+            title="Adicionar 15 minutos">+15m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(1800)"
+            title="Adicionar 30 minutos">+30m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(3600)"
+            title="Adicionar 1 hora">+1h</button>
         </div>
       </div>
 
       <!-- Controles de Ação do Timer -->
       <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem;">
-        <button id="btnTimerToggle" class="btn-install" style="padding: 0.8rem 1.8rem; font-size: 1.05rem;" onclick="appState.timer.isRunning ? pauseTimer() : startTimer()">
+        <button id="btnTimerToggle" class="btn-install" style="padding: 0.8rem 1.8rem; font-size: 1.05rem;"
+          onclick="appState.timer.isRunning ? pauseTimer() : startTimer()">
           ▶️ Iniciar
         </button>
         <button class="btn-secondary-action" style="padding: 0.8rem 1.4rem;" onclick="resetTimer()">
@@ -391,10 +414,11 @@
     <div class="paywall-modal-card" id="paywallModalCard">
       <!-- Ícone de Alerta Amarelo -->
       <div class="paywall-warning-icon">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.3"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </div>
 
@@ -409,19 +433,22 @@
 
       <!-- Descrição -->
       <p class="paywall-description">
-        Ainda não identificamos o seu pagamento via Pix. Regularize seu pagamento para liberar o acesso vitalício ao site com <strong>+200 receitas & bônus</strong>, todas as videoaulas, Guia de Vendas e Calculadora de Preço.
+        Ainda não identificamos o seu pagamento via Pix. Envie o comprovante de pagamento do pix no mesmo número do
+        WhatsApp que te trouxe aqui.
       </p>
 
       <!-- Caixa Chave Pix -->
       <div class="paywall-pix-box">
         <div class="paywall-pix-header">
           <span class="paywall-pix-label">CHAVE PIX (TELEFONE)</span>
-          <span class="paywall-pix-tag">APROVAÇÃO IMEDIATA</span>
+          <!----> <span class="paywall-pix-tag">APROVAÇÃO IMEDIATA</span>
         </div>
         <div class="paywall-pix-body">
-          <input type="text" class="paywall-pix-input" id="paywallPixKeyInput" value="61991168629" readonly aria-label="Chave Pix">
+          <input type="text" class="paywall-pix-input" id="paywallPixKeyInput" value="61991168629" readonly
+            aria-label="Chave Pix">
           <button type="button" class="paywall-btn-copy" id="paywallCopyPixBtn" onclick="paywallCopyPix()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
@@ -430,19 +457,17 @@
         </div>
       </div>
 
-      <!-- Linha de Suporte -->
+      <!-- Linha de Suporte 
       <div class="paywall-support-info">
         📲 SUPORTE: <strong>(61) 99116–8629</strong>
-      </div>
+      </div>-->
 
       <!-- Botão Verde WhatsApp -->
-      <a href="https://wa.me/5561991168629?text=Ol%C3%A1!%20Fiz%20o%20pagamento%20via%20Pix%20e%20gostaria%20de%20enviar%20o%20comprovante%20para%20liberar%20meu%20acesso%20vital%C3%ADcio%20ao%20P%C3%A3o%20Divino." 
-         target="_blank" 
-         rel="noopener noreferrer" 
-         class="paywall-btn-whatsapp"
-         id="paywallWhatsappBtn">
+      <a href="https://wa.me/5561991168629?text=Ol%C3%A1!%20Fiz%20o%20pagamento%20via%20Pix%20e%20gostaria%20de%20enviar%20o%20comprovante%20para%20liberar%20meu%20acesso%20vital%C3%ADcio%20ao%20P%C3%A3o%20Divino."
+        target="_blank" rel="noopener noreferrer" class="paywall-btn-whatsapp" id="paywallWhatsappBtn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          <path
+            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
         </svg>
         FALAR COM O SUPORTE
       </a>
@@ -453,17 +478,10 @@
           Já fez o Pix e recebeu a senha no WhatsApp?
         </label>
         <div class="paywall-unlock-form">
-          <input type="text" 
-                 id="paywallCodeInput" 
-                 class="paywall-unlock-input" 
-                 placeholder="Digite sua senha ou código..." 
-                 autocomplete="off"
-                 autocapitalize="characters"
-                 onkeydown="if(event.key==='Enter') paywallValidateManualCode()">
-          <button type="button" 
-                  class="paywall-btn-unlock" 
-                  id="paywallBtnUnlock" 
-                  onclick="paywallValidateManualCode()">
+          <input type="text" id="paywallCodeInput" class="paywall-unlock-input"
+            placeholder="Digite sua senha ou código..." autocomplete="off" autocapitalize="characters"
+            onkeydown="if(event.key==='Enter') paywallValidateManualCode()">
+          <button type="button" class="paywall-btn-unlock" id="paywallBtnUnlock" onclick="paywallValidateManualCode()">
             Desbloquear
           </button>
         </div>
@@ -501,4 +519,5 @@
     });
   </script>
 </body>
+
 </html>

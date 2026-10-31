@@ -1,15 +1,17 @@
-const CACHE_NAME = 'pao-divino-v2.0.3';
+const CACHE_NAME = 'pao-divino-v2.0.4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './favicon.svg',
   './css/style.css',
+  './sound/alarm.mp3',
   './js/recipes-data.js',
   './js/bonus_gluten_free/bonus-recipes-data.js',
   './js/sucos_detox/sucos-detox-data.js',
   './js/lanches_cafes/lanches-cafes-data.js',
   './js/app.js',
+  './js/paywall.js',
   './icons/icon.svg',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -80,3 +82,23 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+// Controle de Notificação e Parada do Alarme pela Barra de Notificação
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  // Envia mensagem para a janela parar o alarme
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      clientList.forEach((client) => {
+        client.postMessage({ type: 'STOP_ALARM' });
+      });
+
+      // Se não for apenas parar pela ação e sim toque na notificação, foca a janela
+      if (event.action !== 'stop-alarm' && clientList.length > 0) {
+        return clientList[0].focus();
+      }
+    })
+  );
+});
+

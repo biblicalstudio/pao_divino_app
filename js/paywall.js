@@ -3,7 +3,7 @@
  * Bloqueio de degustação após 15 minutos e liberação via Pix ou código de ativação.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Configurações do Bloqueio & Pix
@@ -12,7 +12,7 @@
     pixKey: '61991168629',
     supportPhone: '(61) 99116–8629',
     whatsappNumber: '5561991168629',
-    whatsappMessage: 'Olá! Fiz o pagamento via Pix e gostaria de enviar o comprovante para liberar meu acesso vitalício ao Pão Divino.',
+    // whatsappMessage: 'Olá! Fiz o pagamento via Pix e gostaria de enviar o comprovante para liberar meu acesso vitalício ao Pão Divino.',
     validCodes: ['PAGO445', 'PAGO', 'PAODIVINO', 'LIBERADO'],
     storageKeys: {
       unlocked: 'pao_divino_unlocked',
@@ -75,15 +75,15 @@
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const codeParam = (
-        urlParams.get('code') || 
-        urlParams.get('codigo') || 
-        urlParams.get('senha') || 
-        urlParams.get('pago') || 
+        urlParams.get('code') ||
+        urlParams.get('codigo') ||
+        urlParams.get('senha') ||
+        urlParams.get('pago') ||
         ''
       ).trim().toUpperCase();
 
       if (codeParam) {
-        const isValid = CONFIG.validCodes.some(validCode => 
+        const isValid = CONFIG.validCodes.some(validCode =>
           codeParam === validCode || codeParam.startsWith('PAGO')
         );
 
@@ -126,10 +126,10 @@
 
     // Se houver algum modal de receita ou timer aberto, fecha para evitar sobreposição
     if (typeof closeRecipeModal === 'function') {
-      try { closeRecipeModal(); } catch (e) {}
+      try { closeRecipeModal(); } catch (e) { }
     }
     if (typeof closeTimerModal === 'function') {
-      try { closeTimerModal(); } catch (e) {}
+      try { closeTimerModal(); } catch (e) { }
     }
   }
 
@@ -153,7 +153,7 @@
   // VALIDAÇÃO MANUAL DO CÓDIGO NO POPUP
   // ==========================================================================
 
-  window.paywallValidateManualCode = function() {
+  window.paywallValidateManualCode = function () {
     const input = document.getElementById('paywallCodeInput');
     const feedback = document.getElementById('paywallFeedback');
     const btn = document.getElementById('paywallBtnUnlock');
@@ -197,7 +197,7 @@
   // COPIAR CHAVE PIX
   // ==========================================================================
 
-  window.paywallCopyPix = function() {
+  window.paywallCopyPix = function () {
     const pixText = CONFIG.pixKey;
     const btn = document.getElementById('paywallCopyPixBtn');
     const btnText = document.getElementById('paywallCopyPixText');
@@ -239,7 +239,7 @@
     document.body.removeChild(input);
   }
 
-  window.paywallCloseModal = function() {
+  window.paywallCloseModal = function () {
     closePaywallModal();
   };
 
@@ -249,7 +249,7 @@
 
   function setupClickInterceptor() {
     // Escuta na fase de captura (capture = true) para interceptar antes de qualquer outro handler
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       // Se já está desbloqueado, permite tudo normalmente
       if (isUnlocked()) return;
 

@@ -8,7 +8,7 @@
 
   // Configurações do Bloqueio & Pix
   const CONFIG = {
-    trialMinutes: 10, // Duração da degustação gratuita (15 minutos)
+    trialMinutes: 59, // Duração da degustação gratuita (15 minutos)
     pixKey: '61991168629',
     supportPhone: '(61) 99116–8629',
     whatsappNumber: '5561991168629',

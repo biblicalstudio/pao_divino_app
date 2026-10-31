@@ -76,7 +76,9 @@ const VIDEO_AULAS_DATA = [
     "start3": "02:31",
     "end3": "04:29",
     "start4": "04:38",
-    "end4": "08:58"
+    "end4": "08:58",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/01.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/01.jpg"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",
@@ -123,7 +125,9 @@ const VIDEO_AULAS_DATA = [
     "start1": "00:00",
     "end1": "00:13",
     "start2": "00:27",
-    "end2": "10:26"
+    "end2": "10:26",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/02.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/02.jpg"
   },
   {
     "id": "videoaula-03-pao-castanha-uva-passa",
@@ -189,7 +193,9 @@ const VIDEO_AULAS_DATA = [
     "start3": "01:03",
     "end3": "05:11",
     "start4": "05:41",
-    "end4": "09:16"
+    "end4": "09:16",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/03.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/03.jpg"
   },
   {
     "id": "videoaula-04-pao-italiano-biga",
@@ -265,7 +271,9 @@ const VIDEO_AULAS_DATA = [
     "start3": "03:11",
     "end3": "05:59",
     "start4": "06:10",
-    "end4": "13:13"
+    "end4": "13:13",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/04.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/04.jpg"
   },
   {
     "id": "videoaula-05-pao-multigraos-sem-sovar",
@@ -327,7 +335,9 @@ const VIDEO_AULAS_DATA = [
     "start1": "00:00",
     "end1": "00:14",
     "start2": "01:01",
-    "end2": "11:32"
+    "end2": "11:32",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/05.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/05.jpg"
   },
   {
     "id": "videoaula-06-ciabatta-sem-sovar",
@@ -399,7 +409,9 @@ const VIDEO_AULAS_DATA = [
     "start1": "00:00",
     "end1": "00:13",
     "start2": "00:27",
-    "end2": "10:01"
+    "end2": "10:01",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/06.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/06.jpg"
   },
   {
     "id": "videoaula-07-pao-de-azeitona",
@@ -476,7 +488,9 @@ const VIDEO_AULAS_DATA = [
     "start1": "00:00",
     "end1": "00:12",
     "start2": "01:04",
-    "end2": "10:18"
+    "end2": "10:18",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/07.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/07.jpg"
   },
   {
     "id": "videoaula-08-pao-integral-iniciantes",
@@ -570,7 +584,9 @@ const VIDEO_AULAS_DATA = [
     "start2": "01:07",
     "end2": "06:25",
     "start3": "06:32",
-    "end3": "10:21"
+    "end3": "10:21",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/08.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/08.jpg"
   },
   {
     "id": "videoaula-09-focaccia-sem-sovar",
@@ -662,6 +678,8 @@ const VIDEO_AULAS_DATA = [
     "start1": "00:00",
     "end1": "00:18",
     "start2": "01:32",
-    "end2": "12:11"
+    "end2": "12:11",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/09.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/09.jpg"
   }
 ];

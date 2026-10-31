@@ -128,6 +128,7 @@ Cada objeto no array representa uma vídeo aula completa com os seguintes campos
 | `categoryName` | `string` | Nome legível da categoria (ex: `"Pães Rústicos"`). |
 | `videoFile` | `string` | Nome do arquivo MP4 salvo na pasta de ativos. |
 | `videoPath` | `string` | Caminho relativo do vídeo a partir da raiz do projeto. |
+| `thumb` / `thumbnail` | `string` | Caminho da imagem de capa (ex: `"assets/VideoAulas/pao_rustico/thumbs/01.jpg"`). |
 | `yield` | `string` | Rendimento em unidades ou gramas da receita da aula. |
 | `prepTime` | `string` | Tempo estimado de mão na massa / manuseio. |
 | `totalTime` | `string` | Tempo total incluindo fermentação e forno. |

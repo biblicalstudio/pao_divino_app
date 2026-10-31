@@ -251,7 +251,7 @@
                  onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVideoLesson('${lesson.id}', true);}"
                  aria-label="Assistir aula ${lesson.shortTitle || lesson.title}">
           <div class="video-thumb-wrap">
-            <img src="./images/recipes/pao-multigraos-abencoado-levain.jpg" 
+            <img src="${lesson.thumbnail || lesson.thumb || './images/recipes/pao-multigraos-abencoado-levain.jpg'}" 
                  alt="${lesson.title}" 
                  class="video-thumb-preview" 
                  loading="lazy">
@@ -313,6 +313,9 @@
 
     // Configura o vídeo para início imediato com streaming progressivo
     if (videoEl) {
+      if (lesson.thumbnail || lesson.thumb) {
+        videoEl.poster = lesson.thumbnail || lesson.thumb;
+      }
       // Usa encodeURI para suportar acentos ou espaços no nome do arquivo
       const videoSrc = encodeURI(lesson.videoPath);
       const isDifferentSrc = videoEl.getAttribute('data-current-src') !== videoSrc;

@@ -18,8 +18,7 @@
     completedLessons: new Set(JSON.parse(localStorage.getItem('pao_divino_video_completed') || '[]')),
     lastTapTime: 0,
     lastTapSide: null,
-    startTime: 0,
-    endTime: null
+    segments: []
   };
 
   /**
@@ -48,29 +47,152 @@
   }
 
   /**
-   * Retorna os limites efetivos de início (start) e término (end) da aula
+   * Extrai os trechos (cortes) definidos para uma aula.
+   * Suporta:
+   * 1. Array "segments": [ { start: "00:00", end: "00:30" }, { start: "02:10", end: "04:35" } ]
+   * 2. Propriedades numeradas: start1, end1, start2, end2, start3, end3...
+   * 3. Propriedades simples: start, end
    */
-  function getEffectiveBounds() {
-    const video = document.getElementById('proVideoPlayer');
-    const start = Math.max(0, videoState.startTime || 0);
-    const duration = (video && !isNaN(video.duration) && video.duration > 0) ? video.duration : 0;
-    let end = videoState.endTime;
-    if (end === null || end === undefined || isNaN(end) || end <= start) {
-      end = duration > start ? duration : (start > 0 ? start + 1 : 0);
+  function getLessonSegments(lesson) {
+    if (!lesson) return [];
+
+    // 1. Array segments explícito
+    if (Array.isArray(lesson.segments) && lesson.segments.length > 0) {
+      const segs = [];
+      lesson.segments.forEach(s => {
+        const start = parseTimeToSeconds(s.start);
+        const end = parseTimeToSeconds(s.end);
+        if (start !== null && end !== null && end > start) {
+          segs.push({ start, end, duration: end - start });
+        }
+      });
+      if (segs.length > 0) return segs;
     }
-    const segment = Math.max(0.1, end - start);
-    return { start, end, duration, segment };
+
+    // 2. Propriedades numeradas: start1/end1, start2/end2, start3/end3...
+    const numberedSegs = [];
+    let idx = 1;
+    while (lesson[`start${idx}`] !== undefined || lesson[`end${idx}`] !== undefined) {
+      const start = parseTimeToSeconds(lesson[`start${idx}`]);
+      const end = parseTimeToSeconds(lesson[`end${idx}`]);
+      if (start !== null && end !== null && end > start) {
+        numberedSegs.push({ start, end, duration: end - start });
+      }
+      idx++;
+    }
+    if (numberedSegs.length > 0) return numberedSegs;
+
+    // 3. start e end simples
+    const start = parseTimeToSeconds(lesson.start);
+    const end = parseTimeToSeconds(lesson.end);
+    if (start !== null || end !== null) {
+      const s = start !== null ? start : 0;
+      const e = end !== null ? end : null;
+      return [{ start: s, end: e, duration: e !== null ? Math.max(0.1, e - s) : null }];
+    }
+
+    return [];
   }
 
   /**
-   * Retorna a duração líquida da aula (end - start) formatada como MM:SS
+   * Resolve os trechos ativos do vídeo atual com cálculos de tempo virtual
+   */
+  function getResolvedSegments() {
+    const video = document.getElementById('proVideoPlayer');
+    const videoDuration = (video && !isNaN(video.duration) && video.duration > 0) ? video.duration : 0;
+
+    let rawSegments = (videoState.segments && videoState.segments.length > 0)
+      ? videoState.segments.map(s => ({ ...s }))
+      : (videoState.currentLesson ? getLessonSegments(videoState.currentLesson) : []);
+
+    let segments = [];
+    if (rawSegments.length === 0) {
+      segments = [{ start: 0, end: videoDuration, duration: videoDuration }];
+    } else {
+      rawSegments.forEach(seg => {
+        const s = Math.max(0, seg.start || 0);
+        let e = seg.end;
+        if (e === null || e === undefined || isNaN(e) || (videoDuration > 0 && e > videoDuration)) {
+          e = videoDuration > s ? videoDuration : s + 1;
+        }
+        if (e > s) {
+          segments.push({ start: s, end: e, duration: Math.max(0.1, e - s) });
+        }
+      });
+      if (segments.length === 0) {
+        segments = [{ start: 0, end: videoDuration, duration: videoDuration }];
+      }
+    }
+
+    // Calcula tempos cumulativos
+    let cum = 0;
+    segments.forEach(seg => {
+      seg.cumStart = cum;
+      cum += seg.duration;
+      seg.cumEnd = cum;
+    });
+
+    const totalVirtualDuration = Math.max(0.1, cum);
+    return { segments, totalVirtualDuration, videoDuration };
+  }
+
+  /**
+   * Converte o tempo real do vídeo (video.currentTime) para o tempo virtual (00:00 até total)
+   */
+  function realToVirtual(realTime, resolved) {
+    const res = resolved || getResolvedSegments();
+    const { segments, totalVirtualDuration } = res;
+    if (!segments.length) return 0;
+
+    if (realTime <= segments[0].start) return 0;
+
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      if (realTime >= seg.start && realTime <= seg.end) {
+        return seg.cumStart + (realTime - seg.start);
+      }
+      // Se estiver no intervalo cortado entre dois trechos
+      if (i < segments.length - 1 && realTime > seg.end && realTime < segments[i + 1].start) {
+        return seg.cumEnd;
+      }
+    }
+
+    return totalVirtualDuration;
+  }
+
+  /**
+   * Converte tempo virtual da barra para o ponto real do vídeo
+   */
+  function virtualToReal(virtualTime, resolved) {
+    const res = resolved || getResolvedSegments();
+    const { segments, totalVirtualDuration } = res;
+    if (!segments.length) return 0;
+
+    const clampedV = Math.max(0, Math.min(totalVirtualDuration, virtualTime));
+
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      if (clampedV >= seg.cumStart && clampedV <= seg.cumEnd) {
+        const offset = clampedV - seg.cumStart;
+        return seg.start + offset;
+      }
+    }
+
+    return segments[segments.length - 1].end;
+  }
+
+  /**
+   * Retorna a duração líquida da aula (soma de todos os trechos) formatada como MM:SS
    */
   function getLessonDurationFormatted(lesson) {
     if (!lesson) return '30 min';
-    const start = parseTimeToSeconds(lesson.start) || 0;
-    const end = parseTimeToSeconds(lesson.end);
-    if (end && end > start) {
-      return formatTime(end - start);
+    const segs = getLessonSegments(lesson);
+    if (segs.length > 0) {
+      let total = 0;
+      segs.forEach(s => {
+        if (s.duration) total += s.duration;
+      });
+      if (total > 0) return formatTime(total);
     }
     return lesson.prepTime || '30 min';
   }
@@ -179,8 +301,7 @@
 
     videoState.currentLesson = lesson;
     videoState.currentIndex = videoState.lessons.findIndex(l => l.id === lessonId);
-    videoState.startTime = parseTimeToSeconds(lesson.start) ?? 0;
-    videoState.endTime = parseTimeToSeconds(lesson.end);
+    videoState.segments = getLessonSegments(lesson);
 
     const catalogView = document.getElementById('videoAulasCatalog');
     const playerView = document.getElementById('videoAulaPlayerView');
@@ -196,10 +317,11 @@
       const isDifferentSrc = videoEl.getAttribute('data-current-src') !== videoSrc;
 
       const applyStartTime = () => {
-        const start = videoState.startTime || 0;
+        const segs = videoState.segments;
+        const initialStart = segs && segs.length > 0 ? segs[0].start : 0;
         try {
-          if (Math.abs(videoEl.currentTime - start) > 0.3) {
-            videoEl.currentTime = start;
+          if (Math.abs(videoEl.currentTime - initialStart) > 0.3) {
+            videoEl.currentTime = initialStart;
           }
         } catch (e) {
           console.warn('[Video] Erro ao aplicar tempo de início:', e);
@@ -660,11 +782,13 @@
       if (spinner) spinner.style.display = 'none';
     });
 
-    // 3. Skip 10s respeitando start e end
+    // 3. Skip 10s navegando no tempo virtual dos trechos
     if (skipBackBtn) {
       skipBackBtn.addEventListener('click', () => {
-        const { start } = getEffectiveBounds();
-        video.currentTime = Math.max(start, video.currentTime - 10);
+        const res = getResolvedSegments();
+        const curV = realToVirtual(video.currentTime || 0, res);
+        const targetV = Math.max(0, curV - 10);
+        video.currentTime = virtualToReal(targetV, res);
         showFeedback('skipBack');
         updateTimelineProgress();
       });
@@ -672,39 +796,57 @@
 
     if (skipFwdBtn) {
       skipFwdBtn.addEventListener('click', () => {
-        const { end } = getEffectiveBounds();
-        video.currentTime = Math.min(end, video.currentTime + 10);
+        const res = getResolvedSegments();
+        const curV = realToVirtual(video.currentTime || 0, res);
+        const targetV = Math.min(res.totalVirtualDuration, curV + 10);
+        video.currentTime = virtualToReal(targetV, res);
         showFeedback('skipFwd');
         updateTimelineProgress();
       });
     }
 
-    // 4. Atualização de Tempo e Timeline com verificação de fim (end)
+    // 4. Atualização de Tempo e Timeline com salto automático entre cortes
     video.addEventListener('timeupdate', () => {
-      const { start, end } = getEffectiveBounds();
+      const res = getResolvedSegments();
+      const { segments } = res;
+      const realTime = video.currentTime || 0;
 
-      // Se o cursor estiver antes de start, ajusta para start
-      if (start > 0 && video.currentTime < start - 0.5) {
-        video.currentTime = start;
+      // Se estiver antes do primeiro corte, avança para o início dele
+      if (segments.length > 0 && realTime < segments[0].start - 0.3) {
+        video.currentTime = segments[0].start;
+        updateTimelineProgress();
+        return;
       }
 
-      // Se atingiu ou ultrapassou o ponto end definido no JSON
-      if (end > start && video.currentTime >= end) {
-        video.pause();
-        video.currentTime = end;
-        videoState.isPlaying = false;
-        container.classList.remove('is-playing');
-        updatePlayPauseButton(false);
-        showControls();
+      // Verifica se atingiu o fim de algum trecho
+      for (let i = 0; i < segments.length; i++) {
+        const seg = segments[i];
+        if (realTime >= seg.end) {
+          if (i < segments.length - 1) {
+            // PULA IMEDIATAMENTE PARA O INÍCIO DO PRÓXIMO TRECHO!
+            video.currentTime = segments[i + 1].start;
+            updateTimelineProgress();
+            return;
+          } else {
+            // Fim do último corte da aula: pausa e conclui
+            video.pause();
+            video.currentTime = seg.end;
+            videoState.isPlaying = false;
+            container.classList.remove('is-playing');
+            updatePlayPauseButton(false);
+            showControls();
 
-        // Conclusão automática da aula
-        if (videoState.currentLesson) {
-          videoState.completedLessons.add(videoState.currentLesson.id);
-          localStorage.setItem('pao_divino_video_completed', JSON.stringify([...videoState.completedLessons]));
-          const btn = document.getElementById('btnToggleCompleted');
-          if (btn) {
-            btn.classList.add('completed');
-            btn.innerHTML = '<span>✓ Aula Concluída</span>';
+            if (videoState.currentLesson) {
+              videoState.completedLessons.add(videoState.currentLesson.id);
+              localStorage.setItem('pao_divino_video_completed', JSON.stringify([...videoState.completedLessons]));
+              const btn = document.getElementById('btnToggleCompleted');
+              if (btn) {
+                btn.classList.add('completed');
+                btn.innerHTML = '<span>✓ Aula Concluída</span>';
+              }
+            }
+            updateTimelineProgress();
+            return;
           }
         }
       }
@@ -716,18 +858,17 @@
       updateBufferProgress();
     });
 
-    // 5. Interação com a Timeline (clique e arraste mapeado entre start e end)
+    // 5. Interação com a Timeline (clique e arraste virtual)
     let isDraggingTimeline = false;
 
     const seekToPosition = (e) => {
       if (!timelineWrap) return;
-      const { start, end } = getEffectiveBounds();
-      const segment = Math.max(0.1, end - start);
+      const res = getResolvedSegments();
       const rect = timelineWrap.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const ratio = Math.max(0, Math.min(1, clickX / rect.width));
-      const targetTime = start + (ratio * segment);
-      video.currentTime = Math.max(start, Math.min(end, targetTime));
+      const targetVirtual = ratio * res.totalVirtualDuration;
+      video.currentTime = virtualToReal(targetVirtual, res);
       updateTimelineProgress();
     };
 
@@ -751,11 +892,11 @@
       const tooltip = document.getElementById('proTimeTooltip');
       timelineWrap.addEventListener('mousemove', (e) => {
         if (!tooltip) return;
-        const { segment } = getEffectiveBounds();
+        const res = getResolvedSegments();
         const rect = timelineWrap.getBoundingClientRect();
         const hoverX = e.clientX - rect.left;
         const ratio = Math.max(0, Math.min(1, hoverX / rect.width));
-        const hoverRelativeSecs = ratio * segment;
+        const hoverRelativeSecs = ratio * res.totalVirtualDuration;
         tooltip.textContent = formatTime(hoverRelativeSecs);
         tooltip.style.left = `${hoverX}px`;
       });
@@ -872,9 +1013,10 @@
         video.setAttribute('data-current-src', videoSrc);
         video.src = videoSrc;
         const onLoaded = () => {
-          const start = videoState.startTime || 0;
-          if (start > 0) {
-            try { video.currentTime = start; } catch (e) {}
+          const segs = videoState.segments;
+          const initialStart = segs && segs.length > 0 ? segs[0].start : 0;
+          if (initialStart > 0) {
+            try { video.currentTime = initialStart; } catch (e) {}
           }
           video.play().catch(() => updatePlayPauseButton(false));
           video.removeEventListener('loadedmetadata', onLoaded);
@@ -910,14 +1052,18 @@
         togglePlay();
       } else if (e.key === 'ArrowLeft' || e.key === 'j' || e.key === 'J') {
         e.preventDefault();
-        const { start } = getEffectiveBounds();
-        video.currentTime = Math.max(start, video.currentTime - 10);
+        const res = getResolvedSegments();
+        const curV = realToVirtual(video.currentTime || 0, res);
+        const targetV = Math.max(0, curV - 10);
+        video.currentTime = virtualToReal(targetV, res);
         showFeedback('skipBack');
         updateTimelineProgress();
       } else if (e.key === 'ArrowRight' || e.key === 'l' || e.key === 'L') {
         e.preventDefault();
-        const { end } = getEffectiveBounds();
-        video.currentTime = Math.min(end, video.currentTime + 10);
+        const res = getResolvedSegments();
+        const curV = realToVirtual(video.currentTime || 0, res);
+        const targetV = Math.min(res.totalVirtualDuration, curV + 10);
+        video.currentTime = virtualToReal(targetV, res);
         showFeedback('skipFwd');
         updateTimelineProgress();
       } else if (e.key === 'f' || e.key === 'F') {
@@ -952,15 +1098,15 @@
 
     if (!video) return;
 
-    const { start, end, segment } = getEffectiveBounds();
-    const current = Math.max(start, Math.min(end, video.currentTime || 0));
-    const relativeCurrent = Math.max(0, current - start);
-    const pct = Math.max(0, Math.min(100, (relativeCurrent / segment) * 100));
+    const res = getResolvedSegments();
+    const currentV = realToVirtual(video.currentTime || 0, res);
+    const totalV = res.totalVirtualDuration;
+    const pct = Math.max(0, Math.min(100, (currentV / totalV) * 100));
 
     if (progressBar) progressBar.style.width = `${pct}%`;
     if (thumb) thumb.style.left = `${pct}%`;
-    if (timeCurrent) timeCurrent.textContent = formatTime(relativeCurrent);
-    if (timeDuration) timeDuration.textContent = formatTime(segment);
+    if (timeCurrent) timeCurrent.textContent = formatTime(currentV);
+    if (timeDuration) timeDuration.textContent = formatTime(totalV);
   }
 
   function updateBufferProgress() {
@@ -968,13 +1114,11 @@
     const bufferBar = document.getElementById('proBufferBar');
     if (!video || !bufferBar) return;
 
-    const { start, end } = getEffectiveBounds();
-    const segment = Math.max(0.1, end - start);
-
+    const res = getResolvedSegments();
     if (video.buffered && video.buffered.length > 0) {
       const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-      const clamped = Math.max(start, Math.min(end, bufferedEnd));
-      const pct = Math.max(0, Math.min(100, ((clamped - start) / segment) * 100));
+      const bufferedV = realToVirtual(bufferedEnd, res);
+      const pct = Math.max(0, Math.min(100, (bufferedV / res.totalVirtualDuration) * 100));
       bufferBar.style.width = `${pct}%`;
     }
   }

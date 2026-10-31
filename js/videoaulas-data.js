@@ -71,8 +71,8 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "09:48"
+    "start": "01:30",
+    "end": "07:58"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",

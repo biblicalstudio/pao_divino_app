@@ -71,8 +71,12 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "01:30",
-    "end": "07:58"
+    "start1": "00:00",
+    "end1": "00:16",
+    "start2": "01:30",
+    "end2": "01:54",
+    "start3": "02:30",
+    "end3": "08:58"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",

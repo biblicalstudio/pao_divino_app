@@ -172,7 +172,8 @@
 
     for (let i = 0; i < segments.length; i++) {
       const seg = segments[i];
-      if (clampedV >= seg.cumStart && clampedV <= seg.cumEnd) {
+      const isLast = (i === segments.length - 1);
+      if (clampedV >= seg.cumStart && (isLast ? clampedV <= seg.cumEnd : clampedV < seg.cumEnd)) {
         const offset = clampedV - seg.cumStart;
         return seg.start + offset;
       }
@@ -818,17 +819,25 @@
         return;
       }
 
-      // Verifica se atingiu o fim de algum trecho
+      // Verifica se atingiu o fim de algum trecho ou se caiu em um corte
       for (let i = 0; i < segments.length; i++) {
         const seg = segments[i];
-        if (realTime >= seg.end) {
-          if (i < segments.length - 1) {
-            // PULA IMEDIATAMENTE PARA O INÍCIO DO PRÓXIMO TRECHO!
-            video.currentTime = segments[i + 1].start;
+        const nextSeg = i < segments.length - 1 ? segments[i + 1] : null;
+
+        if (nextSeg) {
+          // Se atingiu o final do trecho i ou caiu no intervalo cortado entre i e i+1
+          if (realTime >= seg.end && realTime < nextSeg.start) {
+            video.currentTime = nextSeg.start;
+            // Garante continuidade da reprodução se estava tocando
+            if (videoState.isPlaying && video.paused) {
+              video.play().catch(() => {});
+            }
             updateTimelineProgress();
             return;
-          } else {
-            // Fim do último corte da aula: pausa e conclui
+          }
+        } else {
+          // Fim do último corte da aula: pausa e conclui
+          if (realTime >= seg.end) {
             video.pause();
             video.currentTime = seg.end;
             videoState.isPlaying = false;

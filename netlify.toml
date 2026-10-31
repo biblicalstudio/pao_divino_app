@@ -36,6 +36,14 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "screen-wake-lock=(self), ambient-light-sensor=()"
 
+# 4. Vídeos com Suporte a Streaming Range Requests (HTTP 206)
+[[headers]]
+  for = "/assets/VideoAulas/*"
+  [headers.values]
+    Accept-Ranges = "bytes"
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
 # ------------------------------------------------------------------------------
 # REDIRECIONAMENTOS SPA (Single Page Application Fallback)
 # ------------------------------------------------------------------------------

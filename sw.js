@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pao-divino-v2.1.0';
+const CACHE_NAME = 'pao-divino-v2.1.2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -51,6 +51,13 @@ self.addEventListener('fetch', (event) => {
   // Ignora requisições não-GET e chrome-extension
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith('http')) return;
+
+  // STREAMING PROGRESSIVO INSTANTÂNEO DE VÍDEOS:
+  // Vídeos usam Range Requests (HTTP 206) para carregar aos poucos.
+  // Deixa o navegador fazer streaming direto pela rede sem esperar baixar o arquivo inteiro.
+  if (event.request.headers.get('range') || event.request.url.match(/\.(mp4|webm|m4v|ogv)$/i)) {
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

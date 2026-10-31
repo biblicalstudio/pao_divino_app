@@ -132,21 +132,30 @@
     if (catalogView) catalogView.classList.add('hidden');
     if (playerView) playerView.classList.remove('hidden');
 
-    // Configura o vídeo
+    // Configura o vídeo para início imediato com streaming progressivo
     if (videoEl) {
       // Usa encodeURI para suportar acentos ou espaços no nome do arquivo
       const videoSrc = encodeURI(lesson.videoPath);
-      if (videoEl.getAttribute('data-current-src') !== videoSrc) {
-        videoEl.src = videoSrc;
+      const isDifferentSrc = videoEl.getAttribute('data-current-src') !== videoSrc;
+
+      if (isDifferentSrc) {
         videoEl.setAttribute('data-current-src', videoSrc);
-        videoEl.load();
+        videoEl.src = videoSrc;
       }
 
       if (autoPlay) {
-        videoEl.play().catch(() => {
-          // Navegadores podem bloquear autoplay sem interação prévia
-          updatePlayPauseButton(false);
-        });
+        // Inicia a reprodução imediata assim que os primeiros bytes chegarem
+        const playPromise = videoEl.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            const onCanPlay = () => {
+              videoEl.play().catch(() => updatePlayPauseButton(false));
+              videoEl.removeEventListener('canplay', onCanPlay);
+            };
+            videoEl.addEventListener('canplay', onCanPlay);
+            updatePlayPauseButton(false);
+          });
+        }
       }
     }
 

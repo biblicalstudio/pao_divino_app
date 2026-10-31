@@ -68,10 +68,12 @@
     ],
     "start1": "00:00",
     "end1": "00:16",
-    "start2": "01:01",
+    "start2": "01:02",
     "end2": "01:54",
     "start3": "02:31",
-    "end3": "08:58"
+    "end3": "04:29",
+    "start4": "04:38",
+    "end4": "08:58"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",
@@ -115,8 +117,10 @@
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:42"
+    "start1": "00:00",
+    "end1": "00:12",
+    "start2": "00:26",
+    "end2": "10:26"
   },
   {
     "id": "videoaula-03-pao-castanha-uva-passa",

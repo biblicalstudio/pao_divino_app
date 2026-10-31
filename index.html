@@ -298,18 +298,22 @@
         <div class="pro-video-player-container" id="proVideoContainer">
           <video id="proVideoPlayer" class="pro-video-element" playsinline webkit-playsinline preload="auto"></video>
 
+          <!-- Botão Gigante de Play Central (Início / Pausa) -->
+          <div class="pro-big-play-btn" id="proBigPlayBtn" title="Reproduzir Aula (Espaço)">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+
           <!-- Spinner Buffering -->
           <div class="pro-player-spinner" id="proPlayerSpinner"></div>
 
           <!-- Feedback Central Animado -->
           <div class="pro-player-center-feedback" id="proCenterFeedback"></div>
 
-          <!-- Áreas Laterais de Duplo Toque (-10s / +10s no celular) -->
-          <div class="pro-player-touch-left" id="proTouchLeft">
-            <div class="pro-player-touch-hint">« 10s</div>
-          </div>
-          <div class="pro-player-touch-right" id="proTouchRight">
-            <div class="pro-player-touch-hint">10s »</div>
+          <!-- Mensagem de Erro de Conexão com Botão de Recarregar -->
+          <div class="pro-player-error-overlay" id="proPlayerError" style="display: none;">
+            <span style="font-size: 2.2rem; display: block; margin-bottom: 0.5rem;">⚠️</span>
+            <p id="proPlayerErrorMsg" style="color: #fff9f0; font-size: 0.95rem; margin-bottom: 0.8rem;">Toque para recarregar o vídeo.</p>
+            <button type="button" class="btn-install" onclick="retryCurrentVideo()" style="padding: 0.5rem 1.2rem;">Recarregar Vídeo</button>
           </div>
 
           <!-- BARRA DE CONTROLES INFERIOR CUSTOMIZADA -->

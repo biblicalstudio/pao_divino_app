@@ -431,37 +431,63 @@
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Áreas de Duplo Toque (Mobile 10s back/fwd) */
-.pro-player-touch-left,
-.pro-player-touch-right {
-  position: absolute;
-  top: 0;
-  bottom: 60px;
-  width: 35%;
-  z-index: 5;
-  cursor: pointer;
-}
-
-.pro-player-touch-left { left: 0; }
-.pro-player-touch-right { right: 0; }
-
-.pro-player-touch-hint {
+/* Botão Gigante de Play Central */
+.pro-big-play-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  padding: 0.4rem 0.8rem;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 20px;
-  color: #ffffff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  pointer-events: none;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4af37 0%, #a66a33 100%);
+  color: #1a120b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 12;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), 0 0 0 8px rgba(212, 175, 55, 0.25);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease, background 0.2s ease;
 }
 
-.pro-player-touch-left .pro-player-touch-hint { left: 24px; }
-.pro-player-touch-right .pro-player-touch-hint { right: 24px; }
+.pro-big-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+  background: linear-gradient(135deg, #f3cf7a 0%, #b58952 100%);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.7), 0 0 0 12px rgba(212, 175, 55, 0.35);
+}
+
+.pro-big-play-btn:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.pro-big-play-btn svg {
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  fill: #1a120b;
+}
+
+/* Quando o vídeo está reproduzindo, oculta o botão grande central */
+.pro-video-player-container.is-playing .pro-big-play-btn {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.75);
+}
+
+/* Overlay de Erro com Botão de Recarregar */
+.pro-player-error-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 11, 6, 0.94);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  text-align: center;
+  padding: 1.5rem;
+}
 
 /* --------------------------------------------------------------------------
    BARRA DE CONTROLES INFERIOR

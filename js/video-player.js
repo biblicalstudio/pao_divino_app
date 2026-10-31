@@ -495,10 +495,20 @@
 
     if (!video || !container) return;
 
+    const bigPlayBtn = document.getElementById('proBigPlayBtn');
+    const errorOverlay = document.getElementById('proPlayerError');
+
     // 1. Play / Pause
     const togglePlay = () => {
+      if (errorOverlay) errorOverlay.style.display = 'none';
       if (video.paused || video.ended) {
-        video.play();
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn('[Video] Play bloqueado pelo navegador:', err);
+            updatePlayPauseButton(false);
+          });
+        }
       } else {
         video.pause();
       }
@@ -506,9 +516,28 @@
 
     video.addEventListener('click', togglePlay);
     if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlay);
+    if (bigPlayBtn) bigPlayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePlay();
+    });
+
+    // Tratamento de Erro do Vídeo
+    video.addEventListener('error', () => {
+      console.error('[Video Error]:', video.error);
+      if (spinner) spinner.style.display = 'none';
+      if (errorOverlay) {
+        errorOverlay.style.display = 'flex';
+        const msg = document.getElementById('proPlayerErrorMsg');
+        if (msg && video.error) {
+          msg.textContent = 'Não foi possível carregar a aula. Toque para tentar novamente.';
+        }
+      }
+    });
 
     video.addEventListener('play', () => {
       videoState.isPlaying = true;
+      container.classList.add('is-playing');
+      if (errorOverlay) errorOverlay.style.display = 'none';
       updatePlayPauseButton(true);
       showFeedback('play');
       requestWakeLock();
@@ -517,6 +546,7 @@
 
     video.addEventListener('pause', () => {
       videoState.isPlaying = false;
+      container.classList.remove('is-playing');
       updatePlayPauseButton(false);
       showFeedback('pause');
       releaseWakeLock();
@@ -525,6 +555,7 @@
 
     video.addEventListener('ended', () => {
       videoState.isPlaying = false;
+      container.classList.remove('is-playing');
       updatePlayPauseButton(false);
       showControls();
       // Sugere conclusão automática da aula
@@ -696,35 +727,21 @@
       });
     }
 
-    // 10. Duplo Toque Mobile (Esquerda -10s, Direita +10s)
-    const touchLeft = document.getElementById('proTouchLeft');
-    const touchRight = document.getElementById('proTouchRight');
+    // 10. Função para tentar recarregar o vídeo em caso de instabilidade
+    window.retryCurrentVideo = function () {
+      const errorOverlay = document.getElementById('proPlayerError');
+      const spinner = document.getElementById('proPlayerSpinner');
+      const video = document.getElementById('proVideoPlayer');
+      if (errorOverlay) errorOverlay.style.display = 'none';
+      if (spinner) spinner.style.display = 'block';
 
-    const handleDoubleTap = (side) => {
-      const now = Date.now();
-      if (videoState.lastTapSide === side && (now - videoState.lastTapTime) < 320) {
-        // Duplo toque detectado
-        if (side === 'left') {
-          video.currentTime = Math.max(0, video.currentTime - 10);
-          showTouchHint(touchLeft, '« 10s');
-          showFeedback('skipBack');
-        } else {
-          video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
-          showTouchHint(touchRight, '10s »');
-          showFeedback('skipFwd');
-        }
-        videoState.lastTapTime = 0;
-        videoState.lastTapSide = null;
-      } else {
-        videoState.lastTapTime = now;
-        videoState.lastTapSide = side;
-        // Alterna controles
-        container.classList.toggle('controls-hidden');
+      if (video && videoState.currentLesson) {
+        const videoSrc = videoState.currentLesson.videoPath;
+        video.setAttribute('data-current-src', videoSrc);
+        video.src = videoSrc;
+        video.play().catch(() => updatePlayPauseButton(false));
       }
     };
-
-    if (touchLeft) touchLeft.addEventListener('click', () => handleDoubleTap('left'));
-    if (touchRight) touchRight.addEventListener('click', () => handleDoubleTap('right'));
 
     // 11. Auto-hide dos controles ao mover mouse
     container.addEventListener('mousemove', () => {

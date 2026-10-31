@@ -269,37 +269,77 @@
       
       <span class="hero-badge">⏱️ Timer de Cozinha</span>
       <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--gold-200); margin-top: 0.5rem;">
-        Controle de Forno & Sova
+        Controle de Forno & Fermentação
       </h3>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-        Toque nos atalhos rápidos ou inicie a contagem regressiva para não perder o ponto do seu pão.
+        Arraste a barra horizontal (até 4 horas) ou toque nos atalhos rápidos.
       </p>
 
-      <!-- Presets de Tempo -->
+      <!-- Presets de Tempo (Até 4 Horas) -->
       <div class="timer-presets">
-        <button class="preset-chip" onclick="setTimerDuration(300, 'Frigideira / Rápido'); startTimer();">⚡ 5 min</button>
         <button class="preset-chip" onclick="setTimerDuration(600, 'Tempo de Sova'); startTimer();">🥣 10 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(1200, 'Descanso da Massa'); startTimer();">⏳ 20 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(2100, 'Forno Dourado'); startTimer();">🔥 35 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(2700, 'Forno Completo'); startTimer();">🍞 45 min</button>
-        <button class="preset-chip" onclick="setTimerDuration(3600, 'Fermentação Longa'); startTimer();">🌾 60 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(1800, 'Descanso da Massa'); startTimer();">⏳ 30 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(2700, 'Forno Dourado'); startTimer();">🔥 45 min</button>
+        <button class="preset-chip" onclick="setTimerDuration(5400, 'Fermentação Média'); startTimer();">🍞 1h 30m</button>
+        <button class="preset-chip" onclick="setTimerDuration(9000, 'Fermentação Longa'); startTimer();">🌾 2h 30m</button>
+        <button class="preset-chip" onclick="setTimerDuration(14400, 'Fermentação Sagrada Máxima'); startTimer();">👑 4 Horas</button>
       </div>
 
-      <!-- Display Circular do Timer -->
-      <div class="timer-circle-progress">
-        <svg width="200" height="200" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="8"></circle>
-          <circle id="timerProgressRing" cx="100" cy="100" r="88" fill="none" stroke="var(--gold-400)" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.92" stroke-dashoffset="0"></circle>
-        </svg>
-        <div class="timer-big-display" id="timerBigDisplay">00:00</div>
+      <!-- Display Principal de Tempo (Formato 00:00:00) -->
+      <div class="timer-display-box">
+        <div class="timer-big-display" id="timerBigDisplay">00:00:00</div>
+        <div class="timer-active-label" id="timerActiveLabel">Preparo de Pão</div>
       </div>
 
-      <!-- Controles do Timer -->
-      <div style="display: flex; gap: 0.75rem; justify-content: center;">
-        <button id="btnTimerToggle" class="btn-install" style="padding: 0.75rem 1.6rem; font-size: 1rem;" onclick="appState.timer.isRunning ? pauseTimer() : startTimer()">
+      <!-- Controle de Tempo com Barra de Carregamento Horizontal (Máximo 4 Horas) -->
+      <div class="timer-horizontal-control-card">
+        <div class="timer-bar-header">
+          <span class="timer-bar-label">
+            <span>⏳ Barra de Tempo & Carregamento</span>
+          </span>
+          <span class="timer-bar-percentage" id="timerProgressPercent">0%</span>
+        </div>
+
+        <!-- Trilha e Barra Horizontal de Carregamento -->
+        <div class="timer-horizontal-track" id="timerHorizontalTrack">
+          <div class="timer-horizontal-progress-bar" id="timerHorizontalProgressBar" style="width: 0%;"></div>
+          <input type="range" 
+                 id="timerHorizontalSlider" 
+                 class="timer-range-slider" 
+                 min="0" 
+                 max="14400" 
+                 step="60" 
+                 value="0" 
+                 aria-label="Controle de tempo horizontal de 0 até 4 horas"
+                 oninput="setTimerFromSlider(this.value)">
+        </div>
+
+        <!-- Marcadores de Escala de 00:00:00 até 04:00:00 (4 Horas) -->
+        <div class="timer-scale-labels">
+          <span>00:00:00</span>
+          <span>1h</span>
+          <span>2h</span>
+          <span>3h</span>
+          <span>04:00:00 (Máx)</span>
+        </div>
+
+        <!-- Botões de Micro-Ajuste Rápido -->
+        <div class="timer-quick-adjusts">
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-900)" title="Diminuir 15 minutos">-15m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(-300)" title="Diminuir 5 minutos">-5m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(300)" title="Adicionar 5 minutos">+5m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(900)" title="Adicionar 15 minutos">+15m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(1800)" title="Adicionar 30 minutos">+30m</button>
+          <button type="button" class="btn-adjust-chip" onclick="adjustTimer(3600)" title="Adicionar 1 hora">+1h</button>
+        </div>
+      </div>
+
+      <!-- Controles de Ação do Timer -->
+      <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem;">
+        <button id="btnTimerToggle" class="btn-install" style="padding: 0.8rem 1.8rem; font-size: 1.05rem;" onclick="appState.timer.isRunning ? pauseTimer() : startTimer()">
           ▶️ Iniciar
         </button>
-        <button class="btn-secondary-action" style="padding: 0.75rem 1.25rem;" onclick="resetTimer()">
+        <button class="btn-secondary-action" style="padding: 0.8rem 1.4rem;" onclick="resetTimer()">
           🔄 Zerar
         </button>
       </div>
@@ -312,7 +352,7 @@
   <div id="kitchenTimerWidget" class="kitchen-timer-widget" onclick="openTimerModal()" title="Ver Timer">
     <span style="font-size: 1.15rem;">⏱️</span>
     <div>
-      <div class="timer-digits" id="floatTimerDigits">00:00</div>
+      <div class="timer-digits" id="floatTimerDigits">00:00:00</div>
       <div class="timer-label-tag">Pão no Forno</div>
     </div>
   </div>

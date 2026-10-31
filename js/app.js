@@ -744,10 +744,25 @@ function closeTimerModal() {
 }
 
 function setTimerDuration(seconds, label = 'Preparo de Pão') {
-  appState.timer.totalSeconds = seconds;
-  appState.timer.remainingSeconds = seconds;
+  const clamped = Math.min(14400, Math.max(0, parseInt(seconds, 10) || 0));
+  appState.timer.totalSeconds = clamped;
+  appState.timer.remainingSeconds = clamped;
   appState.timer.label = label;
   updateTimerDisplay();
+}
+
+function setTimerFromSlider(seconds) {
+  const sec = Math.min(14400, Math.max(0, parseInt(seconds, 10) || 0));
+  appState.timer.totalSeconds = sec;
+  appState.timer.remainingSeconds = sec;
+  appState.timer.label = sec > 0 ? `Timer de ${formatSecondsToMin(sec)}` : 'Preparo de Pão';
+  updateTimerDisplay(true);
+}
+
+function adjustTimer(deltaSeconds) {
+  const current = appState.timer.remainingSeconds || 0;
+  const next = Math.max(0, Math.min(14400, current + deltaSeconds));
+  setTimerDuration(next, appState.timer.label || 'Preparo de Pão');
 }
 
 function startTimer() {
@@ -771,6 +786,7 @@ function startTimer() {
 function pauseTimer() {
   if (!appState.timer.isRunning) return;
   clearInterval(appState.timer.intervalId);
+  appState.timer.intervalId = null;
   appState.timer.isRunning = false;
   updateTimerControls();
 }
@@ -791,11 +807,17 @@ function finishTimer() {
   showToast(`🔔 Glória a Deus! O tempo terminou: ${appState.timer.label || 'Seu pão está no ponto!'}`);
 }
 
-function updateTimerDisplay() {
-  const sec = appState.timer.remainingSeconds;
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  const formatted = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+function formatSecondsToHMS(sec) {
+  const s = Math.max(0, parseInt(sec, 10) || 0);
+  const hours = Math.floor(s / 3600);
+  const minutes = Math.floor((s % 3600) / 60);
+  const seconds = s % 60;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function updateTimerDisplay(fromSlider = false) {
+  const sec = Math.max(0, appState.timer.remainingSeconds || 0);
+  const formatted = formatSecondsToHMS(sec);
 
   const bigDisplay = document.getElementById('timerBigDisplay');
   if (bigDisplay) bigDisplay.textContent = formatted;
@@ -803,13 +825,37 @@ function updateTimerDisplay() {
   const floatDigits = document.getElementById('floatTimerDigits');
   if (floatDigits) floatDigits.textContent = formatted;
 
-  // Atualiza círculo SVG
-  const circle = document.getElementById('timerProgressRing');
-  if (circle && appState.timer.totalSeconds > 0) {
-    const circumference = 2 * Math.PI * 88; // r=88
-    const progress = appState.timer.remainingSeconds / appState.timer.totalSeconds;
-    const offset = circumference * (1 - progress);
-    circle.style.strokeDashoffset = offset;
+  const activeLabel = document.getElementById('timerActiveLabel');
+  if (activeLabel && appState.timer.label) {
+    activeLabel.textContent = appState.timer.label;
+  }
+
+  // Barra Horizontal de Carregamento & Controle de Tempo
+  const bar = document.getElementById('timerHorizontalProgressBar');
+  const slider = document.getElementById('timerHorizontalSlider');
+  const percentText = document.getElementById('timerProgressPercent');
+
+  const total = appState.timer.totalSeconds || 0;
+  let percent = 0;
+
+  if (appState.timer.isRunning && total > 0) {
+    // Durante a contagem, mostra o percentual restante do ciclo
+    percent = Math.round((sec / total) * 100);
+  } else {
+    // Quando configurando, mostra a posição em relação ao tempo máximo de 4 horas (14400s)
+    percent = Math.round((sec / 14400) * 100);
+  }
+
+  const clampedPercent = Math.min(100, Math.max(0, percent));
+
+  if (bar) {
+    bar.style.width = `${clampedPercent}%`;
+  }
+  if (percentText) {
+    percentText.textContent = `${clampedPercent}%`;
+  }
+  if (slider && !fromSlider) {
+    slider.value = sec;
   }
 }
 
@@ -831,8 +877,13 @@ function hideFloatingWidget() {
 }
 
 function formatSecondsToMin(sec) {
-  const m = Math.floor(sec / 60);
-  return `${m} min`;
+  const s = Math.max(0, parseInt(sec, 10) || 0);
+  const hours = Math.floor(s / 3600);
+  const minutes = Math.floor((s % 3600) / 60);
+  if (hours > 0) {
+    return `${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`;
+  }
+  return `${minutes} min`;
 }
 
 // ==========================================================================

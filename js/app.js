@@ -19,7 +19,8 @@ const appState = {
     totalSeconds: 0,
     remainingSeconds: 0,
     label: '',
-    isRunning: false
+    isRunning: false,
+    targetEndTime: null
   },
   deferredPrompt: null
 };
@@ -74,6 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Sincroniza o timer instantaneamente ao voltar para o app no iPhone ou desbloquear tela
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      syncTimerOnWake();
+    }
+  });
+  window.addEventListener('pageshow', syncTimerOnWake);
+  window.addEventListener('focus', syncTimerOnWake);
+
+  // Restaura timer ativo se o usuário recarregou a página enquanto estava rodando
+  initTimerPersistence();
 
   // Escuta tecla ESC para fechar modais ou silenciar alarme
   document.addEventListener('keydown', (e) => {
@@ -778,11 +791,17 @@ function adjustTimer(deltaSeconds) {
 }
 
 // ==========================================================================
-// ÁUDIO DO ALARME & NOTIFICAÇÕES (BARRA DE STATUS E TELA BLOQUEADA)
+// ÁUDIO DO ALARME, CONTROLE DE MÍDIA & EXECUÇÃO EM SEGUNDO PLANO (ANDROID & IOS)
 // ==========================================================================
 const timerAlarmAudio = new Audio('./sound/alarm.mp3');
 timerAlarmAudio.preload = 'auto';
 timerAlarmAudio.loop = true;
+
+// Áudio silencioso em loop contínuo durante a contagem
+// Impede que o iOS Safari congele a contagem ao minimizar a tela e ativa o player de mídia no Android
+const silentBackgroundAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+silentBackgroundAudio.preload = 'auto';
+silentBackgroundAudio.loop = true;
 
 let isAlarmRinging = false;
 let activeSystemNotification = null;
@@ -802,14 +821,69 @@ function requestTimerNotificationPermission() {
   }
 }
 
+// Configura os controles do player nativo na barra de notificações (MediaSession API)
+function updateMediaSession(status, timeText) {
+  if (!('mediaSession' in navigator)) return;
+
+  try {
+    if (status === 'running') {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `⏱️ ${timeText || 'Timer de Cozinha'}`,
+        artist: 'Pão Divino',
+        album: appState.timer.label || 'Timer em Andamento',
+        artwork: [
+          { src: './icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: './icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      navigator.mediaSession.setActionHandler('pause', () => pauseTimer());
+      navigator.mediaSession.setActionHandler('play', () => startTimer());
+      navigator.mediaSession.setActionHandler('stop', () => resetTimer());
+      navigator.mediaSession.playbackState = 'playing';
+    } else if (status === 'paused') {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `⏸️ Pausado: ${timeText || formatSecondsToHMS(appState.timer.remainingSeconds)}`,
+        artist: 'Pão Divino',
+        album: 'Toque em Play para continuar',
+        artwork: [
+          { src: './icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: './icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      navigator.mediaSession.setActionHandler('play', () => startTimer());
+      navigator.mediaSession.setActionHandler('pause', null);
+      navigator.mediaSession.playbackState = 'paused';
+    } else if (status === 'alarm') {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: '🔔 O TEMPO ACABOU!',
+        artist: 'Pão Divino',
+        album: 'Toque em Pausar para silenciar o alarme',
+        artwork: [
+          { src: './icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: './icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      // Permite parar o alarme diretamente pelo botão do fone/notificação no iPhone e Android
+      navigator.mediaSession.setActionHandler('pause', () => stopAlarm());
+      navigator.mediaSession.setActionHandler('stop', () => stopAlarm());
+      navigator.mediaSession.setActionHandler('play', () => stopAlarm());
+      navigator.mediaSession.playbackState = 'playing';
+    } else {
+      navigator.mediaSession.playbackState = 'none';
+    }
+  } catch (e) {
+    console.warn('[MediaSession] Erro ao sincronizar controles:', e);
+  }
+}
+
 function startTimer() {
   if (appState.timer.isRunning) return;
   if (appState.timer.remainingSeconds <= 0) return;
 
-  // Solicita permissão para notificação na barra de status
+  // 1. Pede permissão de notificação na central do celular
   requestTimerNotificationPermission();
 
-  // Destrava o áudio no iOS / Android mediante gesto do usuário
+  // 2. Destrava áudio do alarme para tocar depois no iOS/Android
   try {
     timerAlarmAudio.play().then(() => {
       timerAlarmAudio.pause();
@@ -817,38 +891,120 @@ function startTimer() {
     }).catch(() => {});
   } catch (e) {}
 
+  // 3. Inicia trilha silenciosa em segundo plano (ativa player na barra de status e mantém processo vivo no iOS)
+  try {
+    silentBackgroundAudio.currentTime = 0;
+    silentBackgroundAudio.play().catch(() => {});
+  } catch (e) {}
+
+  // 4. Marca horário final exato (Timestamp de relógio real - não para se o iOS congelar timers)
+  appState.timer.targetEndTime = Date.now() + (appState.timer.remainingSeconds * 1000);
+  try {
+    localStorage.setItem('pao_divino_timer_target', appState.timer.targetEndTime.toString());
+    localStorage.setItem('pao_divino_timer_total', appState.timer.totalSeconds.toString());
+    localStorage.setItem('pao_divino_timer_label', appState.timer.label || 'Preparo de Pão');
+  } catch (e) {}
+
   appState.timer.isRunning = true;
   updateTimerControls();
   showFloatingWidget();
+  updateMediaSession('running', formatSecondsToHMS(appState.timer.remainingSeconds));
+
+  if (appState.timer.intervalId) {
+    clearInterval(appState.timer.intervalId);
+  }
 
   appState.timer.intervalId = setInterval(() => {
-    if (appState.timer.remainingSeconds > 0) {
-      appState.timer.remainingSeconds--;
-      updateTimerDisplay();
-    } else {
-      finishTimer();
-    }
+    tickTimer();
   }, 1000);
+}
+
+function tickTimer() {
+  if (!appState.timer.isRunning || !appState.timer.targetEndTime) return;
+
+  const msLeft = appState.timer.targetEndTime - Date.now();
+
+  if (msLeft > 0) {
+    appState.timer.remainingSeconds = Math.ceil(msLeft / 1000);
+    updateTimerDisplay();
+
+    // Atualiza periodicamente o tempo no player de notificação
+    if (appState.timer.remainingSeconds % 5 === 0) {
+      updateMediaSession('running', formatSecondsToHMS(appState.timer.remainingSeconds));
+    }
+  } else {
+    appState.timer.remainingSeconds = 0;
+    updateTimerDisplay();
+    finishTimer();
+  }
+}
+
+// Sincroniza o relógio instantaneamente quando o usuário volta para o Safari no iPhone
+function syncTimerOnWake() {
+  if (!appState.timer.isRunning || !appState.timer.targetEndTime) return;
+
+  const msLeft = appState.timer.targetEndTime - Date.now();
+  if (msLeft <= 0) {
+    appState.timer.remainingSeconds = 0;
+    updateTimerDisplay();
+    finishTimer();
+  } else {
+    appState.timer.remainingSeconds = Math.ceil(msLeft / 1000);
+    updateTimerDisplay();
+    updateMediaSession('running', formatSecondsToHMS(appState.timer.remainingSeconds));
+  }
 }
 
 function pauseTimer() {
   if (!appState.timer.isRunning) return;
-  clearInterval(appState.timer.intervalId);
-  appState.timer.intervalId = null;
+
+  // Pausa áudio de fundo
+  try {
+    silentBackgroundAudio.pause();
+  } catch (e) {}
+
+  if (appState.timer.intervalId) {
+    clearInterval(appState.timer.intervalId);
+    appState.timer.intervalId = null;
+  }
+
+  // Calcula exatamente quanto sobrou antes de limpar targetEndTime
+  if (appState.timer.targetEndTime) {
+    const msLeft = appState.timer.targetEndTime - Date.now();
+    appState.timer.remainingSeconds = Math.max(0, Math.ceil(msLeft / 1000));
+    appState.timer.targetEndTime = null;
+  }
+
+  try {
+    localStorage.removeItem('pao_divino_timer_target');
+  } catch (e) {}
+
   appState.timer.isRunning = false;
   updateTimerControls();
+  updateTimerDisplay();
+  updateMediaSession('paused', formatSecondsToHMS(appState.timer.remainingSeconds));
 }
 
 function resetTimer() {
   pauseTimer();
   stopAlarm();
+
+  try {
+    localStorage.removeItem('pao_divino_timer_target');
+    silentBackgroundAudio.pause();
+  } catch (e) {}
+
   appState.timer.remainingSeconds = appState.timer.totalSeconds;
   updateTimerDisplay();
   hideFloatingWidget();
+  updateMediaSession('none');
 }
 
 function finishTimer() {
   pauseTimer();
+  try {
+    localStorage.removeItem('pao_divino_timer_target');
+  } catch (e) {}
   playAlarm();
   showToast(`🔔 Glória a Deus! O tempo terminou: ${appState.timer.label || 'Seu pão está no ponto!'}`);
 }
@@ -856,7 +1012,12 @@ function finishTimer() {
 function playAlarm() {
   isAlarmRinging = true;
 
-  // 1. Toca o arquivo de som alarm.mp3 em loop contínuo
+  // 1. Pausa o áudio de fundo
+  try {
+    silentBackgroundAudio.pause();
+  } catch (e) {}
+
+  // 2. Toca o arquivo de som alarm.mp3 em loop contínuo
   try {
     timerAlarmAudio.currentTime = 0;
     const playPromise = timerAlarmAudio.play();
@@ -870,32 +1031,17 @@ function playAlarm() {
     playChurchBellChime();
   }
 
-  // 2. Vibração no dispositivo móvel
+  // 3. Vibração no dispositivo móvel
   if ('vibrate' in navigator) {
     try {
       navigator.vibrate([500, 250, 500, 250, 1000]);
     } catch (e) {}
   }
 
-  // 3. MediaSession API (Controle com botão Parar / Pausar na Barra de Notificação e Tela Bloqueada)
-  if ('mediaSession' in navigator) {
-    try {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: '🔔 O Tempo Acabou!',
-        artist: 'Pão Divino',
-        album: appState.timer.label || 'Seu pão está no ponto!',
-        artwork: [
-          { src: './icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: './icons/icon-512.png', sizes: '512x512', type: 'image/png' }
-        ]
-      });
-      navigator.mediaSession.setActionHandler('pause', stopAlarm);
-      navigator.mediaSession.setActionHandler('stop', stopAlarm);
-      navigator.mediaSession.playbackState = 'playing';
-    } catch (e) {}
-  }
+  // 4. MediaSession API (Controle com botão Parar / Pausar na Barra de Notificação e Tela Bloqueada)
+  updateMediaSession('alarm');
 
-  // 4. Notificação do Sistema na Barra de Notificações
+  // 5. Notificação do Sistema na Barra de Notificações
   if ('Notification' in window && Notification.permission === 'granted') {
     try {
       const notifOptions = {
@@ -922,13 +1068,13 @@ function playAlarm() {
     } catch (e) {}
   }
 
-  // 5. Exibe Banner Visual Superior
+  // 6. Exibe Banner Visual Superior
   const banner = document.getElementById('alarmRingingBanner');
   if (banner) {
     banner.style.display = 'block';
   }
 
-  // 6. Ao clicar em QUALQUER lugar da tela, para imediatamente de tocar!
+  // 7. Ao clicar em QUALQUER lugar da tela, para imediatamente de tocar!
   setTimeout(() => {
     window.addEventListener('click', onGlobalClickStopAlarm, { capture: true, once: true });
     window.addEventListener('touchstart', onGlobalClickStopAlarm, { capture: true, once: true });
@@ -950,11 +1096,7 @@ function stopAlarm() {
   } catch (e) {}
 
   // Reseta MediaSession
-  if ('mediaSession' in navigator) {
-    try {
-      navigator.mediaSession.playbackState = 'none';
-    } catch (e) {}
-  }
+  updateMediaSession('none');
 
   // Fecha notificação do sistema
   if (activeSystemNotification) {
@@ -973,6 +1115,35 @@ function stopAlarm() {
   window.removeEventListener('touchstart', onGlobalClickStopAlarm, { capture: true });
 
   showToast('🔇 Alarme silenciado.');
+}
+
+// Restaura timer ativo se o usuário recarregou a página enquanto estava rodando
+function initTimerPersistence() {
+  try {
+    const savedTarget = localStorage.getItem('pao_divino_timer_target');
+    const savedTotal = localStorage.getItem('pao_divino_timer_total');
+    const savedLabel = localStorage.getItem('pao_divino_timer_label');
+
+    if (savedTarget) {
+      const targetTime = parseInt(savedTarget, 10);
+      const total = parseInt(savedTotal, 10) || 600;
+      appState.timer.totalSeconds = total;
+      appState.timer.label = savedLabel || 'Preparo de Pão';
+
+      const msLeft = targetTime - Date.now();
+      if (msLeft > 0) {
+        appState.timer.remainingSeconds = Math.ceil(msLeft / 1000);
+        updateTimerDisplay();
+        startTimer();
+      } else if (msLeft > -300000) { // terminou há menos de 5 min
+        appState.timer.remainingSeconds = 0;
+        updateTimerDisplay();
+        finishTimer();
+      } else {
+        localStorage.removeItem('pao_divino_timer_target');
+      }
+    }
+  } catch (e) {}
 }
 
 function formatSecondsToHMS(sec) {

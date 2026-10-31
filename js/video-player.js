@@ -17,8 +17,63 @@
     wakeLock: null,
     completedLessons: new Set(JSON.parse(localStorage.getItem('pao_divino_video_completed') || '[]')),
     lastTapTime: 0,
-    lastTapSide: null
+    lastTapSide: null,
+    startTime: 0,
+    endTime: null
   };
+
+  /**
+   * Converte marcação de tempo ("MM:SS", "HH:MM:SS" ou segundos numéricos) para segundos
+   */
+  function parseTimeToSeconds(val) {
+    if (val === undefined || val === null || val === '') return null;
+    if (typeof val === 'number') return isNaN(val) ? null : Math.max(0, val);
+    if (typeof val === 'string') {
+      const trimmed = val.trim();
+      if (!trimmed) return null;
+      if (!trimmed.includes(':') && !isNaN(Number(trimmed))) {
+        return Math.max(0, Number(trimmed));
+      }
+      const parts = trimmed.split(':').map(Number);
+      if (parts.some(isNaN)) return null;
+      if (parts.length === 3) {
+        return parts[0] * 3600 + parts[1] * 60 + parts[2];
+      } else if (parts.length === 2) {
+        return parts[0] * 60 + parts[1];
+      } else if (parts.length === 1) {
+        return parts[0];
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Retorna os limites efetivos de início (start) e término (end) da aula
+   */
+  function getEffectiveBounds() {
+    const video = document.getElementById('proVideoPlayer');
+    const start = Math.max(0, videoState.startTime || 0);
+    const duration = (video && !isNaN(video.duration) && video.duration > 0) ? video.duration : 0;
+    let end = videoState.endTime;
+    if (end === null || end === undefined || isNaN(end) || end <= start) {
+      end = duration > start ? duration : (start > 0 ? start + 1 : 0);
+    }
+    const segment = Math.max(0.1, end - start);
+    return { start, end, duration, segment };
+  }
+
+  /**
+   * Retorna a duração líquida da aula (end - start) formatada como MM:SS
+   */
+  function getLessonDurationFormatted(lesson) {
+    if (!lesson) return '30 min';
+    const start = parseTimeToSeconds(lesson.start) || 0;
+    const end = parseTimeToSeconds(lesson.end);
+    if (end && end > start) {
+      return formatTime(end - start);
+    }
+    return lesson.prepTime || '30 min';
+  }
 
   // Inicialização quando o DOM estiver pronto
   document.addEventListener('DOMContentLoaded', () => {
@@ -93,7 +148,7 @@
             <div class="video-card-meta">
               <div class="video-meta-tag">
                 <span>⏱️</span>
-                <span>${lesson.prepTime || '30 min'}</span>
+                <span>${getLessonDurationFormatted(lesson)}</span>
               </div>
               <div class="video-meta-tag">
                 <span>🍞</span>
@@ -124,6 +179,8 @@
 
     videoState.currentLesson = lesson;
     videoState.currentIndex = videoState.lessons.findIndex(l => l.id === lessonId);
+    videoState.startTime = parseTimeToSeconds(lesson.start) ?? 0;
+    videoState.endTime = parseTimeToSeconds(lesson.end);
 
     const catalogView = document.getElementById('videoAulasCatalog');
     const playerView = document.getElementById('videoAulaPlayerView');
@@ -138,9 +195,29 @@
       const videoSrc = encodeURI(lesson.videoPath);
       const isDifferentSrc = videoEl.getAttribute('data-current-src') !== videoSrc;
 
+      const applyStartTime = () => {
+        const start = videoState.startTime || 0;
+        try {
+          if (Math.abs(videoEl.currentTime - start) > 0.3) {
+            videoEl.currentTime = start;
+          }
+        } catch (e) {
+          console.warn('[Video] Erro ao aplicar tempo de início:', e);
+        }
+        updateTimelineProgress();
+      };
+
       if (isDifferentSrc) {
         videoEl.setAttribute('data-current-src', videoSrc);
         videoEl.src = videoSrc;
+
+        const onLoaded = () => {
+          applyStartTime();
+          videoEl.removeEventListener('loadedmetadata', onLoaded);
+        };
+        videoEl.addEventListener('loadedmetadata', onLoaded);
+      } else {
+        applyStartTime();
       }
 
       if (autoPlay) {
@@ -149,6 +226,7 @@
         if (playPromise !== undefined) {
           playPromise.catch(() => {
             const onCanPlay = () => {
+              applyStartTime();
               videoEl.play().catch(() => updatePlayPauseButton(false));
               videoEl.removeEventListener('canplay', onCanPlay);
             };
@@ -216,6 +294,7 @@
           <div class="lesson-meta-chips">
             <span class="lesson-chip-num">AULA #${lesson.numStr || String(videoState.currentIndex + 1).padStart(2, '0')}</span>
             <span class="lesson-chip-badge">${lesson.badge || 'Técnica de Panificação'}</span>
+            <span class="lesson-chip-badge" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24;">⏱️ ${getLessonDurationFormatted(lesson)}</span>
             <span style="font-size: 0.78rem; color: var(--text-muted);">${videoState.currentIndex + 1} de ${videoState.lessons.length} aulas</span>
           </div>
           <h2 class="lesson-title-text">${lesson.title}</h2>
@@ -581,23 +660,55 @@
       if (spinner) spinner.style.display = 'none';
     });
 
-    // 3. Skip 10s
+    // 3. Skip 10s respeitando start e end
     if (skipBackBtn) {
       skipBackBtn.addEventListener('click', () => {
-        video.currentTime = Math.max(0, video.currentTime - 10);
+        const { start } = getEffectiveBounds();
+        video.currentTime = Math.max(start, video.currentTime - 10);
         showFeedback('skipBack');
+        updateTimelineProgress();
       });
     }
 
     if (skipFwdBtn) {
       skipFwdBtn.addEventListener('click', () => {
-        video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
+        const { end } = getEffectiveBounds();
+        video.currentTime = Math.min(end, video.currentTime + 10);
         showFeedback('skipFwd');
+        updateTimelineProgress();
       });
     }
 
-    // 4. Atualização de Tempo e Timeline
+    // 4. Atualização de Tempo e Timeline com verificação de fim (end)
     video.addEventListener('timeupdate', () => {
+      const { start, end } = getEffectiveBounds();
+
+      // Se o cursor estiver antes de start, ajusta para start
+      if (start > 0 && video.currentTime < start - 0.5) {
+        video.currentTime = start;
+      }
+
+      // Se atingiu ou ultrapassou o ponto end definido no JSON
+      if (end > start && video.currentTime >= end) {
+        video.pause();
+        video.currentTime = end;
+        videoState.isPlaying = false;
+        container.classList.remove('is-playing');
+        updatePlayPauseButton(false);
+        showControls();
+
+        // Conclusão automática da aula
+        if (videoState.currentLesson) {
+          videoState.completedLessons.add(videoState.currentLesson.id);
+          localStorage.setItem('pao_divino_video_completed', JSON.stringify([...videoState.completedLessons]));
+          const btn = document.getElementById('btnToggleCompleted');
+          if (btn) {
+            btn.classList.add('completed');
+            btn.innerHTML = '<span>✓ Aula Concluída</span>';
+          }
+        }
+      }
+
       updateTimelineProgress();
     });
 
@@ -605,15 +716,19 @@
       updateBufferProgress();
     });
 
-    // 5. Interação com a Timeline (clique e arraste)
+    // 5. Interação com a Timeline (clique e arraste mapeado entre start e end)
     let isDraggingTimeline = false;
 
     const seekToPosition = (e) => {
-      if (!timelineWrap || !video.duration) return;
+      if (!timelineWrap) return;
+      const { start, end } = getEffectiveBounds();
+      const segment = Math.max(0.1, end - start);
       const rect = timelineWrap.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const ratio = Math.max(0, Math.min(1, clickX / rect.width));
-      video.currentTime = ratio * video.duration;
+      const targetTime = start + (ratio * segment);
+      video.currentTime = Math.max(start, Math.min(end, targetTime));
+      updateTimelineProgress();
     };
 
     if (timelineWrap) {
@@ -632,15 +747,16 @@
         isDraggingTimeline = false;
       });
 
-      // Hover para mostrar o tempo na bolha flutuante
+      // Hover para mostrar o tempo na bolha flutuante (iniciando em 00:00)
       const tooltip = document.getElementById('proTimeTooltip');
       timelineWrap.addEventListener('mousemove', (e) => {
-        if (!tooltip || !video.duration) return;
+        if (!tooltip) return;
+        const { segment } = getEffectiveBounds();
         const rect = timelineWrap.getBoundingClientRect();
         const hoverX = e.clientX - rect.left;
         const ratio = Math.max(0, Math.min(1, hoverX / rect.width));
-        const hoverSecs = ratio * video.duration;
-        tooltip.textContent = formatTime(hoverSecs);
+        const hoverRelativeSecs = ratio * segment;
+        tooltip.textContent = formatTime(hoverRelativeSecs);
         tooltip.style.left = `${hoverX}px`;
       });
     }
@@ -752,10 +868,18 @@
       if (spinner) spinner.style.display = 'block';
 
       if (video && videoState.currentLesson) {
-        const videoSrc = videoState.currentLesson.videoPath;
+        const videoSrc = encodeURI(videoState.currentLesson.videoPath);
         video.setAttribute('data-current-src', videoSrc);
         video.src = videoSrc;
-        video.play().catch(() => updatePlayPauseButton(false));
+        const onLoaded = () => {
+          const start = videoState.startTime || 0;
+          if (start > 0) {
+            try { video.currentTime = start; } catch (e) {}
+          }
+          video.play().catch(() => updatePlayPauseButton(false));
+          video.removeEventListener('loadedmetadata', onLoaded);
+        };
+        video.addEventListener('loadedmetadata', onLoaded);
       }
     };
 
@@ -786,12 +910,16 @@
         togglePlay();
       } else if (e.key === 'ArrowLeft' || e.key === 'j' || e.key === 'J') {
         e.preventDefault();
-        video.currentTime = Math.max(0, video.currentTime - 10);
+        const { start } = getEffectiveBounds();
+        video.currentTime = Math.max(start, video.currentTime - 10);
         showFeedback('skipBack');
+        updateTimelineProgress();
       } else if (e.key === 'ArrowRight' || e.key === 'l' || e.key === 'L') {
         e.preventDefault();
-        video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
+        const { end } = getEffectiveBounds();
+        video.currentTime = Math.min(end, video.currentTime + 10);
         showFeedback('skipFwd');
+        updateTimelineProgress();
       } else if (e.key === 'f' || e.key === 'F') {
         e.preventDefault();
         toggleFullscreen(container, video);
@@ -824,24 +952,29 @@
 
     if (!video) return;
 
-    const current = video.currentTime || 0;
-    const duration = video.duration || 0;
-    const pct = duration > 0 ? (current / duration) * 100 : 0;
+    const { start, end, segment } = getEffectiveBounds();
+    const current = Math.max(start, Math.min(end, video.currentTime || 0));
+    const relativeCurrent = Math.max(0, current - start);
+    const pct = Math.max(0, Math.min(100, (relativeCurrent / segment) * 100));
 
     if (progressBar) progressBar.style.width = `${pct}%`;
     if (thumb) thumb.style.left = `${pct}%`;
-    if (timeCurrent) timeCurrent.textContent = formatTime(current);
-    if (timeDuration) timeDuration.textContent = formatTime(duration);
+    if (timeCurrent) timeCurrent.textContent = formatTime(relativeCurrent);
+    if (timeDuration) timeDuration.textContent = formatTime(segment);
   }
 
   function updateBufferProgress() {
     const video = document.getElementById('proVideoPlayer');
     const bufferBar = document.getElementById('proBufferBar');
-    if (!video || !bufferBar || !video.duration) return;
+    if (!video || !bufferBar) return;
 
-    if (video.buffered.length > 0) {
+    const { start, end } = getEffectiveBounds();
+    const segment = Math.max(0.1, end - start);
+
+    if (video.buffered && video.buffered.length > 0) {
       const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-      const pct = (bufferedEnd / video.duration) * 100;
+      const clamped = Math.max(start, Math.min(end, bufferedEnd));
+      const pct = Math.max(0, Math.min(100, ((clamped - start) / segment) * 100));
       bufferBar.style.width = `${pct}%`;
     }
   }

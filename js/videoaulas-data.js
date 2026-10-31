@@ -1,5 +1,6 @@
 /**
  * PÃO DIVINO - Catálogo Oficial de Vídeo Aulas de Pães Rústicos
+ * Inclui suporte a pontos de corte inicial (start) e final (end)
  */
 
 const VIDEO_AULAS_DATA = [
@@ -69,7 +70,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "09:48"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",
@@ -112,7 +115,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:42"
   },
   {
     "id": "videoaula-03-pao-castanha-uva-passa",
@@ -170,7 +175,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "09:54"
   },
   {
     "id": "videoaula-04-pao-italiano-biga",
@@ -238,7 +245,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "13:44"
   },
   {
     "id": "videoaula-05-pao-multigraos-sem-sovar",
@@ -296,7 +305,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "12:04"
   },
   {
     "id": "videoaula-06-ciabatta-sem-sovar",
@@ -364,7 +375,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:34"
   },
   {
     "id": "videoaula-07-pao-de-azeitona",
@@ -437,7 +450,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:50"
   },
   {
     "id": "videoaula-08-pao-integral-iniciantes",
@@ -525,7 +540,9 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:55"
   },
   {
     "id": "videoaula-09-focaccia-sem-sovar",
@@ -613,6 +630,8 @@ const VIDEO_AULAS_DATA = [
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "12:40"
   }
 ];

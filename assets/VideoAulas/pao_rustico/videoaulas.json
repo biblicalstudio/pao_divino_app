@@ -65,7 +65,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "09:48"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",
@@ -108,7 +110,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:42"
   },
   {
     "id": "videoaula-03-pao-castanha-uva-passa",
@@ -166,7 +170,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "09:54"
   },
   {
     "id": "videoaula-04-pao-italiano-biga",
@@ -234,7 +240,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "13:44"
   },
   {
     "id": "videoaula-05-pao-multigraos-sem-sovar",
@@ -292,7 +300,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "12:04"
   },
   {
     "id": "videoaula-06-ciabatta-sem-sovar",
@@ -360,7 +370,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:34"
   },
   {
     "id": "videoaula-07-pao-de-azeitona",
@@ -433,7 +445,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:50"
   },
   {
     "id": "videoaula-08-pao-integral-iniciantes",
@@ -521,7 +535,9 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "10:55"
   },
   {
     "id": "videoaula-09-focaccia-sem-sovar",
@@ -609,6 +625,8 @@
           }
         ]
       }
-    ]
+    ],
+    "start": "00:00",
+    "end": "12:40"
   }
 ]

@@ -344,12 +344,108 @@
     </button>
   </nav>
 
+  <!-- ==========================================
+       POPUP DE BLOQUEIO DE PAGAMENTO (PAYWALL PIX)
+       ========================================== -->
+  <div id="paywallModalBackdrop" class="paywall-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="paywall-modal-card" id="paywallModalCard">
+      <!-- Ícone de Alerta Amarelo -->
+      <div class="paywall-warning-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+
+      <!-- Título Vermelho -->
+      <h2 class="paywall-title">PAGAMENTO NÃO IDENTIFICADO</h2>
+
+      <!-- Badge de Acesso Bloqueado -->
+      <div class="paywall-badge-blocked">
+        <span class="paywall-badge-dot"></span>
+        SEU ACESSO FOI BLOQUEADO
+      </div>
+
+      <!-- Descrição -->
+      <p class="paywall-description">
+        Ainda não identificamos o seu pagamento via Pix. Regularize seu pagamento para liberar o acesso vitalício ao site com <strong>+200 receitas & bônus</strong>, todas as videoaulas, Guia de Vendas e Calculadora de Preço.
+      </p>
+
+      <!-- Caixa Chave Pix -->
+      <div class="paywall-pix-box">
+        <div class="paywall-pix-header">
+          <span class="paywall-pix-label">CHAVE PIX (TELEFONE)</span>
+          <span class="paywall-pix-tag">APROVAÇÃO IMEDIATA</span>
+        </div>
+        <div class="paywall-pix-body">
+          <input type="text" class="paywall-pix-input" id="paywallPixKeyInput" value="61991168629" readonly aria-label="Chave Pix">
+          <button type="button" class="paywall-btn-copy" id="paywallCopyPixBtn" onclick="paywallCopyPix()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="paywallCopyPixText">Copiar Chave</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Linha de Suporte -->
+      <div class="paywall-support-info">
+        📲 SUPORTE: <strong>(61) 99116–8629</strong>
+      </div>
+
+      <!-- Botão Verde WhatsApp -->
+      <a href="https://wa.me/5561991168629?text=Ol%C3%A1!%20Fiz%20o%20pagamento%20via%20Pix%20e%20gostaria%20de%20enviar%20o%20comprovante%20para%20liberar%20meu%20acesso%20vital%C3%ADcio%20ao%20P%C3%A3o%20Divino." 
+         target="_blank" 
+         rel="noopener noreferrer" 
+         class="paywall-btn-whatsapp"
+         id="paywallWhatsappBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+        FALAR COM O SUPORTE
+      </a>
+
+      <!-- Seção de Inserção de Senha/Código -->
+      <div class="paywall-unlock-box">
+        <label for="paywallCodeInput" class="paywall-unlock-label">
+          Já fez o Pix e recebeu a senha no WhatsApp?
+        </label>
+        <div class="paywall-unlock-form">
+          <input type="text" 
+                 id="paywallCodeInput" 
+                 class="paywall-unlock-input" 
+                 placeholder="Digite sua senha ou código..." 
+                 autocomplete="off"
+                 autocapitalize="characters"
+                 onkeydown="if(event.key==='Enter') paywallValidateManualCode()">
+          <button type="button" 
+                  class="paywall-btn-unlock" 
+                  id="paywallBtnUnlock" 
+                  onclick="paywallValidateManualCode()">
+            Desbloquear
+          </button>
+        </div>
+        <div id="paywallFeedback" class="paywall-feedback" style="display: none;"></div>
+      </div>
+
+      <!-- Link Fechar Aviso -->
+      <div>
+        <button type="button" class="paywall-btn-close" onclick="paywallCloseModal()">
+          FECHAR AVISO
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="./js/recipes-data.js"></script>
   <script src="./js/bonus_gluten_free/bonus-recipes-data.js"></script>
   <script src="./js/sucos_detox/sucos-detox-data.js"></script>
   <script src="./js/lanches_cafes/lanches-cafes-data.js"></script>
   <script src="./js/app.js"></script>
+  <script src="./js/paywall.js"></script>
   <script>
     // Elimina o badge da Netlify
     window.addEventListener('DOMContentLoaded', () => {

@@ -138,6 +138,21 @@
          ========================================== -->
     <section class="modules-section" id="modulesSection" aria-labelledby="modulesTitle">
       <div class="modules-grid" id="modulesGrid">
+        <!-- Banner Destaque Principal: Vídeo Aulas de Pães Rústicos (Topo Widescreen) -->
+        <article class="module-card module-card-featured" onclick="selectModule('video-aulas')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('video-aulas');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Vídeo Aulas de Pães Rústicos">
+          <img src="./images/recipes/pao-multigraos-abencoado-levain.jpg" alt="Vídeo Aulas de Pães Rústicos" class="module-card-img"
+            loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge module-card-badge-glow">🎥 Aulas Práticas em Vídeo</span>
+            <h3 class="module-title">Vídeo Aulas • Pães Rústicos</h3>
+            <p class="module-card-desc">Domine a panificação artesanal na prática: do fermento à casca crocante na pedra e panela de ferro.</p>
+            <span class="module-count" style="margin-top: 0.4rem; display: inline-block;">9 vídeo aulas passo a passo</span>
+          </div>
+        </article>
+
         <!-- Card 1: Pães Sagrados -->
         <article class="module-card" onclick="selectModule('sagrados')"
           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('sagrados');}"
@@ -191,21 +206,6 @@
             <span class="module-badge">Cafés & Praticidade</span>
             <h3 class="module-title">Lanches</h3>
             <span class="module-count">25 receitas</span>
-          </div>
-        </article>
-
-        <!-- Card 5: Vídeo Aulas de Pães Rústicos (Destaque Widescreen) -->
-        <article class="module-card module-card-featured" onclick="selectModule('video-aulas')"
-          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('video-aulas');}"
-          role="button" tabindex="0" aria-label="Abrir módulo Vídeo Aulas de Pães Rústicos">
-          <img src="./images/recipes/pao-multigraos-abencoado-levain.jpg" alt="Vídeo Aulas de Pães Rústicos" class="module-card-img"
-            loading="lazy">
-          <div class="module-card-overlay"></div>
-          <div class="module-card-content">
-            <span class="module-badge module-card-badge-glow">🎥 Aulas Práticas em Vídeo</span>
-            <h3 class="module-title">Vídeo Aulas • Pães Rústicos</h3>
-            <p class="module-card-desc">Domine a panificação artesanal na prática: do fermento à casca crocante na pedra e panela de ferro.</p>
-            <span class="module-count" style="margin-top: 0.4rem; display: inline-block;">9 vídeo aulas passo a passo</span>
           </div>
         </article>
       </div>
@@ -346,12 +346,15 @@
                   <svg viewBox="0 0 24 24"><path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/></svg>
                 </button>
 
-                <!-- Controle de Volume -->
-                <div class="pro-volume-wrap">
-                  <button type="button" class="pro-btn-ctrl" id="proBtnVolume" title="Mudo (M)">
+                <!-- Controle de Volume Suspenso (Abre para Cima) -->
+                <div class="pro-volume-wrap" id="proVolumeWrap">
+                  <button type="button" class="pro-btn-ctrl" id="proBtnVolume" title="Ajustar Volume">
                     <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L9 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                   </button>
-                  <input type="range" class="pro-volume-slider" id="proVolumeSlider" min="0" max="1" step="0.05" value="1" title="Volume">
+                  <div class="pro-volume-popover" id="proVolumePopover">
+                    <span class="pro-volume-value" id="proVolumeValue">100%</span>
+                    <input type="range" class="pro-volume-slider-vertical" id="proVolumeSlider" min="0" max="1" step="0.05" value="1" orient="vertical" title="Ajustar Volume">
+                  </div>
                 </div>
 
                 <!-- Tempo Atual / Duração Total -->

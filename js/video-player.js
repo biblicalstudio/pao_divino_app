@@ -645,11 +645,24 @@
       });
     }
 
-    // 6. Volume e Mudo
-    if (volumeBtn) {
-      volumeBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        updateVolumeIcon();
+    // 6. Controle de Volume Suspenso (Abre para Cima)
+    const volumeWrap = document.getElementById('proVolumeWrap');
+    const volumePopover = document.getElementById('proVolumePopover');
+    const volumeValue = document.getElementById('proVolumeValue');
+
+    if (volumeBtn && volumePopover) {
+      volumeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willShow = !volumePopover.classList.contains('show');
+        volumePopover.classList.toggle('show');
+        if (speedMenu) speedMenu.classList.remove('show');
+      });
+
+      // Fechamento ao clicar fora
+      document.addEventListener('click', (e) => {
+        if (volumeWrap && !volumeWrap.contains(e.target)) {
+          volumePopover.classList.remove('show');
+        }
       });
     }
 
@@ -658,6 +671,9 @@
         const val = parseFloat(e.target.value);
         video.volume = val;
         video.muted = (val === 0);
+        if (volumeValue) {
+          volumeValue.textContent = `${Math.round(val * 100)}%`;
+        }
         updateVolumeIcon();
       });
     }

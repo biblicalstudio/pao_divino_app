@@ -244,6 +244,13 @@ function renderRecipes() {
   grid.innerHTML = filtered.map(recipe => createRecipeCardHTML(recipe)).join('');
 }
 
+function getHeartIconHTML(isFav, size = 20) {
+  if (isFav) {
+    return `<svg class="heart-icon favorited" viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+  }
+  return `<svg class="heart-icon" viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+}
+
 function createRecipeCardHTML(recipe) {
   const isFav = appState.favorites.includes(recipe.id);
   const verseSnippet = recipe.verseText || recipe.story || recipe.tips || '';
@@ -270,7 +277,7 @@ function createRecipeCardHTML(recipe) {
           <button class="btn-fav-card ${isFav ? 'favorited' : ''}" 
                   onclick="event.stopPropagation(); toggleFavorite('${recipe.id}')" 
                   title="Favoritar receita" aria-label="Favoritar">
-            ${isFav ? '❤️' : '🤍'}
+            ${getHeartIconHTML(isFav, 20)}
           </button>
         </div>
 
@@ -450,7 +457,7 @@ function toggleFavorite(recipeId) {
 
   // Atualiza botões no modal de tela cheia se estiver aberto
   const topFavBtn = document.getElementById('modalTopFavBtn');
-  if (topFavBtn) topFavBtn.textContent = isNowFav ? '❤️' : '🤍';
+  if (topFavBtn) topFavBtn.innerHTML = getHeartIconHTML(isNowFav, 20);
   const footerFavBtn = document.getElementById('modalFooterFavBtn');
   if (footerFavBtn) footerFavBtn.innerHTML = `<span>${isNowFav ? '❤️ Favoritado' : '🤍 Favoritar'}</span>`;
 }
@@ -525,7 +532,7 @@ function buildRecipeModalHTML(recipe) {
 
         <div class="modal-top-actions">
           <button class="modal-top-action-btn" id="modalTopFavBtn" onclick="toggleFavorite('${recipe.id}')" title="Favoritar">
-            ${isFav ? '❤️' : '🤍'}
+            ${getHeartIconHTML(isFav, 20)}
           </button>
           <button class="modal-top-action-btn" onclick="closeRecipeModal(true)" title="Fechar receita">
             ✕
@@ -805,6 +812,7 @@ silentBackgroundAudio.loop = true;
 
 let isAlarmRinging = false;
 let activeSystemNotification = null;
+let alarmAutoStopTimeout = null;
 
 // Tenta carregar fallback se o caminho primário falhar
 timerAlarmAudio.addEventListener('error', () => {
@@ -1079,13 +1087,25 @@ function playAlarm() {
     window.addEventListener('click', onGlobalClickStopAlarm, { capture: true, once: true });
     window.addEventListener('touchstart', onGlobalClickStopAlarm, { capture: true, once: true });
   }, 120);
+
+  // 8. Limite de tempo: desliga o alarme automaticamente após no máximo 10 segundos
+  alarmAutoStopTimeout = setTimeout(() => {
+    if (isAlarmRinging) {
+      stopAlarm(false);
+    }
+  }, 10000);
 }
 
 function onGlobalClickStopAlarm(e) {
-  stopAlarm();
+  stopAlarm(true);
 }
 
-function stopAlarm() {
+function stopAlarm(showToastMsg = true) {
+  if (alarmAutoStopTimeout) {
+    clearTimeout(alarmAutoStopTimeout);
+    alarmAutoStopTimeout = null;
+  }
+
   if (!isAlarmRinging) return;
   isAlarmRinging = false;
 
@@ -1114,7 +1134,9 @@ function stopAlarm() {
   window.removeEventListener('click', onGlobalClickStopAlarm, { capture: true });
   window.removeEventListener('touchstart', onGlobalClickStopAlarm, { capture: true });
 
-  showToast('🔇 Alarme silenciado.');
+  if (showToastMsg) {
+    showToast('🔇 Alarme silenciado.');
+  }
 }
 
 // Restaura timer ativo se o usuário recarregou a página enquanto estava rodando

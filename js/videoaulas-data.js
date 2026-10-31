@@ -1,0 +1,619 @@
+/**
+ * PÃO DIVINO - Catálogo Oficial de Vídeo Aulas de Pães Rústicos
+ * Gerado a partir de assets/VideoAulas/pao_rustico/videoaulas.json
+ */
+
+const VIDEO_AULAS_DATA = [
+  {
+    "id": "videoaula-01-pao-portugues",
+    "number": 1,
+    "numStr": "01",
+    "title": "PÃO PORTUGUÊS - Receita de pão rústico com azeite feito na pedra refratária",
+    "shortTitle": "Pão Português Rústico",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "01 - YTDown.com_YouTube_Media_-COyoIijyQU_PÃO-PORTUGUÊS-Receita-de-pão-rústico-com-azeite-feito-na-pedra-refratária_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/01 - YTDown.com_YouTube_Media_-COyoIijyQU_PÃO-PORTUGUÊS-Receita-de-pão-rústico-com-azeite-feito-na-pedra-refratária_004_360p.mp4",
+    "yield": "3 pães médios de 200 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "4 a 5 horas (total)",
+    "description": "Aprenda a fazer o tradicional Pão Português rústico com crosta crocante dourada, miolo macio e o aroma inconfundível do azeite de oliva, assado na pedra refratária.",
+    "badge": "Pedra Refratária",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "80 g (⅔ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Água morna",
+            "amount": "80 g (⅓ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "5 g (½ sachê de 10 g)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "320 g (2½ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Açúcar",
+            "amount": "8 g (1 colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "12 g (¾ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "160 g a 175 g (⅔ xícara)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-02-pao-caseiro-iniciantes",
+    "number": 2,
+    "numStr": "02",
+    "title": "PÃO CASEIRO PARA INICIANTES: Receita fácil para quem nunca fez pão",
+    "shortTitle": "Pão Caseiro para Iniciantes",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "02 - YTDown.com_YouTube_Media_nAWHwvnO5SY_PÃO-CASEIRO-PARA-INICIANTES-Receita-fácil-para-quem-nunca-fez-pão_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/02 - YTDown.com_YouTube_Media_nAWHwvnO5SY_PÃO-CASEIRO-PARA-INICIANTES-Receita-fácil-para-quem-nunca-fez-pão_004_360p.mp4",
+    "yield": "1 pão de 500 g (Para 2 pães basta dobrar os ingredientes mantendo os tempos)",
+    "prepTime": "40 minutos",
+    "totalTime": "3 a 4 horas",
+    "description": "A aula perfeita e descomplicada para quem nunca fez pão na vida. Poucos ingredientes, técnica clara e resultado com sabor de padaria artesanal.",
+    "badge": "Nível Fácil",
+    "ingredientGroups": [
+      {
+        "group": "INGREDIENTES PRINCIPAIS",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "360 g (3 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "230 g (1 xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "4 g (½ sachê)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "7 g (½ colher de sopa)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-03-pao-castanha-uva-passa",
+    "number": 3,
+    "numStr": "03",
+    "title": "PÃO DE CASTANHA-DO-PARÁ E UVA-PASSA - Receita de pão rústico feito na panela de ferro",
+    "shortTitle": "Pão de Castanha e Uva-Passa",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "03 - YTDown.com_YouTube_Media_B_bAtyBN0cU_PÃO-DE-CASTANHA-DO-PARÁ-E-UVA-PASSA-Receita-de-pão-rústico-feito-na-panela-de-fe_003_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/03 - YTDown.com_YouTube_Media_B_bAtyBN0cU_PÃO-DE-CASTANHA-DO-PARÁ-E-UVA-PASSA-Receita-de-pão-rústico-feito-na-panela-de-fe_003_360p.mp4",
+    "yield": "1 pão de 850 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "Pão rústico espetacular assado na panela de ferro (Dutch Oven). A crocância da castanha-do-pará com o toque suave adocicado da uva-passa em uma casca estaladiça.",
+    "badge": "Panela de Ferro",
+    "ingredientGroups": [
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "500 g (4 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "5 g (½ sachê de 10 g)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "10 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "320 g a 340 g (1⅓ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "RECHEIO",
+        "ingredients": [
+          {
+            "name": "Castanha-do-pará",
+            "amount": "70 g (13 unidades picadas)",
+            "notes": ""
+          },
+          {
+            "name": "Uva-passa",
+            "amount": "70 g (1 xícara)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-04-pao-italiano-biga",
+    "number": 4,
+    "numStr": "04",
+    "title": "PÃO ITALIANO - Receita fácil utilizando biga e dois métodos de forno: assadeira ou pedra refratária",
+    "shortTitle": "Pão Italiano com Biga",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "04 - YTDown.com_YouTube_Media_gV43xy-CYAA_PÃO-ITALIANO-Receita-fácil-utilizando-biga-e-dois-métodos-de-forno-assadeira-ou_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/04 - YTDown.com_YouTube_Media_gV43xy-CYAA_PÃO-ITALIANO-Receita-fácil-utilizando-biga-e-dois-métodos-de-forno-assadeira-ou_004_360p.mp4",
+    "yield": "1 pão médio de 400 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "16 a 20 horas (fermentação com biga)",
+    "description": "A verdadeira tradição italiana com pré-fermento (Biga). Domine dois métodos eficientes de forno: assadeira convencional ou pedra refratária.",
+    "badge": "Método Biga",
+    "ingredientGroups": [
+      {
+        "group": "BIGA (PRÉ-FERMENTO)",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "50 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "1 g (¼ colher de chá) ou 3 g fresco",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "33 g (¼ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "250 g (2 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "2 g (½ colher de chá) ou 6 g fresco",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "6 g (⅓ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Biga pré-fermentada",
+            "amount": "Toda a biga (ou 50 g de fermento natural)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "150 g a 160 g (⅔ xícara)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-05-pao-multigraos-sem-sovar",
+    "number": 5,
+    "numStr": "05",
+    "title": "PÃO MULTIGRÃOS DE LONGA FERMENTAÇÃO - Receita fácil que não precisa sovar",
+    "shortTitle": "Pão Multigrãos Sem Sovar",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "05 - YTDown.com_YouTube_Media_SX9ZXJc5azY_PÃO-MULTIGRÃOS-DE-LONGA-FERMENTAÇÃO-Receita-fácil-que-não-precisa-sovar_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/05 - YTDown.com_YouTube_Media_SX9ZXJc5azY_PÃO-MULTIGRÃOS-DE-LONGA-FERMENTAÇÃO-Receita-fácil-que-não-precisa-sovar_004_360p.mp4",
+    "yield": "1 pão médio de 750 g",
+    "prepTime": "50 minutos (manuseio)",
+    "totalTime": "Longa fermentação",
+    "description": "Pão rústico super nutritivo carregado de sementes e grãos funcionais. Não precisa sovar: o tempo e a hidratação correta desenvolvem o glúten naturalmente.",
+    "badge": "Sem Sovar",
+    "ingredientGroups": [
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "400 g (3 ¼ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "280 a 320 g (1 ¼ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Mix de grãos (gergelim, chia, linhaça, etc.)",
+            "amount": "40 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "1 g",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "COBERTURA",
+        "ingredients": [
+          {
+            "name": "Aveia em flocos ou sementes de girassol",
+            "amount": "100 g",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-06-ciabatta-sem-sovar",
+    "number": 6,
+    "numStr": "06",
+    "title": "CIABATTA: Receita fácil que não precisa sovar",
+    "shortTitle": "Ciabatta Italiana Sem Sovar",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "06 - YTDown.com_YouTube_Media_q3hbLIs_tN0_CIABATTA-Receita-fácil-que-não-precisa-sovar_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/06 - YTDown.com_YouTube_Media_q3hbLIs_tN0_CIABATTA-Receita-fácil-que-não-precisa-sovar_004_360p.mp4",
+    "yield": "4 ciabattas médias",
+    "prepTime": "60 minutos (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "A clássica Ciabatta italiana cheia de alvéolos grandes e casca fina crocante. Uma técnica prática e sem esforço mecânico de sova.",
+    "badge": "Alvéolos Perfeitos",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "75 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "75 g (⅓ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "3 g (⅓ sachê) ou 9 g fresco",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA FINAL",
+        "ingredients": [
+          {
+            "name": "Esponja fermentada",
+            "amount": "153 g",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo",
+            "amount": "300 g (2 ¼ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "210 g (¾ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "15 g (1 colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Sal de cozinha",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-07-pao-de-azeitona",
+    "number": 7,
+    "numStr": "07",
+    "title": "PÃO DE AZEITONA: Incluindo 5 dicas para fazer pão no inverno",
+    "shortTitle": "Pão Rústico de Azeitona",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "07 - YTDown.com_YouTube_Media_jjGnG7bmW98_PÃO-DE-AZEITONA-Incluindo-5-dicas-para-fazer-pão-no-inverno_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/07 - YTDown.com_YouTube_Media_jjGnG7bmW98_PÃO-DE-AZEITONA-Incluindo-5-dicas-para-fazer-pão-no-inverno_004_360p.mp4",
+    "yield": "1 pão de 700 g",
+    "prepTime": "40 minutos (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "Receita aromática irresistível com azeitonas verdes e pretas embutidas no miolo aerado. A aula inclui 5 dicas vitais para fermentação nos dias frios de inverno.",
+    "badge": "5 Dicas de Inverno",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "100 g (¾ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "100 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "4 g (½ sachê de 10 g)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "300 g (2 ½ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "150 g (⅔ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "RECHEIO",
+        "ingredients": [
+          {
+            "name": "Azeitona verde picada",
+            "amount": "50 g (¾ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Azeitona preta picada",
+            "amount": "50 g (¾ xícara)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-08-pao-integral-iniciantes",
+    "number": 8,
+    "numStr": "08",
+    "title": "PÃO INTEGRAL PARA INICIANTES - Receita fácil com apenas 5 ingredientes",
+    "shortTitle": "Pão Integral para Iniciantes",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "08 - YTDown.com_YouTube_Media_YtaKqPYjr3I_PÃO-INTEGRAL-PARA-INICIANTES-Receita-fácil-com-apenas-5-ingredientes_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/08 - YTDown.com_YouTube_Media_YtaKqPYjr3I_PÃO-INTEGRAL-PARA-INICIANTES-Receita-fácil-com-apenas-5-ingredientes_004_360p.mp4",
+    "yield": "1 pão médio de 700 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "4 a 5 horas (total)",
+    "description": "Um pão 100% caseiro com método de autólise para garantir maciez sem ressecamento, usando apenas 5 ingredientes saudáveis.",
+    "badge": "Autólise & Fibras",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo branca",
+            "amount": "25 g (¼ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo integral",
+            "amount": "75 g (⅔ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "4 g (1 colher de sopa) ou 12 g fresco",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "100 g (½ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "AUTÓLISE",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo branca",
+            "amount": "75 g (⅔ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo integral",
+            "amount": "225 g (2 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "180 a 190 g (¾ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Massa da autólise",
+            "amount": "Preparada acima",
+            "notes": ""
+          },
+          {
+            "name": "Esponja fermentada",
+            "amount": "Preparada acima",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "15 g (1 colher de sopa)",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "videoaula-09-focaccia-sem-sovar",
+    "number": 9,
+    "numStr": "09",
+    "title": "FOCACCIA: Uma receita prática que não precisa sovar",
+    "shortTitle": "Focaccia Tradicional Sem Sovar",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "09 - YTDown.com_YouTube_Media_TRBiwOwb170_FOCACCIA-Uma-receita-prática-que-não-precisa-sovar_004_360p.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/09 - YTDown.com_YouTube_Media_TRBiwOwb170_FOCACCIA-Uma-receita-prática-que-não-precisa-sovar_004_360p.mp4",
+    "yield": "1 focaccia grande de 900 g",
+    "prepTime": "40 minutos (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "A autêntica focaccia dourada, aerada e perfumada com alecrim fresco, azeite generoso e sal grosso. Textura macia por dentro e crocante por fora.",
+    "badge": "Alecrim & Azeite",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "100 g (¾ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "100 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "5 g (½ sachê) ou 15 g fresco (ou 205 g fermento natural refrescado)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA FINAL",
+        "ingredients": [
+          {
+            "name": "Esponja fermentada",
+            "amount": "205 g",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo",
+            "amount": "400 g (3 ⅓ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "280 g (1 ⅓ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "20 g (2 colheres de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Sal de cozinha",
+            "amount": "10 g (½ colher de sopa)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "COBERTURA",
+        "ingredients": [
+          {
+            "name": "Alecrim fresco",
+            "amount": "4 a 6 ramos",
+            "notes": ""
+          },
+          {
+            "name": "Sal grosso",
+            "amount": "A gosto para polvilhar",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "A gosto para untar e regar generosamente",
+            "notes": ""
+          }
+        ]
+      }
+    ]
+  }
+];

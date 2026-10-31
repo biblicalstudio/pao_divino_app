@@ -47,6 +47,11 @@ const MODULE_CONFIG = {
     desc: 'Lanches e Cafés da Manhã Práticos & Nutritivos',
     filterFn: (r) => r.category === 'lanches-cafes'
   },
+  'video-aulas': {
+    title: 'Vídeo Aulas',
+    desc: 'Passo a Passo em Vídeo dos Pães Rústicos Artesanais',
+    filterFn: null
+  },
   'favoritos': {
     title: 'Meus Favoritos',
     desc: 'Suas receitas salvas para rápido acesso',
@@ -313,10 +318,33 @@ function selectModule(moduleId) {
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
   const devSec = document.getElementById('devotionalSection');
+  const videoSec = document.getElementById('videoAulasSection');
   const titleEl = document.getElementById('recipesSectionTitle');
+
+  // Pausa o vídeo se estiver saindo do módulo de vídeo aulas
+  const videoEl = document.getElementById('proVideoPlayer');
+  if (moduleId !== 'video-aulas' && videoEl && !videoEl.paused) {
+    videoEl.pause();
+  }
 
   if (modulesSec) modulesSec.classList.add('hidden');
   if (devSec) devSec.classList.add('hidden');
+
+  // Atualiza abas da barra inferior
+  const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
+  navBtns.forEach(b => b.classList.remove('active'));
+  const activeNavBtn = document.querySelector(`.bottom-nav-bar .nav-item[data-target="${moduleId}"]`);
+  if (activeNavBtn) activeNavBtn.classList.add('active');
+
+  // Rota para o módulo de Vídeo Aulas
+  if (moduleId === 'video-aulas') {
+    if (recipesSec) recipesSec.classList.add('hidden');
+    if (videoSec) videoSec.classList.remove('hidden');
+    window.scrollTo({ top: videoSec ? videoSec.offsetTop - 75 : 0, behavior: 'smooth' });
+    return;
+  }
+
+  if (videoSec) videoSec.classList.add('hidden');
   if (recipesSec) recipesSec.classList.remove('hidden');
 
   const config = MODULE_CONFIG[moduleId];
@@ -341,10 +369,18 @@ function backToModules() {
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
   const devSec = document.getElementById('devotionalSection');
+  const videoSec = document.getElementById('videoAulasSection');
+
+  // Pausa vídeo se estiver reproduzindo
+  const videoEl = document.getElementById('proVideoPlayer');
+  if (videoEl && !videoEl.paused) {
+    videoEl.pause();
+  }
 
   if (modulesSec) modulesSec.classList.remove('hidden');
   if (recipesSec) recipesSec.classList.add('hidden');
   if (devSec) devSec.classList.add('hidden');
+  if (videoSec) videoSec.classList.add('hidden');
 
   const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
   navBtns.forEach(b => b.classList.remove('active'));
@@ -367,8 +403,16 @@ function showDevotional() {
   const modulesSec = document.getElementById('modulesSection');
   const recipesSec = document.getElementById('recipesSection');
   const devSec = document.getElementById('devotionalSection');
+  const videoSec = document.getElementById('videoAulasSection');
+
+  const videoEl = document.getElementById('proVideoPlayer');
+  if (videoEl && !videoEl.paused) {
+    videoEl.pause();
+  }
+
   if (modulesSec) modulesSec.classList.add('hidden');
   if (recipesSec) recipesSec.classList.add('hidden');
+  if (videoSec) videoSec.classList.add('hidden');
   if (devSec) devSec.classList.remove('hidden');
 
   const navBtns = document.querySelectorAll('.bottom-nav-bar .nav-item');
@@ -400,11 +444,13 @@ function initSearch() {
     appState.searchQuery = e.target.value;
     const modulesSec = document.getElementById('modulesSection');
     const recipesSec = document.getElementById('recipesSection');
+    const videoSec = document.getElementById('videoAulasSection');
     const titleEl = document.getElementById('recipesSectionTitle');
 
     if (appState.searchQuery.trim().length > 0) {
       if (clearBtn) clearBtn.classList.add('active');
       if (modulesSec) modulesSec.classList.add('hidden');
+      if (videoSec) videoSec.classList.add('hidden');
       if (recipesSec) recipesSec.classList.remove('hidden');
       if (titleEl) titleEl.textContent = 'Resultados da Busca';
     } else {
@@ -1364,6 +1410,8 @@ function initBottomNav() {
       const target = btn.dataset.target;
       if (target === 'modulos') {
         backToModules();
+      } else if (target === 'video-aulas') {
+        selectModule('video-aulas');
       } else if (target === 'favoritos') {
         showFavoritesModule();
       } else if (target === 'devocional') {

@@ -36,6 +36,7 @@
 
   <!-- Folha de Estilos Principal -->
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/video-player.css">
 
   <!-- Elimina o badge/drawer/HUD da Netlify instantaneamente -->
   <script>
@@ -192,6 +193,21 @@
             <span class="module-count">25 receitas</span>
           </div>
         </article>
+
+        <!-- Card 5: Vídeo Aulas de Pães Rústicos (Destaque Widescreen) -->
+        <article class="module-card module-card-featured" onclick="selectModule('video-aulas')"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectModule('video-aulas');}"
+          role="button" tabindex="0" aria-label="Abrir módulo Vídeo Aulas de Pães Rústicos">
+          <img src="./images/recipes/pao-multigraos-abencoado-levain.jpg" alt="Vídeo Aulas de Pães Rústicos" class="module-card-img"
+            loading="lazy">
+          <div class="module-card-overlay"></div>
+          <div class="module-card-content">
+            <span class="module-badge module-card-badge-glow">🎥 Aulas Práticas em Vídeo</span>
+            <h3 class="module-title">Vídeo Aulas • Pães Rústicos</h3>
+            <p class="module-card-desc">Domine a panificação artesanal na prática: do fermento à casca crocante na pedra e panela de ferro.</p>
+            <span class="module-count" style="margin-top: 0.4rem; display: inline-block;">9 vídeo aulas passo a passo</span>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -230,6 +246,148 @@
 
       <div class="recipes-grid" id="recipesGrid" role="feed" aria-busy="false">
         <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SEÇÃO DE VÍDEO AULAS • PÃES RÚSTICOS
+         ========================================== -->
+    <section class="video-aulas-section hidden" id="videoAulasSection" aria-labelledby="videoAulasTitle">
+      <div class="module-navigation-bar">
+        <button type="button" class="btn-back-modules" onclick="backToModules()">
+          <span class="back-arrow">←</span> Voltar aos Módulos
+        </button>
+      </div>
+
+      <!-- VISUALIZAÇÃO 1: CATÁLOGO DE AULAS (GRADE) -->
+      <div id="videoAulasCatalog">
+        <div class="section-header-flex video-section-header">
+          <div class="section-title-wrap">
+            <span class="hero-badge">🎥 Aulas Práticas</span>
+            <h2 id="videoAulasTitle">Vídeo Aulas • Pães Rústicos</h2>
+            <span class="section-subtitle">
+              Aprenda na prática técnicas de panificação artesanal com passo a passo gravado em vídeo e bancada de ingredientes interativa.
+            </span>
+          </div>
+          <span class="recipes-counter">9 vídeo aulas</span>
+        </div>
+
+        <div class="video-catalog-grid" id="videoCatalogGrid">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+
+      <!-- VISUALIZAÇÃO 2: TELA DA AULA & PLAYER PROFISSIONAL -->
+      <div id="videoAulaPlayerView" class="video-player-view hidden">
+        <div class="video-player-header-bar">
+          <button type="button" class="btn-back-to-catalog" onclick="closeVideoLessonView()">
+            <span>←</span> Todas as Aulas
+          </button>
+          
+          <div class="video-view-nav-arrows">
+            <button type="button" class="btn-nav-lesson" id="btnPrevLesson" onclick="navigateLesson(-1)" title="Aula Anterior">
+              ◀ Anterior
+            </button>
+            <button type="button" class="btn-nav-lesson" id="btnNextLesson" onclick="navigateLesson(1)" title="Próxima Aula">
+              Próxima ▶
+            </button>
+          </div>
+        </div>
+
+        <!-- PLAYER DE VÍDEO PROFISSIONAL (MASTERCLASS DESIGN) -->
+        <div class="pro-video-player-container" id="proVideoContainer">
+          <video id="proVideoPlayer" class="pro-video-element" playsinline webkit-playsinline preload="metadata"></video>
+
+          <!-- Spinner Buffering -->
+          <div class="pro-player-spinner" id="proPlayerSpinner"></div>
+
+          <!-- Feedback Central Animado -->
+          <div class="pro-player-center-feedback" id="proCenterFeedback"></div>
+
+          <!-- Áreas Laterais de Duplo Toque (-10s / +10s no celular) -->
+          <div class="pro-player-touch-left" id="proTouchLeft">
+            <div class="pro-player-touch-hint">« 10s</div>
+          </div>
+          <div class="pro-player-touch-right" id="proTouchRight">
+            <div class="pro-player-touch-hint">10s »</div>
+          </div>
+
+          <!-- BARRA DE CONTROLES INFERIOR CUSTOMIZADA -->
+          <div class="pro-player-controls" id="proPlayerControls">
+            <!-- Timeline Deslizante com Buffer e Progresso Dourado -->
+            <div class="pro-player-timeline-wrap" id="proTimelineWrap">
+              <div class="pro-player-timeline-bg">
+                <div class="pro-player-buffer-bar" id="proBufferBar"></div>
+                <div class="pro-player-progress-bar" id="proProgressBar"></div>
+                <div class="pro-player-thumb" id="proThumb"></div>
+              </div>
+              <div class="pro-player-time-tooltip" id="proTimeTooltip">00:00</div>
+            </div>
+
+            <!-- Botões de Controle -->
+            <div class="pro-player-buttons-row">
+              <div class="pro-player-btn-group-left">
+                <!-- Play / Pause -->
+                <button type="button" class="pro-btn-ctrl" id="proBtnPlayPause" title="Reproduzir (Espaço)">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+
+                <!-- Retroceder 10 segundos -->
+                <button type="button" class="pro-btn-ctrl pro-btn-skip" id="proBtnSkipBack" title="Retroceder 10s (Seta Esquerda)">
+                  <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                </button>
+
+                <!-- Avançar 10 segundos -->
+                <button type="button" class="pro-btn-ctrl pro-btn-skip" id="proBtnSkipFwd" title="Avançar 10s (Seta Direita)">
+                  <svg viewBox="0 0 24 24"><path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/></svg>
+                </button>
+
+                <!-- Controle de Volume -->
+                <div class="pro-volume-wrap">
+                  <button type="button" class="pro-btn-ctrl" id="proBtnVolume" title="Mudo (M)">
+                    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L9 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                  </button>
+                  <input type="range" class="pro-volume-slider" id="proVolumeSlider" min="0" max="1" step="0.05" value="1" title="Volume">
+                </div>
+
+                <!-- Tempo Atual / Duração Total -->
+                <div class="pro-player-time-display">
+                  <span class="pro-player-time-current" id="proTimeCurrent">00:00</span>
+                  <span class="pro-player-time-duration"> / <span id="proTimeDuration">00:00</span></span>
+                </div>
+              </div>
+
+              <div class="pro-player-btn-group-right">
+                <!-- Seletor de Velocidade -->
+                <div class="pro-speed-dropdown">
+                  <button type="button" class="pro-btn-speed" id="proBtnSpeed" title="Velocidade de Reprodução">1x</button>
+                  <div class="pro-speed-menu" id="proSpeedMenu">
+                    <button type="button" class="pro-speed-option" data-speed="0.75">0.75x</button>
+                    <button type="button" class="pro-speed-option active" data-speed="1.0">1.0x (Normal)</button>
+                    <button type="button" class="pro-speed-option" data-speed="1.25">1.25x</button>
+                    <button type="button" class="pro-speed-option" data-speed="1.5">1.5x</button>
+                    <button type="button" class="pro-speed-option" data-speed="2.0">2.0x</button>
+                  </div>
+                </div>
+
+                <!-- Picture-in-Picture -->
+                <button type="button" class="pro-btn-ctrl" id="proBtnPip" title="Picture-in-Picture (P)">
+                  <svg viewBox="0 0 24 24"><path d="M19 11h-8v6h8v-6zm4 8V4.98C23 3.88 22.1 3 21 3H3c-1.1 0-2 .88-2 1.98V19c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zm-2 .02H3V4.97h18v14.05z"/></svg>
+                </button>
+
+                <!-- Fullscreen -->
+                <button type="button" class="pro-btn-ctrl" id="proBtnFullscreen" title="Tela Cheia (F)">
+                  <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BANCADA DA AULA: DETALHES, ESPECIFICAÇÕES E INGREDIENTES COM CHECK -->
+        <div class="lesson-body-container" id="lessonDetailsContainer">
+          <!-- Renderizado dinamicamente via JS -->
+        </div>
       </div>
     </section>
 
@@ -393,6 +551,10 @@
       <span class="nav-icon">📖</span>
       <span>Módulos</span>
     </button>
+    <button class="nav-item" data-target="video-aulas" type="button" onclick="selectModule('video-aulas')">
+      <span class="nav-icon">🎥</span>
+      <span>Aulas</span>
+    </button>
     <button class="nav-item" data-target="favoritos" type="button" onclick="showFavoritesModule()">
       <span class="nav-icon">❤️</span>
       <span>Favoritos</span>
@@ -502,7 +664,9 @@
   <script src="./js/bonus_gluten_free/bonus-recipes-data.js"></script>
   <script src="./js/sucos_detox/sucos-detox-data.js"></script>
   <script src="./js/lanches_cafes/lanches-cafes-data.js"></script>
+  <script src="./js/videoaulas-data.js"></script>
   <script src="./js/app.js"></script>
+  <script src="./js/video-player.js"></script>
   <script src="./js/paywall.js"></script>
   <script>
     // Elimina o badge da Netlify

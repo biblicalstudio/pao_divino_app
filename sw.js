@@ -1,15 +1,19 @@
-const CACHE_NAME = 'pao-divino-v2.0.4';
+const CACHE_NAME = 'pao-divino-v2.1.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './favicon.svg',
   './css/style.css',
+  './css/video-player.css',
   './sound/alarm.mp3',
   './js/recipes-data.js',
   './js/bonus_gluten_free/bonus-recipes-data.js',
   './js/sucos_detox/sucos-detox-data.js',
   './js/lanches_cafes/lanches-cafes-data.js',
+  './js/videoaulas-data.js',
+  './js/video-player.js',
+  './assets/VideoAulas/pao_rustico/videoaulas.json',
   './js/app.js',
   './js/paywall.js',
   './icons/icon.svg',

@@ -393,8 +393,10 @@
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:34"
+    "start1": "00:00",
+    "end1": "00:13",
+    "start2": "00:27",
+    "end2": "10:01"
   },
   {
     "id": "videoaula-07-pao-de-azeitona",
@@ -468,8 +470,10 @@
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:50"
+    "start1": "00:00",
+    "end1": "00:12",
+    "start2": "01:04",
+    "end2": "10:18"
   },
   {
     "id": "videoaula-08-pao-integral-iniciantes",

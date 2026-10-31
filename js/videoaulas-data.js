@@ -1,8 +1,6 @@
 /**
- * PÃO DIVINO - Catálogo Oficial de Vídeo Aulas de Pães Rústicos
- * Inclui suporte a pontos de corte inicial (start) e final (end)
+ * Dados de Fallback das Vídeo Aulas de Panificação Rústica
  */
-
 const VIDEO_AULAS_DATA = [
   {
     "id": "videoaula-01-pao-portugues",
@@ -73,10 +71,12 @@ const VIDEO_AULAS_DATA = [
     ],
     "start1": "00:00",
     "end1": "00:16",
-    "start2": "01:30",
+    "start2": "01:02",
     "end2": "01:54",
-    "start3": "02:30",
-    "end3": "08:58"
+    "start3": "02:31",
+    "end3": "04:29",
+    "start4": "04:38",
+    "end4": "08:58"
   },
   {
     "id": "videoaula-02-pao-caseiro-iniciantes",
@@ -120,8 +120,10 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:42"
+    "start1": "00:00",
+    "end1": "00:13",
+    "start2": "00:27",
+    "end2": "10:26"
   },
   {
     "id": "videoaula-03-pao-castanha-uva-passa",
@@ -180,8 +182,14 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "09:54"
+    "start1": "00:00",
+    "end1": "00:17",
+    "start2": "00:26",
+    "end2": "00:43",
+    "start3": "01:03",
+    "end3": "05:11",
+    "start4": "05:41",
+    "end4": "09:16"
   },
   {
     "id": "videoaula-04-pao-italiano-biga",
@@ -250,8 +258,14 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "13:44"
+    "start1": "00:00",
+    "end1": "00:14",
+    "start2": "00:20",
+    "end2": "02:45",
+    "start3": "03:11",
+    "end3": "05:59",
+    "start4": "06:10",
+    "end4": "13:13"
   },
   {
     "id": "videoaula-05-pao-multigraos-sem-sovar",
@@ -310,8 +324,10 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "12:04"
+    "start1": "00:00",
+    "end1": "00:14",
+    "start2": "01:01",
+    "end2": "11:32"
   },
   {
     "id": "videoaula-06-ciabatta-sem-sovar",
@@ -380,8 +396,10 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:34"
+    "start1": "00:00",
+    "end1": "00:13",
+    "start2": "00:27",
+    "end2": "10:01"
   },
   {
     "id": "videoaula-07-pao-de-azeitona",
@@ -455,8 +473,10 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:50"
+    "start1": "00:00",
+    "end1": "00:12",
+    "start2": "01:04",
+    "end2": "10:18"
   },
   {
     "id": "videoaula-08-pao-integral-iniciantes",
@@ -545,8 +565,12 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "10:55"
+    "start1": "00:00",
+    "end1": "00:23",
+    "start2": "01:07",
+    "end2": "06:25",
+    "start3": "06:32",
+    "end3": "10:21"
   },
   {
     "id": "videoaula-09-focaccia-sem-sovar",
@@ -635,7 +659,9 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start": "00:00",
-    "end": "12:40"
+    "start1": "00:00",
+    "end1": "00:18",
+    "start2": "01:32",
+    "end2": "12:11"
   }
 ];

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pao-divino-v2.1.9';
+const CACHE_NAME = 'pao-divino-v2.2.1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

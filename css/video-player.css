@@ -194,6 +194,15 @@
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
+.video-card-badge .badge-tag-text {
+  display: inline;
+}
+
+.video-card-badge .badge-title-text {
+  display: none;
+}
+
+
 .video-card-number {
   position: absolute;
   top: 10px;
@@ -1171,5 +1180,66 @@
 @media (max-width: 380px) {
   .pro-player-time-duration {
     display: none; /* Em telas ultra estreitas, exibe apenas tempo decorrido para não estourar */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   AJUSTES RESPONSIVOS MOBILE DOS CARDS DE VÍDEO (PADRÃO CARDS DE RECEITA)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* No modo mobile: texto de video-card-badge recebe o título do vídeo */
+  .video-card-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 0.45rem 0.85rem;
+    max-width: calc(100% - 56px);
+    line-height: 1.25;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--bread-crust);
+    border-radius: var(--radius-sm);
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  [data-theme="dark"] .video-card-badge {
+    background: rgba(30, 20, 14, 0.95);
+    color: var(--wheat-200);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+  }
+
+  .video-card-badge .badge-tag-text {
+    display: none !important;
+  }
+
+  .video-card-badge .badge-title-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--bread-crust);
+  }
+
+  [data-theme="dark"] .video-card-badge .badge-title-text {
+    color: var(--wheat-200);
+  }
+
+  /* Remove video-card-title e video-card-desc de baixo da foto no mobile */
+  .video-card-title,
+  .video-card-desc {
+    display: none !important;
+  }
+
+  .video-card-body {
+    padding: 0.75rem 1rem;
+  }
+
+  .video-card-meta {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
   }
 }

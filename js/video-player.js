@@ -260,7 +260,10 @@
                 <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
               </div>
             </div>
-            <span class="video-card-badge">${lesson.badge || 'Vídeo Aula'}</span>
+            <span class="video-card-badge">
+              <span class="badge-tag-text">${lesson.badge || 'Vídeo Aula'}</span>
+              <span class="badge-title-text">${lesson.shortTitle || lesson.title}</span>
+            </span>
             <span class="video-card-number">#${lesson.numStr || String(idx + 1).padStart(2, '0')}</span>
           </div>
 
@@ -383,7 +386,9 @@
     if (catalogView) catalogView.classList.remove('hidden');
 
     renderVideoCatalog();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const videoSec = document.getElementById('videoAulasSection');
+    const scrollTarget = videoSec ? videoSec.offsetTop - 75 : 0;
+    window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
   };
 
   /**

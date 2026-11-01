@@ -340,6 +340,17 @@ function selectModule(moduleId) {
   if (moduleId === 'video-aulas') {
     if (recipesSec) recipesSec.classList.add('hidden');
     if (videoSec) videoSec.classList.remove('hidden');
+
+    // Sempre retorna para a lista com todas as vídeo aulas
+    if (typeof window.closeVideoLessonView === 'function') {
+      window.closeVideoLessonView();
+    } else {
+      const catalogView = document.getElementById('videoAulasCatalog');
+      const playerView = document.getElementById('videoAulaPlayerView');
+      if (playerView) playerView.classList.add('hidden');
+      if (catalogView) catalogView.classList.remove('hidden');
+    }
+
     window.scrollTo({ top: videoSec ? videoSec.offsetTop - 75 : 0, behavior: 'smooth' });
     return;
   }
@@ -371,10 +382,18 @@ function backToModules() {
   const devSec = document.getElementById('devotionalSection');
   const videoSec = document.getElementById('videoAulasSection');
 
-  // Pausa vídeo se estiver reproduzindo
-  const videoEl = document.getElementById('proVideoPlayer');
-  if (videoEl && !videoEl.paused) {
-    videoEl.pause();
+  // Pausa vídeo e reseta a visualização para o catálogo caso retorne
+  if (typeof window.closeVideoLessonView === 'function') {
+    window.closeVideoLessonView();
+  } else {
+    const videoEl = document.getElementById('proVideoPlayer');
+    if (videoEl && !videoEl.paused) {
+      videoEl.pause();
+    }
+    const catalogView = document.getElementById('videoAulasCatalog');
+    const playerView = document.getElementById('videoAulaPlayerView');
+    if (playerView) playerView.classList.add('hidden');
+    if (catalogView) catalogView.classList.remove('hidden');
   }
 
   if (modulesSec) modulesSec.classList.remove('hidden');

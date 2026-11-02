@@ -681,5 +681,437 @@ const VIDEO_AULAS_DATA = [
     "end2": "12:11",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/09.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/09.jpg"
+  },
+  {
+    "id": "videoaula-10-ciabatta-longa-fermentacao",
+    "number": 10,
+    "numStr": "10",
+    "title": "CIABATTA DE LONGA FERMENTAÇÃO - Receita com poucos ingredientes e sem sova",
+    "shortTitle": "Ciabatta Longa Fermentação",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_10_ciabatta_longa_fermentacao.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_10_ciabatta_longa_fermentacao.mp4",
+    "yield": "4 unidades",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "12 horas (total)",
+    "description": "Aprenda a fazer ciabattas leves, aeradas e de fácil digestão usando o método de longa fermentação, com poucos ingredientes e sem sova.",
+    "badge": "Longa Fermentação",
+    "ingredientGroups": [
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "400 g (3 ¼ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (1 colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "2 g (½ colher de chá)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "290 a 310 ml (1 ¼ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "COBERTURA",
+        "ingredients": [
+          {
+            "name": "Azeite de oliva",
+            "amount": "A gosto",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo",
+            "amount": "Para polvilhar",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "08:31",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/10.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/10.jpg"
+  },
+  {
+    "id": "videoaula-11-pao-de-abobora",
+    "number": 11,
+    "numStr": "11",
+    "title": "PÃO DE ABÓBORA - Receita que funciona em qualquer forno doméstico usando uma panela de ferro",
+    "shortTitle": "Pão de Abóbora Artesanal",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_11_pao_de_abobora.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_11_pao_de_abobora.mp4",
+    "yield": "1 pão grande de 1200 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "4 a 5 horas (total)",
+    "description": "Pão rústico espetacular com abóbora cabotiá, crosta super crocante assada na panela de ferro e miolo incrivelmente macio e dourado.",
+    "badge": "Panela de Ferro",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "100 g (¾ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "7 g (⅔ sachê) ou 14 g fresco",
+            "notes": ""
+          },
+          {
+            "name": "Água (do cozimento da abóbora)",
+            "amount": "100 g (½ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "600 g (4 ¾ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "14 g (¼ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Abóbora cabotiá",
+            "amount": "350 g",
+            "notes": ""
+          },
+          {
+            "name": "Esponja",
+            "amount": "Ver acima",
+            "notes": ""
+          },
+          {
+            "name": "Água (do cozimento da abóbora)",
+            "amount": "100 a 170 g (½ xícara)",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "08:15",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/11.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/11.jpg"
+  },
+  {
+    "id": "videoaula-12-pao-de-pinhao",
+    "number": 12,
+    "numStr": "12",
+    "title": "PÃO DE PINHÃO DE LONGA FERMENTAÇÃO: Receita sem sova e que não usa panela",
+    "shortTitle": "Pão de Pinhão Sem Sova",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_12_pao_de_pinhao.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_12_pao_de_pinhao.mp4",
+    "yield": "1 pão médio de 700 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "10 a 12 horas (total)",
+    "description": "Receita prática sem sova com pinhão (ou castanhas), feita à noite para assar no café da manhã direto em assadeira comum ou pedra refratária.",
+    "badge": "Sem Panela",
+    "ingredientGroups": [
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "400 g (3 ¼ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "1 g (¼ colher de chá)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "270 g a 290 g (1 ¼ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Pinhão cozido descascado",
+            "amount": "120 g (28 unidades ou 200 g com casca)",
+            "notes": "Pode substituir por castanhas"
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "12:58",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/12.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/12.jpg"
+  },
+  {
+    "id": "videoaula-13-fougasse",
+    "number": 13,
+    "numStr": "13",
+    "title": "FOUGASSE - Versão francesa da focaccia, recheada com azeitonas e que não precisa sovar",
+    "shortTitle": "Fougasse Francesa de Azeitona",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_13_fougasse.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_13_fougasse.mp4",
+    "yield": "1 fougasse média de 500 g",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "4 a 5 horas (total)",
+    "description": "Versão francesa provençal da focaccia, esculpida em formato de folha de trigo, recheada com azeitonas e banhada em azeite de oliva extravirgem.",
+    "badge": "Clássico Francês",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "60 g (½ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "3 g (¾ colher de sopa) ou 9 g fresco",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "60 g (¼ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "240 g (2 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "6 g (⅓ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Esponja",
+            "amount": "Ver acima",
+            "notes": ""
+          },
+          {
+            "name": "Azeite de oliva",
+            "amount": "7 g (1 colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "150 g (⅔ xícara)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "RECHEIO",
+        "ingredients": [
+          {
+            "name": "Azeitonas",
+            "amount": "60 g (7 unidades)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "COBERTURA",
+        "ingredients": [
+          {
+            "name": "Azeite de oliva",
+            "amount": "A gosto",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "09:15",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/13.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/13.jpg"
+  },
+  {
+    "id": "videoaula-14-pao-frances",
+    "number": 14,
+    "numStr": "14",
+    "title": "PÃO FRANCÊS: Uma receita caseira para fazer pão de sal de padaria",
+    "shortTitle": "Pão Francês Caseiro (Pão de Sal)",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_14_pao_frances.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_14_pao_frances.mp4",
+    "yield": "6 pães médios de 90 g",
+    "prepTime": "60 minutos (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "Receita caseira infalível para fazer o clássico pão de sal com casquinha crocante estaladiça, miolo macio e pestana perfeita.",
+    "badge": "Pão de Sal",
+    "ingredientGroups": [
+      {
+        "group": "ESPONJA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "30 g (¼ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "30 g (2 colheres de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco",
+            "amount": "4 g (½ sachê) ou 12 g fresco",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "MASSA FINAL",
+        "ingredients": [
+          {
+            "name": "Esponja (ou fermento natural)",
+            "amount": "64 g",
+            "notes": ""
+          },
+          {
+            "name": "Farinha de trigo",
+            "amount": "300 g (2 ¼ xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "160 g a 170 g (⅔ xícara)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "8 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Açúcar",
+            "amount": "4 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Manteiga sem sal ou banha",
+            "amount": "14 g (1 colher de sopa)",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "11:07",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/14.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/14.jpg"
+  },
+  {
+    "id": "videoaula-15-focaccia-de-batata",
+    "number": 15,
+    "numStr": "15",
+    "title": "FOCACCIA DE BATATA - Receita rápida e fácil que não precisa sovar",
+    "shortTitle": "Focaccia de Batata & Tomate Cereja",
+    "category": "pao_rustico",
+    "categoryName": "Pães Rústicos",
+    "videoFile": "aula_15_focaccia_de_batata.mp4",
+    "videoPath": "assets/VideoAulas/pao_rustico/aula_15_focaccia_de_batata.mp4",
+    "yield": "1 focaccia de 1,2 kg",
+    "prepTime": "30 min (manuseio)",
+    "totalTime": "3 a 4 horas (total)",
+    "description": "Receita rápida e sem sova onde a batata traz uma maciez surpreendente e umidade prolongada à focaccia, decorada com tomates cereja frescos e orégano.",
+    "badge": "Super Macia",
+    "ingredientGroups": [
+      {
+        "group": "MASSA",
+        "ingredients": [
+          {
+            "name": "Farinha de trigo",
+            "amount": "500 g (4 xícaras)",
+            "notes": ""
+          },
+          {
+            "name": "Sal",
+            "amount": "10 g (½ colher de sopa)",
+            "notes": ""
+          },
+          {
+            "name": "Fermento biológico seco instantâneo",
+            "amount": "10 g (1 sachê)",
+            "notes": ""
+          },
+          {
+            "name": "Batata",
+            "amount": "150 g (1 unidade)",
+            "notes": ""
+          },
+          {
+            "name": "Água",
+            "amount": "350 a 380 g (2 xícaras)",
+            "notes": ""
+          }
+        ]
+      },
+      {
+        "group": "COBERTURA",
+        "ingredients": [
+          {
+            "name": "Azeite de oliva",
+            "amount": "20 g",
+            "notes": ""
+          },
+          {
+            "name": "Tomate cereja",
+            "amount": "180 g (16 unidades)",
+            "notes": ""
+          },
+          {
+            "name": "Orégano",
+            "amount": "A gosto",
+            "notes": ""
+          },
+          {
+            "name": "Sal grosso",
+            "amount": "A gosto",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "start1": "00:00",
+    "end1": "07:54",
+    "thumb": "assets/VideoAulas/pao_rustico/thumbs/15.jpg",
+    "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/15.jpg"
   }
 ];

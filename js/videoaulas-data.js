@@ -739,10 +739,17 @@ const VIDEO_AULAS_DATA = [
         ]
       }
     ],
-    "start1": "00:00",
-    "end1": "08:31",
+
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/10.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/10.jpg"
+    , "start1": "00:00",
+    "end1": "00:25",
+    "start2": "01:28",
+    "end2": "04:20",
+    "start3": "01:28",
+    "end3": "04:20",
+    "start3": "04:29",
+    "end3": "07:53",
   },
   {
     "id": "videoaula-11-pao-de-abobora",
@@ -812,7 +819,11 @@ const VIDEO_AULAS_DATA = [
       }
     ],
     "start1": "00:00",
-    "end1": "08:15",
+    "end1": "00:16",
+    "start2": "01:02",
+    "end2": "05:00",
+    "start3": "05:16",
+    "end3": "07:23",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/11.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/11.jpg"
   },
@@ -864,7 +875,11 @@ const VIDEO_AULAS_DATA = [
       }
     ],
     "start1": "00:00",
-    "end1": "12:58",
+    "end1": "00:22",
+    "start2": "01:10",
+    "end2": "08:50",
+    "start3": "09:01",
+    "end3": "12:25",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/12.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/12.jpg"
   },
@@ -956,7 +971,11 @@ const VIDEO_AULAS_DATA = [
       }
     ],
     "start1": "00:00",
-    "end1": "09:15",
+    "end1": "00:19",
+    "start2": "00:26",
+    "end2": "05:20",
+    "start3": "05:29",
+    "end3": "08:38",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/13.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/13.jpg"
   },
@@ -1033,7 +1052,9 @@ const VIDEO_AULAS_DATA = [
       }
     ],
     "start1": "00:00",
-    "end1": "11:07",
+    "end1": "00:16",
+    "start1": "00:31",
+    "end1": "10:32",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/14.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/14.jpg"
   },
@@ -1110,7 +1131,13 @@ const VIDEO_AULAS_DATA = [
       }
     ],
     "start1": "00:00",
-    "end1": "07:54",
+    "end1": "00:19",
+    "start2": "00:27",
+    "end2": "03:40",
+    "start3": "04:09",
+    "end3": "04:37",
+    "start4": "04:09",
+    "end4": "07:08",
     "thumb": "assets/VideoAulas/pao_rustico/thumbs/15.jpg",
     "thumbnail": "assets/VideoAulas/pao_rustico/thumbs/15.jpg"
   }
